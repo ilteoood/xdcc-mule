@@ -57,7 +57,7 @@ const retrieveScriptContent = async (scriptUrl: string) => {
     return scriptContent.text()
 }
 
-const createOramaInstance = () => {
+const createDbInstance = () => {
     const database = new sqlite3.Database(':memory:');
 
     return database.run('CREATE TABLE files (serverName TEXT, network TEXT, fileNumber TEXT, channelName TEXT, fileSize TEXT, fileName TEXT, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)');
@@ -66,7 +66,7 @@ const createOramaInstance = () => {
 let sqliteDb: sqlite3.Database
 
 export const createDatabase = async (database: DatabaseContent[]) => {
-    sqliteDb = createOramaInstance()
+    sqliteDb = createDbInstance()
 
     const promises = database.map(async channel => {
         const { serverName, network } = channel
