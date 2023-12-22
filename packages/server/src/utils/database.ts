@@ -1,4 +1,4 @@
-import { create, insert, search } from '@orama/orama';
+import { create, insertMultiple, search } from '@orama/orama';
 import { Agent, fetch, setGlobalDispatcher } from 'undici';
 
 setGlobalDispatcher(new Agent({ connect: { timeout: 30_000 } }));
@@ -58,16 +58,7 @@ const retrieveScriptContent = async (scriptUrl: string) => {
 }
 
 const createOramaInstance = () => {
-    return create<DownloadableFile>({
-        schema: {
-            serverName: 'string',
-            network: 'string',
-            fileNumber: 'string',
-            channelName: 'string',
-            fileSize: 'string',
-            fileName: 'string',
-        }
-    })
+    return create({ schema: { fileName: 'string' } })
 }
 
 let oramaDb
@@ -90,7 +81,7 @@ export const createDatabase = async (database: DatabaseContent[]) => {
                 fileName
             }))
 
-        await insert(oramaDb, documentsToInsert)
+        await insertMultiple(oramaDb, documentsToInsert)
     })
 
     await Promise.allSettled(promises)
@@ -102,5 +93,6 @@ export const searchInDatabase = async (value: string) => {
         await createDatabase(xdccDatabase)
     }
 
-    return search(oramaDb, { term: value }).then(result => result.hits.map(hit => hit.document))
+    return search(oramaDb, { term: value, properties: ['fileName'] })
+        .then(result => result.hits.map(hit => hit.document))
 }
