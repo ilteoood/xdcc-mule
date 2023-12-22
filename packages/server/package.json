@@ -10,11 +10,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@orama/orama": "2.0.0-beta.11",
     "fastify": "^4.25.1",
     "sqlite3": "^5.1.6",
     "tsx": "^4.7.0",
-    "undici": "^6.2.1"
+    "undici": "^6.2.1",
+    "xdccjs": "^5.1.5"
   },
   "devDependencies": {
     "@types/node": "^20.10.5",

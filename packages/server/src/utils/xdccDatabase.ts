@@ -9,14 +9,7 @@ type DatabaseContent = {
     network: string
 }
 
-type DownloadableFile = {
-    serverName: string,
-    network: string,
-    fileNumber: string,
-    channelName: string,
-    fileSize: string,
-    fileName: string,
-}
+const COLUMNS_PER_FILE = 4
 
 const retrieveDatabaseContent = async () => {
     const databaseContent = await fetch(process.env.DATABASE_URL)
@@ -76,6 +69,7 @@ export const create = async (database: DatabaseContent[]) => {
 
         scriptContent.split('\n')
             .map(line => line.split(' ').filter(Boolean))
+            .filter(file => file.filter(Boolean).length === COLUMNS_PER_FILE)
             .map(([fileNumber, channelName, fileSize, fileName]) => {
                 preparedStatement.run(serverName, network, fileNumber, channelName, fileSize, fileName.trim())
             })
