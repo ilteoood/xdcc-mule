@@ -72,7 +72,7 @@ let oramaDb
 export const createDatabase = async (database: DatabaseContent[]) => {
     oramaDb = await createOramaInstance()
 
-    for (const channel of database) {
+    const promises = database.map(async channel => {
         const { serverName, network } = channel
         const scriptContent = await retrieveScriptContent(channel.scriptUrl).catch(() => '')
 
@@ -88,7 +88,9 @@ export const createDatabase = async (database: DatabaseContent[]) => {
             }))
 
         await insert(oramaDb, documentsToInsert)
-    }
+    })
+
+    await Promise.all(promises)
 }
 
 export const searchInDatabase = async (value: string) => {
