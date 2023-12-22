@@ -74,7 +74,7 @@ export const createDatabase = async (database: DatabaseContent[]) => {
 
     for (const channel of database) {
         const { serverName, network } = channel
-        const scriptContent = await retrieveScriptContent(channel.scriptUrl)
+        const scriptContent = await retrieveScriptContent(channel.scriptUrl).catch(() => '')
 
         const documentsToInsert = scriptContent.split('\n')
             .map(line => line.split(' ').filter(Boolean))
