@@ -12,6 +12,7 @@
   "dependencies": {
     "@orama/orama": "2.0.0-beta.11",
     "fastify": "^4.25.1",
+    "sqlite3": "^5.1.6",
     "tsx": "^4.7.0",
     "undici": "^6.2.1"
   },

@@ -1,4 +1,4 @@
-import { create, insertMultiple, search } from '@orama/orama';
+import sqlite3 from 'sqlite3';
 import { Agent, fetch, setGlobalDispatcher } from 'undici';
 
 setGlobalDispatcher(new Agent({ connect: { timeout: 30_000 } }));
@@ -58,41 +58,41 @@ const retrieveScriptContent = async (scriptUrl: string) => {
 }
 
 const createOramaInstance = () => {
-    return create({ schema: { fileName: 'string' } })
+    const database = new sqlite3.Database(':memory:');
+
+    return database.run('CREATE TABLE files (serverName TEXT, network TEXT, fileNumber TEXT, channelName TEXT, fileSize TEXT, fileName TEXT, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)');
 }
 
-let oramaDb
+let sqliteDb: sqlite3.Database
 
 export const createDatabase = async (database: DatabaseContent[]) => {
-    oramaDb = await createOramaInstance()
+    sqliteDb = createOramaInstance()
 
     const promises = database.map(async channel => {
         const { serverName, network } = channel
         const scriptContent = await retrieveScriptContent(channel.scriptUrl)
 
-        const documentsToInsert = scriptContent.split('\n')
-            .map(line => line.split(' ').filter(Boolean))
-            .map(([fileNumber, channelName, fileSize, fileName]) => ({
-                serverName,
-                network,
-                fileNumber,
-                channelName,
-                fileSize,
-                fileName
-            }))
+        const preparedStatement = sqliteDb.prepare('INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)')
 
-        await insertMultiple(oramaDb, documentsToInsert)
+        scriptContent.split('\n')
+            .map(line => line.split(' ').filter(Boolean))
+            .map(([fileNumber, channelName, fileSize, fileName]) => {
+                preparedStatement.run(serverName, network, fileNumber, channelName, fileSize, fileName.trim())
+            })
+
+        preparedStatement.finalize()
     })
 
     await Promise.allSettled(promises)
 }
 
 export const searchInDatabase = async (value: string) => {
-    if (!oramaDb) {
+    if (!sqliteDb) {
         const xdccDatabase = await parseXdccDatabase()
         await createDatabase(xdccDatabase)
     }
 
-    return search(oramaDb, { term: value, properties: ['fileName'] })
-        .then(result => result.hits.map(hit => hit.document))
+    return new Promise((resolve) => {
+        sqliteDb.all('SELECT * FROM files WHERE fileName LIKE ?', [`%${value}%`], (err, rows = []) => resolve(rows))
+    })
 }
