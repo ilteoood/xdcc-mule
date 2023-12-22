@@ -60,7 +60,7 @@ const retrieveScriptContent = async (scriptUrl: string) => {
 const createDbInstance = () => {
     const database = new sqlite3.Database(':memory:');
 
-    return database.run('CREATE TABLE files (serverName TEXT, network TEXT, fileNumber TEXT, channelName TEXT, fileSize TEXT, fileName TEXT, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)');
+    return database.run('CREATE TABLE files (serverName TEXT, network TEXT, fileNumber TEXT, channelName TEXT, fileSize TEXT, fileName TEXT)');
 }
 
 let sqliteDb: sqlite3.Database
