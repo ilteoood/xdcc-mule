@@ -12,7 +12,8 @@
   "dependencies": {
     "@orama/orama": "2.0.0-beta.11",
     "fastify": "^4.25.1",
-    "tsx": "^4.7.0"
+    "tsx": "^4.7.0",
+    "undici": "^6.2.1"
   },
   "devDependencies": {
     "@types/node": "^20.10.5",

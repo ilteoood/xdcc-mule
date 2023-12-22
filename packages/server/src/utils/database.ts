@@ -1,4 +1,7 @@
-import { create, insert, search } from '@orama/orama'
+import { create, insert, search } from '@orama/orama';
+import { Agent, fetch, setGlobalDispatcher } from 'undici';
+
+setGlobalDispatcher(new Agent({ connect: { timeout: 30_000 } }));
 
 type DatabaseContent = {
     serverName: string
