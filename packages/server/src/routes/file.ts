@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { searchInDatabase } from "../utils/database";
+import { search } from "../utils/xdccDatabase.js";
 
 export default async function (fastify: FastifyInstance) {
 
@@ -33,7 +33,7 @@ export default async function (fastify: FastifyInstance) {
     }, (request) => {
         const { fileName } = request.query
 
-        return searchInDatabase(fileName)
+        return search(fileName)
     })
 
 }

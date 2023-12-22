@@ -46,7 +46,7 @@ const extractDatabaseInfo = (databaseContent: string): DatabaseContent[] => {
     return extractedChannels
 }
 
-export const parseXdccDatabase = async () => {
+export const parse = async () => {
     const databaseContent = await retrieveDatabaseContent()
 
     return extractDatabaseInfo(databaseContent)
@@ -65,7 +65,7 @@ const createDbInstance = () => {
 
 let sqliteDb: sqlite3.Database
 
-export const createDatabase = async (database: DatabaseContent[]) => {
+export const create = async (database: DatabaseContent[]) => {
     sqliteDb = createDbInstance()
 
     const promises = database.map(async channel => {
@@ -86,10 +86,10 @@ export const createDatabase = async (database: DatabaseContent[]) => {
     await Promise.allSettled(promises)
 }
 
-export const searchInDatabase = async (value: string) => {
+export const search = async (value: string) => {
     if (!sqliteDb) {
-        const xdccDatabase = await parseXdccDatabase()
-        await createDatabase(xdccDatabase)
+        const xdccDatabase = await parse()
+        await create(xdccDatabase)
     }
 
     return new Promise((resolve) => {

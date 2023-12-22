@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createOramaDatabase, parseXdccDatabase, searchInDatabase } from '../../src/utils/database'
+import { create, parse, search } from '../../src/utils/xdccDatabase.js'
 
-describe('database', () => {
+describe('xdccDatabase', () => {
     const parsedXdccDatabase = [
         {
             "serverName": "#a-b-c",
@@ -15,7 +15,7 @@ describe('database', () => {
         },
     ]
 
-    describe('parseXdccDatabase', () => {
+    describe('parse', () => {
         it('should parse database', async () => {
             globalThis.fetch = vi.fn().mockResolvedValue({
                 text: () => `[foo]
@@ -24,20 +24,20 @@ describe('database', () => {
 2=#Pierpaolo*http://www.pierpaolo.org/scripts.php*1 Mix*public`
             })
 
-            const database = await parseXdccDatabase()
+            const database = await parse()
 
             expect(database).toStrictEqual(parsedXdccDatabase)
         })
     })
 
-    describe('createOramaDatabase', () => {
+    describe('create', () => {
         it('should create a searchable orama database', async () => {
             globalThis.fetch = vi.fn().mockResolvedValue({
                 text: () => `#1   AeC|1P|01 1.9G Foo-Fuugther.part01.rar
 #2   AeC|1P|01 1.9G Foo-Fuugther.part02.rar`})
 
-            await createOramaDatabase(parsedXdccDatabase)
-            const result = await searchInDatabase('foo')
+            await create(parsedXdccDatabase)
+            const result = await search('foo')
 
             expect(result).toStrictEqual([
                 {
