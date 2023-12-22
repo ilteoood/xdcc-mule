@@ -1,19 +1,21 @@
 {
   "name": "xdcc-mule-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "start": "tsx --inspect --watch ./src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@orama/orama": "2.0.0-beta.11",
-    "fastify": "^4.25.1"
+    "fastify": "^4.25.1",
+    "tsx": "^4.7.0"
   },
   "devDependencies": {
+    "@types/node": "^20.10.5",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",
     "vitest": "^1.1.0"

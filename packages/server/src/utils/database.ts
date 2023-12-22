@@ -28,7 +28,7 @@ const extractDatabaseInfo = (databaseContent: string): DatabaseContent[] => {
     for (let line of databaseContent.split('\n')) {
         if (line.startsWith('0=')) {
             parsedNetwrok = line.split('*')[1]
-        } else if (!line.startsWith('[')) {
+        } else if (line && !line.startsWith('[')) {
             line = line.split('=')[1]
             const [serverName, scriptUrl] = line.split('*')
 
@@ -69,33 +69,32 @@ const createOramaInstance = () => {
 
 let oramaDb
 
-export const createOramaDatabase = async (database: DatabaseContent[]) => {
+export const createDatabase = async (database: DatabaseContent[]) => {
     oramaDb = await createOramaInstance()
 
     for (const channel of database) {
         const { serverName, network } = channel
         const scriptContent = await retrieveScriptContent(channel.scriptUrl)
 
-        for (const line of scriptContent.split('\n')) {
-            const [fileNumber, channelName, fileSize, fileName] = line.split(' ').filter(Boolean)
-
-            await insert(oramaDb, {
+        const documentsToInsert = scriptContent.split('\n')
+            .map(line => line.split(' ').filter(Boolean))
+            .map(([fileNumber, channelName, fileSize, fileName]) => ({
                 serverName,
                 network,
                 fileNumber,
                 channelName,
                 fileSize,
                 fileName
-            })
+            }))
 
-        }
+        await insert(oramaDb, documentsToInsert)
     }
 }
 
 export const searchInDatabase = async (value: string) => {
     if (!oramaDb) {
         const xdccDatabase = await parseXdccDatabase()
-        await createOramaDatabase(xdccDatabase)
+        await createDatabase(xdccDatabase)
     }
 
     return search(oramaDb, { term: value }).then(result => result.hits.map(hit => hit.document))
