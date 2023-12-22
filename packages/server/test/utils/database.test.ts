@@ -31,7 +31,7 @@ describe('database', () => {
     })
 
     describe('createOramaDatabase', () => {
-        it('should create orama database', async () => {
+        it('should create a searchable orama database', async () => {
             globalThis.fetch = vi.fn().mockResolvedValue({
                 text: () => `#1   AeC|1P|01 1.9G Foo-Fuugther.part01.rar
 #2   AeC|1P|01 1.9G Foo-Fuugther.part02.rar`})
