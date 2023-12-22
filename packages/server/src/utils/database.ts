@@ -77,7 +77,7 @@ export const createDatabase = async (database: DatabaseContent[]) => {
 
     const promises = database.map(async channel => {
         const { serverName, network } = channel
-        const scriptContent = await retrieveScriptContent(channel.scriptUrl).catch(() => '')
+        const scriptContent = await retrieveScriptContent(channel.scriptUrl)
 
         const documentsToInsert = scriptContent.split('\n')
             .map(line => line.split(' ').filter(Boolean))
@@ -93,7 +93,7 @@ export const createDatabase = async (database: DatabaseContent[]) => {
         await insert(oramaDb, documentsToInsert)
     })
 
-    await Promise.all(promises)
+    await Promise.allSettled(promises)
 }
 
 export const searchInDatabase = async (value: string) => {
