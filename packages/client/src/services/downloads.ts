@@ -17,8 +17,10 @@ export interface DownloadingFile extends DownloadableFile {
 
 export const statusOptions: StatusOption[] = ['pending', 'downloading', 'downloaded', 'error', 'cancelled']
 
+const ENDPOINT = `/api/downloads`;
+
 export const downloadFile = (file: DownloadableFile) => {
-    return fetch(`/api/download`, {
+    return fetch(ENDPOINT, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -28,7 +30,7 @@ export const downloadFile = (file: DownloadableFile) => {
 }
 
 export const cancelDownload = (file: DownloadableFile) => {
-    return fetch(`/api/download`, {
+    return fetch(ENDPOINT, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -38,7 +40,7 @@ export const cancelDownload = (file: DownloadableFile) => {
 }
 
 export const getDownloads = (): Promise<DownloadingFile[]> => {
-    return fetch(`/api/downloads`, {
+    return fetch(ENDPOINT, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
