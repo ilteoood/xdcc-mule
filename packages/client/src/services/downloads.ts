@@ -39,8 +39,10 @@ export const cancelDownload = (file: DownloadableFile) => {
     })
 }
 
-export const getDownloads = (): Promise<DownloadingFile[]> => {
-    return fetch(ENDPOINT, {
+export const getDownloads = (statusOption: StatusOption): Promise<DownloadingFile[]> => {
+    const endpoint = statusOption ? `${ENDPOINT}?status=${statusOption}` : ENDPOINT
+
+    return fetch(endpoint, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'

@@ -12,14 +12,10 @@ interface DownloadableItemProps {
     statusOption?: StatusOption
 }
 
-const filterPerStatus = (status?: StatusOption) => (downloads: DownloadingFile[]) => {
-    return status ? downloads.filter(download => download.status === status) : downloads
-}
-
 export const DownloadList = ({ statusOption }: DownloadableItemProps) => {
     const { data = [], isLoading, isError } = useQuery({
         queryKey: ['downloads', statusOption],
-        queryFn: () => getDownloads().then(filterPerStatus(statusOption)),
+        queryFn: () => getDownloads(statusOption),
         refetchInterval: REFETCH_INTERVAL
     })
 

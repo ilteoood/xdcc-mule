@@ -1,6 +1,8 @@
 import XDCC from "xdccjs"
 
-export type DownloadableFile = {
+type StatusOption = 'pending' | 'downloading' | 'downloaded' | 'error' | 'cancelled'
+
+export interface DownloadableFile {
     channelName: string,
     network: string,
     fileNumber: string,
@@ -9,10 +11,16 @@ export type DownloadableFile = {
     fileName: string,
 }
 
+export interface DownloadingFile extends DownloadableFile {
+    status: StatusOption
+    percentage: number
+    errorMessage?: string
+}
+
 const clients = new Map<string, XDCC.default>()
 const jobs = new Map<string, XDCC.Job>()
 
-const downloads = new Map<string, DownloadableFile>()
+const downloads = new Map<string, DownloadingFile>()
 
 const buildJobKey = (file: DownloadableFile) => `${file.network}-${file.channelName}-${file.botName}-${file.fileNumber}-${file.fileName}-${file.fileSize}`
 
@@ -43,7 +51,7 @@ export const download = (fileToDownload: DownloadableFile) => {
             const job = await xdcc.download(fileToDownload.botName, fileToDownload.fileNumber)
             jobs.set(jobKey, job)
 
-            const downloadData = { ...fileToDownload, percentage: 0, status: 'pending', errorMessage: undefined }
+            const downloadData = { ...fileToDownload, percentage: 0, status: 'pending' as StatusOption, errorMessage: undefined }
 
             downloads.set(jobKey, downloadData)
 

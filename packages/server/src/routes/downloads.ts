@@ -14,8 +14,17 @@ const downloadableFileSchema = {
 }
 
 export default async function (fastify: FastifyInstance) {
-    fastify.get('/', {
+    fastify.get<{ Querystring: { status: string } }>('/', {
         schema: {
+            querystring: {
+                type: 'object',
+                properties: {
+                    status: {
+                        type: 'string',
+                        enum: ['pending', 'downloading', 'downloaded', 'error', 'cancelled']
+                    }
+                }
+            },
             response: {
                 200: {
                     type: 'array',
@@ -31,7 +40,12 @@ export default async function (fastify: FastifyInstance) {
                 }
             }
         }
-    }, statuses)
+    }, (request) => {
+        const { status } = request.query
+        const downloads = statuses()
+
+        return status ? downloads.filter(download => download.status === status) : downloads
+    })
 
     fastify.post<{ Body: DownloadableFile }>('/', {
         schema: {
