@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
-    "start": "tsx --inspect --watch ./src/index.ts"
+    "start": "tsx --inspect --watch ./src/index.ts",
+    "build": "tsup"
   },
   "keywords": [],
   "author": "",
