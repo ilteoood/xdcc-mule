@@ -19,7 +19,7 @@ jobs:
         with:
           tag: latest,1.0.0
           imageName: ilteoood/xdcc-mule
-          platform: linux/amd64,linux/arm64,linux/arm/v7
+          platform: linux/amd64,linux/arm64
           publish: true
           dockerUser: ilteoood
           dockerPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
