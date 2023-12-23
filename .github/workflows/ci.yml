@@ -2,28 +2,24 @@ name: CI workflow
 on: [push, pull_request]
 jobs:
   test:
-    runs-on: 'ubuntu-latest'
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v4.0.0
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: ".nvmrc"
       - uses: pnpm/action-setup@v2
         with:
           version: latest
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm build
-      - if: matrix.node-version == '20.x'
-        uses: ilteoood/docker_buildx@master
+      - uses: ilteoood/docker_buildx@master
         with:
-            tag: latest,1.0.0
-            imageName: ilteoood/xdcc-mule
-            platform: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6
-            publish: true
-            dockerUser: ilteoood
-            dockerPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          tag: latest,1.0.0
+          imageName: ilteoood/xdcc-mule
+          platform: linux/amd64,linux/arm64,linux/arm/v7
+          publish: true
+          dockerUser: ilteoood
+          dockerPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
