@@ -87,6 +87,7 @@ export const search = async (value: string) => {
     }
 
     return new Promise((resolve) => {
-        sqliteDb.all('SELECT * FROM files WHERE fileName LIKE ?', [`%${value}%`], (err, rows = []) => resolve(rows))
+        const likeableValue = value.split(' ').filter(Boolean).join('%')
+        sqliteDb.all('SELECT * FROM files WHERE fileName LIKE ?', [`%${likeableValue}%`], (err, rows = []) => resolve(rows))
     })
 }
