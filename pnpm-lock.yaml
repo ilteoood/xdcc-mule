@@ -10,6 +10,9 @@ importers:
 
   packages/client:
     dependencies:
+      '@fluentui/react-hooks':
+        specifier: ^8.6.34
+        version: 8.6.34(@types/react@18.2.45)(react@18.2.0)
       '@tanstack/react-query':
         specifier: ^5.14.2
         version: 5.14.2(react@18.2.0)
@@ -495,6 +498,66 @@ packages:
     resolution: {integrity: sha512-aZAXGYo6m22Fk1zZzEUKBvut/CIIQe/BapEORnxiD5Qr0kPHqqI69NtEMCme74h+at72sPhbkb4ZrLd1W3KRLA==}
     dependencies:
       fast-json-stringify: 5.9.1
+    dev: false
+
+  /@fluentui/dom-utilities@2.2.13:
+    resolution: {integrity: sha512-mIb1njyLp1sIwZsokHCfqbdgbA1YRHO/BQ5NwIrNH44sp6hWo1d3Ytu2FoQebPU+caIniAXIsTzpa1AsfeOPgQ==}
+    dependencies:
+      '@fluentui/set-version': 8.2.13
+      tslib: 2.6.2
+    dev: false
+
+  /@fluentui/merge-styles@8.5.14:
+    resolution: {integrity: sha512-OrFEizI56NwO7C9zpEx04WYfrqPmPCWXNtNlXaCd3VW7/MNPQm2wpYqOF2b3xlP5Tnzn6/+w+XR2ym0vLIdM6g==}
+    dependencies:
+      '@fluentui/set-version': 8.2.13
+      tslib: 2.6.2
+    dev: false
+
+  /@fluentui/react-hooks@8.6.34(@types/react@18.2.45)(react@18.2.0):
+    resolution: {integrity: sha512-FtfvsOHuNz4JfmACAUpJKyh/62i14s5K8lk4GGoe4soETyaKAlmYX9HbBOrFi9FkKk6scrFytLCViQ8sR15bDA==}
+    peerDependencies:
+      '@types/react': '>=16.8.0 <19.0.0'
+      react: '>=16.8.0 <19.0.0'
+    dependencies:
+      '@fluentui/react-window-provider': 2.2.17(@types/react@18.2.45)(react@18.2.0)
+      '@fluentui/set-version': 8.2.13
+      '@fluentui/utilities': 8.13.22(@types/react@18.2.45)(react@18.2.0)
+      '@types/react': 18.2.45
+      react: 18.2.0
+      tslib: 2.6.2
+    dev: false
+
+  /@fluentui/react-window-provider@2.2.17(@types/react@18.2.45)(react@18.2.0):
+    resolution: {integrity: sha512-MFaeF/hJGoXiJXjkRZ41IQmYyEnU3uCyNtoaT6YlzAE3KAMV4SvGzcSXVbgx1ZPMXMSnAJt12qX02F5XEBusbA==}
+    peerDependencies:
+      '@types/react': '>=16.8.0 <19.0.0'
+      react: '>=16.8.0 <19.0.0'
+    dependencies:
+      '@fluentui/set-version': 8.2.13
+      '@types/react': 18.2.45
+      react: 18.2.0
+      tslib: 2.6.2
+    dev: false
+
+  /@fluentui/set-version@8.2.13:
+    resolution: {integrity: sha512-xzfxKGNP/N8/hWayv32Jt6EhP7XOe0myFb2R15ll2xUnLypdLVj85y3nfu4EJb+jsTvev8uHEiz540KcZ+6EOg==}
+    dependencies:
+      tslib: 2.6.2
+    dev: false
+
+  /@fluentui/utilities@8.13.22(@types/react@18.2.45)(react@18.2.0):
+    resolution: {integrity: sha512-iYVtMOl8DGrXl6Wke/ft1S31VeegW2aNLpPdF/iqanv/zejm4Z7JDrGpXDf4wjEQKzlK/XNDjBiQssM6MUsKAQ==}
+    peerDependencies:
+      '@types/react': '>=16.8.0 <19.0.0'
+      react: '>=16.8.0 <19.0.0'
+    dependencies:
+      '@fluentui/dom-utilities': 2.2.13
+      '@fluentui/merge-styles': 8.5.14
+      '@fluentui/set-version': 8.2.13
+      '@types/react': 18.2.45
+      react: 18.2.0
+      tslib: 2.6.2
     dev: false
 
   /@gar/promisify@1.1.3:
@@ -3208,6 +3271,10 @@ packages:
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: true
+
+  /tslib@2.6.2:
+    resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
+    dev: false
 
   /tsup@8.0.1(typescript@5.3.3):
     resolution: {integrity: sha512-hvW7gUSG96j53ZTSlT4j/KL0q1Q2l6TqGBFc6/mu/L46IoNWqLLUzLRLP1R8Q7xrJTmkDxxDoojV5uCVs1sVOg==}
