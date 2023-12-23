@@ -62,6 +62,8 @@ const createDbInstance = () => {
 let sqliteDb: sqlite3.Database;
 
 export const create = async (database: DatabaseContent[]) => {
+	sqliteDb?.close();
+
 	sqliteDb = createDbInstance();
 
 	const promises = database.map(async (channel) => {
@@ -94,10 +96,14 @@ export const create = async (database: DatabaseContent[]) => {
 	await Promise.allSettled(promises);
 };
 
+export const refresh = async () => {
+	const xdccDatabase = await parse();
+	await create(xdccDatabase);
+}
+
 export const search = async (value: string) => {
 	if (!sqliteDb) {
-		const xdccDatabase = await parse();
-		await create(xdccDatabase);
+		await refresh();
 	}
 
 	return new Promise((resolve) => {

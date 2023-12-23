@@ -1,8 +1,10 @@
 import fastifyStatic from "@fastify/static";
 import { dirname } from "desm";
 import fastify from "fastify";
+import fastifyCron from "fastify-cron";
 import { join } from "path";
 import apiController from "./routes/api.js";
+import { refresh } from "./utils/xdccDatabase.js";
 
 const app = fastify();
 
@@ -13,5 +15,12 @@ app.register(apiController, {
 app.register(fastifyStatic, {
 	root: join(dirname(import.meta.url), "public"),
 });
+
+app.register(fastifyCron.default, {
+	jobs: [{
+		cronTime: '0 * * * *',
+		onTick: refresh
+	}]
+})
 
 await app.listen({ port: 3000, host: "::" });
