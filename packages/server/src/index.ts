@@ -14,4 +14,4 @@ app.register(fastifyStatic, {
     root: join(dirname(import.meta.url), 'public'),
 })
 
-await app.listen({ port: 3000 })
+await app.listen({ port: 3000, host: '::' })
