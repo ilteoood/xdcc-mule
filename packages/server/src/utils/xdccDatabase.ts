@@ -4,7 +4,7 @@ import { Agent, fetch, setGlobalDispatcher } from 'undici';
 setGlobalDispatcher(new Agent({ connect: { timeout: 30_000 } }));
 
 type DatabaseContent = {
-    serverName: string
+    channelName: string
     scriptUrl: string
     network: string
 }
@@ -26,10 +26,10 @@ const extractDatabaseInfo = (databaseContent: string): DatabaseContent[] => {
             parsedNetwrok = line.split('*')[1]
         } else if (line && !line.startsWith('[')) {
             line = line.split('=')[1]
-            const [serverName, scriptUrl] = line.split('*')
+            const [channelName, scriptUrl] = line.split('*')
 
             extractedChannels.push({
-                serverName,
+                channelName,
                 scriptUrl,
                 network: parsedNetwrok
             })
@@ -53,7 +53,7 @@ const retrieveScriptContent = async (scriptUrl: string) => {
 const createDbInstance = () => {
     const database = new sqlite3.Database(':memory:');
 
-    return database.run('CREATE TABLE files (serverName TEXT, network TEXT, fileNumber TEXT, channelName TEXT, fileSize TEXT, fileName TEXT)');
+    return database.run('CREATE TABLE files (channelName TEXT, network TEXT, fileNumber TEXT, botName TEXT, fileSize TEXT, fileName TEXT)');
 }
 
 let sqliteDb: sqlite3.Database
@@ -62,7 +62,7 @@ export const create = async (database: DatabaseContent[]) => {
     sqliteDb = createDbInstance()
 
     const promises = database.map(async channel => {
-        const { serverName, network } = channel
+        const { channelName, network } = channel
         const scriptContent = await retrieveScriptContent(channel.scriptUrl)
 
         const preparedStatement = sqliteDb.prepare('INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)')
@@ -70,8 +70,8 @@ export const create = async (database: DatabaseContent[]) => {
         scriptContent.split('\n')
             .map(line => line.split(' ').filter(Boolean))
             .filter(file => file.filter(Boolean).length === COLUMNS_PER_FILE)
-            .map(([fileNumber, channelName, fileSize, fileName]) => {
-                preparedStatement.run(serverName, network, fileNumber, channelName, fileSize, fileName.trim())
+            .forEach(([fileNumber, botName, fileSize, fileName]) => {
+                preparedStatement.run(channelName, network, fileNumber, botName, fileSize, fileName.trim())
             })
 
         preparedStatement.finalize()
