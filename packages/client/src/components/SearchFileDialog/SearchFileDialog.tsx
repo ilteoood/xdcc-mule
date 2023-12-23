@@ -39,7 +39,7 @@ export const SearchFileDialog = () => {
                             <i className="pi pi-file" />
                             <InputText value={fileName} placeholder='File name' onChange={onFileNameChange} />
                         </span>
-                        <Button label="Search" icon="pi pi-search" onClick={() => refetch()} />
+                        <Button disabled={!fileName} label="Search" icon="pi pi-search" onClick={() => refetch()} />
                     </div>
 
                     <DataView value={data} itemTemplate={downloadableItem(FILE_OPTIONS)} />
