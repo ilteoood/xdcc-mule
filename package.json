@@ -4,10 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "pnpm -r build"
+    "build": "pnpm -r build",
+    "format": "biome format ./packages",
+    "format:fix": "pnpm run format --write",
+    "sort": "biome check --apply-unsafe ./packages",
+    "lint": "biome lint ./packages",
+    "lint:fix": "biome check --apply ./packages"
   },
   "keywords": [],
   "author": "Matteo Pietro Dazzi",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "@biomejs/biome": "^1.4.1"
+  }
 }

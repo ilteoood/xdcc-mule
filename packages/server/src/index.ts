@@ -1,17 +1,17 @@
-import fastifyStatic from '@fastify/static'
-import { dirname } from 'desm'
-import fastify from 'fastify'
-import { join } from 'path'
-import apiController from './routes/api.js'
+import fastifyStatic from "@fastify/static";
+import { dirname } from "desm";
+import fastify from "fastify";
+import { join } from "path";
+import apiController from "./routes/api.js";
 
-const app = fastify()
+const app = fastify();
 
 app.register(apiController, {
-    prefix: '/api'
-})
+	prefix: "/api",
+});
 
 app.register(fastifyStatic, {
-    root: join(dirname(import.meta.url), 'public'),
-})
+	root: join(dirname(import.meta.url), "public"),
+});
 
-await app.listen({ port: 3000, host: '::' })
+await app.listen({ port: 3000, host: "::" });
