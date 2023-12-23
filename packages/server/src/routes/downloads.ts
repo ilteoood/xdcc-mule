@@ -49,14 +49,10 @@ export default async function (fastify: FastifyInstance) {
         schema: {
             body: downloadableFileSchema
         }
-    }, async (request, response) => {
+    }, async (request) => {
         const fileRequest = request.body
 
-        const outcome = cancel(fileRequest)
-
-        if (!outcome) {
-            response.status(404)
-        }
+        cancel(fileRequest)
     })
 
 }

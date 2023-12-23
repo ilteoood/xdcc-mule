@@ -13,7 +13,7 @@ export type DownloadableFile = {
 const clients = new Map<string, XDCC.default>()
 const jobs = new Map<string, XDCC.Job>()
 
-const downloads = []
+const downloads = new Map<string, DownloadableFile>()
 
 const buildJobKey = (file: DownloadableFile) => `${file.network}-${file.channelName}-${file.botName}-${file.fileNumber}-${file.fileName}-${file.fileSize}`
 
@@ -42,7 +42,7 @@ export const download = (fileToDownload: DownloadableFile) => {
 
             const downloadData = { ...fileToDownload, percentage: 0, status: 'pending', errorMessage: undefined }
 
-            downloads.push(downloadData)
+            downloads.set(jobKey, downloadData)
 
             job.on('downloading', (_fileInfo, _received, percentage) => {
                 downloadData.percentage = percentage
@@ -72,17 +72,14 @@ export const download = (fileToDownload: DownloadableFile) => {
     })
 }
 
-export const statuses = () => downloads
+export const statuses = () => new Array(...downloads.values())
 
 export const cancel = (fileToCancel: DownloadableFile) => {
     const jobKey = buildJobKey(fileToCancel)
 
-    const jobExists = jobs.has(jobKey)
-
-    if(jobExists) {
+    if (jobs.has(jobKey)) {
         jobs.get(jobKey).cancel()
-        return true
     }
 
-    return jobExists
+    downloads.delete(jobKey)
 }
