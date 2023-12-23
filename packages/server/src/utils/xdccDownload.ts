@@ -1,4 +1,3 @@
-import { rejects } from "assert"
 import XDCC from "xdccjs"
 
 export type DownloadableFile = {
@@ -39,7 +38,7 @@ export const download = (fileToDownload: DownloadableFile) => {
 
     const xdcc = clients.get(fileToDownload.network)
 
-    return new Promise<void>((resolve) => {
+    return new Promise<void>((resolve, rejects) => {
         xdcc.on('ready', async () => {
             const job = await xdcc.download(fileToDownload.botName, fileToDownload.fileNumber)
             jobs.set(jobKey, job)
@@ -72,7 +71,7 @@ export const download = (fileToDownload: DownloadableFile) => {
             resolve()
         })
 
-        xdcc.on('error', (error) => { rejects(undefined, error.message) })
+        xdcc.on('error', (error) => { rejects(error) })
 
         xdcc.on('can-quit', () => {
             xdcc.quit()
