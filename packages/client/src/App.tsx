@@ -17,7 +17,7 @@ function App() {
         <div className='mr-2'>
           Status:
         </div>
-        <Dropdown value={statusOption} options={statusOptions} onChange={onStatusChange} />
+        <Dropdown value={statusOption} options={statusOptions} onChange={onStatusChange} showClear />
       </div>
 
       <SearchFileDialog />
