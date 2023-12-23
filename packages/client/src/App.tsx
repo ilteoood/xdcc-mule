@@ -2,10 +2,10 @@ import { Dropdown, DropdownChangeEvent } from "primereact/dropdown"
 import { useCallback, useState } from "react"
 import { DownloadList } from "./components/DownloadList"
 import { SearchFileDialog } from "./components/SearchFileDialog/SearchFileDialog"
-import { statusOptions } from "./services/downloads"
+import { StatusOption, statusOptions } from "./services/downloads"
 
 function App() {
-  const [statusOption, setStatusOption] = useState()
+  const [statusOption, setStatusOption] = useState<StatusOption>()
 
   const onStatusChange = useCallback((event: DropdownChangeEvent) => {
     setStatusOption(event.value)
@@ -22,7 +22,7 @@ function App() {
 
       <SearchFileDialog />
     </div>
-  <DownloadList />
+  <DownloadList statusOption={statusOption} />
   </>
 }
 
