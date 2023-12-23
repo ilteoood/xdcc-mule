@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "pnpm -r build"
+    "build": "pnpm -r build",
+    "postbuild": ""
   },
   "keywords": [],
   "author": "Matteo Pietro Dazzi",
