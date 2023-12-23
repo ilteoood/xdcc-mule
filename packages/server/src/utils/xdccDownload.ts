@@ -1,3 +1,4 @@
+import { rejects } from "assert"
 import XDCC from "xdccjs"
 
 export type DownloadableFile = {
@@ -27,5 +28,7 @@ export const download = (fileToDownload: DownloadableFile) => {
 
             resolve()
         })
+
+        xdcc.on('error', (error) => { rejects(undefined, error.message) })
     })
 }
