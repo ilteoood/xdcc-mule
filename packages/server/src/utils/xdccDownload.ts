@@ -54,11 +54,6 @@ export const download = (fileToDownload: DownloadableFile) => {
                 jobs.delete(jobKey)
             })
 
-            job.on('done', () => {
-                downloadData.status = 'done'
-                jobs.delete(jobKey)
-            })
-
             job.on('error', (error) => {
                 downloadData.status = 'error'
                 downloadData.errorMessage = error
