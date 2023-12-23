@@ -3,12 +3,12 @@ import { search } from "../utils/xdccDatabase.js";
 
 export default async function (fastify: FastifyInstance) {
 
-    fastify.get<{ Querystring: { fileName: string } }>('/', {
+    fastify.get<{ Querystring: { name: string } }>('/', {
         schema: {
             querystring: {
                 type: 'object',
                 properties: {
-                    fileName: {
+                    name: {
                         type: 'string'
                     }
                 }
@@ -31,8 +31,8 @@ export default async function (fastify: FastifyInstance) {
             }
         }
     }, (request) => {
-        const { fileName } = request.query
+        const { name } = request.query
 
-        return search(fileName)
+        return search(name)
     })
 }
