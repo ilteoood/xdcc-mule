@@ -28,7 +28,7 @@ export const statusOptions: StatusOption[] = [
 	"cancelled",
 ];
 
-const ENDPOINT = `/api/downloads`;
+const ENDPOINT = "/api/downloads";
 
 export const downloadFile = (file: DownloadableFile) => {
 	return fetch(ENDPOINT, {

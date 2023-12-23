@@ -1,11 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { DataView } from "primereact/dataview";
+import { DataView as PrimeReactDataView } from "primereact/dataview";
 
-import {
-	DownloadingFile,
-	StatusOption,
-	getDownloads,
-} from "../services/downloads";
+import { StatusOption, getDownloads } from "../services/downloads";
 import { downloadableItem } from "./DownloadableItem/DownloadableItem";
 import { ErrorBoundary } from "./ErrorBoundary";
 
@@ -29,7 +25,10 @@ export const DownloadList = ({ statusOption }: DownloadableItemProps) => {
 
 	return (
 		<ErrorBoundary isLoading={isLoading} isError={isError}>
-			<DataView value={data} itemTemplate={downloadableItem(FILE_OPTIONS)} />
+			<PrimeReactDataView
+				value={data}
+				itemTemplate={downloadableItem(FILE_OPTIONS)}
+			/>
 		</ErrorBoundary>
 	);
 };

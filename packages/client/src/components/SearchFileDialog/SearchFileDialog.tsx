@@ -1,7 +1,7 @@
 import { useBoolean } from "@fluentui/react-hooks";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "primereact/button";
-import { DataView } from "primereact/dataview";
+import { DataView as PrimeReactDataView } from "primereact/dataview";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { ChangeEvent, useCallback, useState } from "react";
@@ -72,7 +72,7 @@ export const SearchFileDialog = () => {
 							/>
 						</div>
 
-						<DataView
+						<PrimeReactDataView
 							value={data}
 							itemTemplate={downloadableItem(FILE_OPTIONS)}
 						/>

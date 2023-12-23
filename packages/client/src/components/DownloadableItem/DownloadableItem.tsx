@@ -37,14 +37,14 @@ const styleMap: Record<string, ButtonProps["severity"]> = {
 };
 
 export const downloadableItem =
-	(props?: DownloadableItemProps) =>
+	(props: DownloadableItemProps) =>
 	(downloadableFile: DownloadableFile & DownloadingFile) => {
 		const [isButtonDisabled, { setTrue: disableButton }] = useBoolean(false);
 
 		const onButtonClick = useCallback(() => {
 			disableButton();
-			buttonActionsMap[props!.action](downloadableFile);
-		}, [downloadableFile]);
+			buttonActionsMap[props.action](downloadableFile);
+		}, [props, disableButton, downloadableFile]);
 
 		return (
 			<div className={classNames(style.container, "flex", "flex-column")}>

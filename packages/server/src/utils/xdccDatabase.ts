@@ -20,7 +20,7 @@ const retrieveDatabaseContent = async () => {
 const extractDatabaseInfo = (databaseContent: string): DatabaseContent[] => {
 	const extractedChannels: DatabaseContent[] = [];
 
-	let parsedNetwrok: string = "";
+	let parsedNetwrok = "";
 
 	for (let line of databaseContent.split("\n")) {
 		if (line.startsWith("0=")) {
@@ -72,20 +72,21 @@ export const create = async (database: DatabaseContent[]) => {
 			"INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)",
 		);
 
-		scriptContent
+		const validLines = scriptContent
 			.split("\n")
 			.map((line) => line.split(" ").filter(Boolean))
-			.filter((file) => file.filter(Boolean).length === COLUMNS_PER_FILE)
-			.forEach(([fileNumber, botName, fileSize, fileName]) => {
-				preparedStatement.run(
-					channelName,
-					network,
-					fileNumber,
-					botName,
-					fileSize,
-					fileName.trim(),
-				);
-			});
+			.filter((file) => file.filter(Boolean).length === COLUMNS_PER_FILE);
+
+		for (const [fileNumber, botName, fileSize, fileName] of validLines) {
+			preparedStatement.run(
+				channelName,
+				network,
+				fileNumber,
+				botName,
+				fileSize,
+				fileName.trim(),
+			);
+		}
 
 		preparedStatement.finalize();
 	});
