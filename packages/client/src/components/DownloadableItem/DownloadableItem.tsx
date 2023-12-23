@@ -21,7 +21,7 @@ const buttonActionsMap: Record<string, (downloadableFile: DownloadableFile) => P
 }
 
 export const downloadableItem = (props?: DownloadableItemProps) => (downloadableFile: DownloadableFile) => {
-    const [isButtonEnabled, { setFalse: disableButton }] = useBoolean(false)
+    const [isButtonDisabled, { setTrue: disableButton }] = useBoolean(false)
 
     const onButtonClick = useCallback(() => {
         disableButton()
@@ -36,7 +36,7 @@ export const downloadableItem = (props?: DownloadableItemProps) => (downloadable
             <div>Size: {downloadableFile.fileSize}</div>
         </div>
         <div className='flex align-items-center gap-2'>
-            {props?.action && <Button icon={iconsMap[props.action]} size='small' onClick={onButtonClick} />}
+            {props?.action && <Button disabled={isButtonDisabled} icon={iconsMap[props.action]} size='small' onClick={onButtonClick} />}
         </div>
     </div>
 }
