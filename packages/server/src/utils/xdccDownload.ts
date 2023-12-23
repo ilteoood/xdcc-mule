@@ -1,4 +1,5 @@
 import XDCC from "xdccjs"
+import { config } from "./config.js"
 
 type StatusOption = 'pending' | 'downloading' | 'downloaded' | 'error' | 'cancelled'
 
@@ -36,9 +37,9 @@ export const download = (fileToDownload: DownloadableFile) => {
             host: fileToDownload.network,
             port: 6667,
             chan: [fileToDownload.channelName],
-            nickname: 'iLPaolo',
+            nickname: config.nickname,
             randomizeNick: true,
-            path: './',
+            path: config.downloadPath,
             verbose: true,
             queue: /.*coda.*/
         } as XDCC.Params))

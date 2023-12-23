@@ -1,5 +1,6 @@
 import sqlite3 from 'sqlite3';
 import { Agent, fetch, setGlobalDispatcher } from 'undici';
+import { config } from './config.js';
 
 setGlobalDispatcher(new Agent({ connect: { timeout: 30_000 } }));
 
@@ -12,7 +13,7 @@ type DatabaseContent = {
 const COLUMNS_PER_FILE = 4
 
 const retrieveDatabaseContent = async () => {
-    const databaseContent = await fetch(process.env.DATABASE_URL)
+    const databaseContent = await fetch(config.databaseUrl)
     return databaseContent.text()
 }
 
