@@ -17,10 +17,12 @@ app.register(fastifyStatic, {
 });
 
 app.register(fastifyCron.default, {
-	jobs: [{
-		cronTime: '0 * * * *',
-		onTick: refresh
-	}]
-})
+	jobs: [
+		{
+			cronTime: "0 * * * *",
+			onTick: refresh,
+		},
+	],
+});
 
 await app.listen({ port: 3000, host: "::" });

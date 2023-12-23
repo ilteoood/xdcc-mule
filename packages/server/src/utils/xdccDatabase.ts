@@ -99,7 +99,7 @@ export const create = async (database: DatabaseContent[]) => {
 export const refresh = async () => {
 	const xdccDatabase = await parse();
 	await create(xdccDatabase);
-}
+};
 
 export const search = async (value: string) => {
 	if (!sqliteDb) {

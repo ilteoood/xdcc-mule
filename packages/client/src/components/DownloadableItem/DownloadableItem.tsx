@@ -57,6 +57,9 @@ export const downloadableItem =
 						</div>
 						<div>Package number: {downloadableFile.fileName}</div>
 						<div>Size: {downloadableFile.fileSize}</div>
+						{downloadableFile.status && (
+							<div>Status: {downloadableFile.status}</div>
+						)}
 					</div>
 					<div className="flex align-items-center gap-2">
 						{props?.action && (
