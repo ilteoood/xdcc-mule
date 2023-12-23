@@ -18,6 +18,12 @@ const downloads = new Map<string, DownloadableFile>()
 const buildJobKey = (file: DownloadableFile) => `${file.network}-${file.channelName}-${file.botName}-${file.fileNumber}-${file.fileName}-${file.fileSize}`
 
 export const download = (fileToDownload: DownloadableFile) => {
+    const jobKey = buildJobKey(fileToDownload)
+
+    if(jobs.has(jobKey)) {
+        return
+    }
+
     if (!clients.has(fileToDownload.network)) {
         clients.set(fileToDownload.network, new XDCC.default({
             host: fileToDownload.network,
@@ -35,8 +41,6 @@ export const download = (fileToDownload: DownloadableFile) => {
 
     return new Promise<void>((resolve) => {
         xdcc.on('ready', async () => {
-            const jobKey = buildJobKey(fileToDownload)
-
             const job = await xdcc.download(fileToDownload.botName, fileToDownload.fileNumber)
             jobs.set(jobKey, job)
 
@@ -69,6 +73,11 @@ export const download = (fileToDownload: DownloadableFile) => {
         })
 
         xdcc.on('error', (error) => { rejects(undefined, error.message) })
+
+        xdcc.on('can-quit', () => {
+            xdcc.quit()
+            clients.delete(fileToDownload.network)
+        })
     })
 }
 
