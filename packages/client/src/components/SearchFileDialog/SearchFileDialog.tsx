@@ -29,7 +29,7 @@ export const SearchFileDialog = () => {
     const onFileNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setFileName(e.target.value), [])
 
     return <>
-        <Button icon='pi pi-plus' onClick={setVisible} />
+        <Button icon='pi pi-file' className='pi pi-search' onClick={setVisible} />
         <Dialog header="Search file" visible={isVisible} onHide={setInvisible} className={style.dialogContainer}>
             <ErrorBoundary isLoading={isLoading || isRefetching} isError={isError || isRefetchError}>
                 <p className="m-0">
