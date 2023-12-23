@@ -1,7 +1,7 @@
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown"
 import { useCallback, useState } from "react"
 import { DownloadList } from "./components/DownloadList"
-import { SearchFileDialog } from "./components/SearchFileDialog"
+import { SearchFileDialog } from "./components/SearchFileDialog/SearchFileDialog"
 import { statusOptions } from "./services/downloads"
 
 function App() {
