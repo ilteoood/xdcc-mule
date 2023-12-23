@@ -1,7 +1,7 @@
-import { Button } from "primereact/button"
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown"
 import { useCallback, useState } from "react"
 import { DownloadList } from "./components/DownloadList"
+import { SearchFileDialog } from "./components/SearchFileDialog"
 import { statusOptions } from "./services/downloads"
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
         <Dropdown value={statusOption} options={statusOptions} onChange={onStatusChange} />
       </div>
 
-      <Button icon='pi pi-plus' />
+      <SearchFileDialog />
     </div>
   <DownloadList />
   </>
