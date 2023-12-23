@@ -14,7 +14,7 @@ function App() {
 
   return <>
     <div className='flex justify-content-between'>
-      <div className='flex align-items-center'>
+      <div className='flex align-items-center mb-2'>
         <div className='mr-2'>
           Status:
         </div>
