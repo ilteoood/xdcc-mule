@@ -24,9 +24,7 @@ export const SearchFileDialog = () => {
         refetch
     } = useQuery({ queryKey: ['files'], queryFn: () => searchFile(fileName), enabled: false })
 
-    const onFileNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setFileName(e.target.value)
-    }, [])
+    const onFileNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setFileName(e.target.value), [])
 
     return <>
         <Button icon='pi pi-plus' onClick={setVisible} />
