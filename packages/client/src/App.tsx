@@ -1,8 +1,11 @@
+import { useMutation } from "@tanstack/react-query";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { useCallback, useState } from "react";
+import { DoubleIconButton } from "./components/DoubleIconButton/DoubleIconButton";
 import { DownloadList } from "./components/DownloadList";
 import { SearchFileDialog } from "./components/SearchFileDialog/SearchFileDialog";
 import { StatusOption, statusOptions } from "./services/downloads";
+import { refreshDatabase } from "./services/files";
 
 function App() {
 	const [statusOption, setStatusOption] = useState<StatusOption>();
@@ -10,6 +13,8 @@ function App() {
 	const onStatusChange = useCallback((event: DropdownChangeEvent) => {
 		setStatusOption(event.value);
 	}, []);
+
+	const { isPending, mutate } = useMutation({ mutationFn: refreshDatabase });
 
 	return (
 		<>
@@ -24,7 +29,17 @@ function App() {
 					/>
 				</div>
 
-				<SearchFileDialog />
+				<div className="flex gap-2">
+					<DoubleIconButton
+						icon="pi pi-database"
+						severity="danger"
+						className="pi pi-times"
+						onClick={mutate as () => void}
+						disabled={isPending}
+					/>
+
+					<SearchFileDialog />
+				</div>
 			</div>
 			<DownloadList statusOption={statusOption} />
 		</>

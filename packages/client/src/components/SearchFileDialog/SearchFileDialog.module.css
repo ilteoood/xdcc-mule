@@ -1,7 +1,3 @@
 .dialogContainer {
     width: 90%;
 }
-
-.withoutLabel :global(.p-button-label) {
-    display: none;
-}

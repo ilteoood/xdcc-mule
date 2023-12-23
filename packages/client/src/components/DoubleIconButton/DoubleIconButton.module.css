@@ -1,0 +1,3 @@
+.withoutLabel :global(.p-button-label) {
+    display: none;
+}

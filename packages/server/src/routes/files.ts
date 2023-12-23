@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { search } from "../utils/xdccDatabase.js";
+import { refresh, search } from "../utils/xdccDatabase.js";
 
 export default async function (fastify: FastifyInstance) {
 	fastify.get<{ Querystring: { name: string } }>(
@@ -38,4 +38,6 @@ export default async function (fastify: FastifyInstance) {
 			return search(name);
 		},
 	);
+
+	fastify.delete("/", refresh);
 }

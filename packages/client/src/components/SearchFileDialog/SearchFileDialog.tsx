@@ -9,7 +9,7 @@ import { searchFile } from "../../services/files";
 import { downloadableItem } from "../DownloadableItem/DownloadableItem";
 import { ErrorBoundary } from "../ErrorBoundary";
 
-import { classNames } from "primereact/utils";
+import { DoubleIconButton } from "../DoubleIconButton/DoubleIconButton";
 import style from "./SearchFileDialog.module.css";
 
 const FILE_OPTIONS = { action: "download" };
@@ -39,10 +39,10 @@ export const SearchFileDialog = () => {
 
 	return (
 		<>
-			<Button
+			<DoubleIconButton
 				icon="pi pi-file"
-				className={classNames(style.withoutLabel, "pi", "pi-search")}
 				onClick={setVisible}
+				className="pi pi-search"
 			/>
 			<Dialog
 				header="Search file"
