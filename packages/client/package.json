@@ -9,9 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.14.2",
+    "primeflex": "^3.3.1",
+    "primeicons": "^6.0.1",
     "primereact": "^10.2.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.12"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

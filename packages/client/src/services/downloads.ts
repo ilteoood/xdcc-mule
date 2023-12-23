@@ -1,4 +1,4 @@
-interface DownloadableFile {
+export interface DownloadableFile {
     channelName: string,
     network: string,
     fileNumber: string,
@@ -6,6 +6,8 @@ interface DownloadableFile {
     fileSize: string,
     fileName: string,
 }
+
+export const statusOptions = ['pending', 'downloading', 'downloaded', 'error', 'cancelled']
 
 export const downloadFile = (file: DownloadableFile) => {
     return fetch(`/api/download`, {
@@ -27,7 +29,7 @@ export const cancelDownload = (file: DownloadableFile) => {
     })
 }
 
-export const getDownloads = () => {
+export const getDownloads = (): Promise<DownloadableFile[]> => {
     return fetch(`/api/downloads`, {
         method: 'GET',
         headers: {
