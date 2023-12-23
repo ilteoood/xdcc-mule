@@ -6,10 +6,12 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { ChangeEvent, useCallback, useState } from 'react';
 import { searchFile } from '../../services/files';
-import { DownloadableItem } from '../DownloadableItem/DownloadableItem';
+import { downloadableItem } from '../DownloadableItem/DownloadableItem';
 import { ErrorBoundary } from '../ErrorBoundary';
 
 import style from './SearchFileDialog.module.css';
+
+const FILE_OPTIONS = { action: 'download' }
 
 export const SearchFileDialog = () => {
     const [isVisible, { setTrue: setVisible, setFalse: setInvisible }] = useBoolean(false)
@@ -39,7 +41,7 @@ export const SearchFileDialog = () => {
                         <Button label="Search" icon="pi pi-search" onClick={() => refetch()} />
                     </div>
 
-                    <DataView value={data} itemTemplate={DownloadableItem} />
+                    <DataView value={data} itemTemplate={downloadableItem(FILE_OPTIONS)} />
                 </p>
             </ErrorBoundary>
         </Dialog >

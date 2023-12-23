@@ -5,7 +5,6 @@ import { SearchFileDialog } from "./components/SearchFileDialog/SearchFileDialog
 import { statusOptions } from "./services/downloads"
 
 function App() {
-
   const [statusOption, setStatusOption] = useState()
 
   const onStatusChange = useCallback((event: DropdownChangeEvent) => {
