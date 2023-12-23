@@ -33,7 +33,7 @@ export const SearchFileDialog = () => {
         <Button icon='pi pi-file' className={classNames(style.withoutLabel, 'pi', 'pi-search')} onClick={setVisible} />
         <Dialog header="Search file" visible={isVisible} onHide={setInvisible} className={style.dialogContainer}>
             <ErrorBoundary isLoading={isLoading || isRefetching} isError={isError || isRefetchError}>
-                <p className="m-0">
+                <div className="m-0">
                     <div className='flex justify-content-between mb-2'>
                         <span className="p-input-icon-left">
                             <i className="pi pi-file" />
@@ -43,7 +43,7 @@ export const SearchFileDialog = () => {
                     </div>
 
                     <DataView value={data} itemTemplate={downloadableItem(FILE_OPTIONS)} />
-                </p>
+                </div>
             </ErrorBoundary>
         </Dialog >
     </>

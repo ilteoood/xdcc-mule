@@ -1,9 +1,11 @@
 import { useBoolean } from "@fluentui/react-hooks";
-import { Button } from 'primereact/button';
+import { Button, ButtonProps } from 'primereact/button';
+import { ProgressBar } from "primereact/progressbar";
 import { classNames } from 'primereact/utils';
-import { DownloadableFile, cancelDownload, downloadFile } from "../../services/downloads";
-
 import { useCallback } from "react";
+
+import { DownloadableFile, DownloadingFile, cancelDownload, downloadFile } from "../../services/downloads";
+
 import style from './DownloadableItem.module.css';
 
 interface DownloadableItemProps {
@@ -20,7 +22,11 @@ const buttonActionsMap: Record<string, (downloadableFile: DownloadableFile) => P
     'delete': (downloadableFile: DownloadableFile) => cancelDownload(downloadableFile)
 }
 
-export const downloadableItem = (props?: DownloadableItemProps) => (downloadableFile: DownloadableFile) => {
+const styleMap: Record<string, ButtonProps['severity']> = {
+    'delete': 'danger',
+}
+
+export const downloadableItem = (props?: DownloadableItemProps) => (downloadableFile: DownloadableFile & DownloadingFile) => {
     const [isButtonDisabled, { setTrue: disableButton }] = useBoolean(false)
 
     const onButtonClick = useCallback(() => {
@@ -28,15 +34,20 @@ export const downloadableItem = (props?: DownloadableItemProps) => (downloadable
         buttonActionsMap[props!.action](downloadableFile)
     }, [downloadableFile])
 
-    return <div className={classNames(style.container, 'flex', 'flex-row', 'justify-content-between')}>
-        <div>
-            <div>Name: {downloadableFile.fileName}</div>
-            <div>Location: {downloadableFile.network} - {downloadableFile.channelName} - {downloadableFile.botName}</div>
-            <div>Package number: {downloadableFile.fileName}</div>
-            <div>Size: {downloadableFile.fileSize}</div>
+    return <div className={classNames(style.container, 'flex', 'flex-column')}>
+        <div className='flex flex-row justify-content-between'>
+            <div>
+                <div>Name: {downloadableFile.fileName}</div>
+                <div>Location: {downloadableFile.network} - {downloadableFile.channelName} - {downloadableFile.botName}</div>
+                <div>Package number: {downloadableFile.fileName}</div>
+                <div>Size: {downloadableFile.fileSize}</div>
+            </div>
+            <div className='flex align-items-center gap-2'>
+                {props?.action && <Button disabled={isButtonDisabled} icon={iconsMap[props.action]} severity={styleMap[props.action]} size='small' onClick={onButtonClick} />}
+            </div>
         </div>
-        <div className='flex align-items-center gap-2'>
-            {props?.action && <Button disabled={isButtonDisabled} icon={iconsMap[props.action]} size='small' onClick={onButtonClick} />}
-        </div>
+        {
+            downloadableFile.percentage > 0 && <ProgressBar className="mt-2" value={downloadableFile.percentage.toFixed(2)} />
+        }
     </div>
 }

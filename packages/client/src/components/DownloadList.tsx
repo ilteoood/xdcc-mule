@@ -6,11 +6,12 @@ import { downloadableItem } from './DownloadableItem/DownloadableItem'
 import { ErrorBoundary } from './ErrorBoundary'
 
 const REFETCH_INTERVAL = 5_000
+const FILE_OPTIONS = { action: 'delete' }
 
 export const DownloadList = () => {
     const { data = [], isLoading, isError } = useQuery({ queryKey: ['downloads'], queryFn: getDownloads, refetchInterval: REFETCH_INTERVAL })
 
     return <ErrorBoundary isLoading={isLoading} isError={isError}>
-        <DataView value={data} itemTemplate={downloadableItem()} />
+        <DataView value={data} itemTemplate={downloadableItem(FILE_OPTIONS)} />
     </ErrorBoundary>
 }
