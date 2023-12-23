@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { DownloadableFile, download, statuses } from "../utils/xdccDownload.js";
+import { DownloadableFile, cancel, download, statuses } from "../utils/xdccDownload.js";
 
 const downloadableFileSchema = {
     type: 'object',
@@ -35,20 +35,28 @@ export default async function (fastify: FastifyInstance) {
 
     fastify.post<{ Body: DownloadableFile }>('/', {
         schema: {
-            body: downloadableFileSchema,
-            response: {
-                200: {
-                    type: 'object',
-                    properties: {
-                        downloadId: { type: 'string' }
-                    }
-                }
-            }
+            body: downloadableFileSchema
         }
-    }, async (request) => {
+    }, async (request, response) => {
         const fileRequest = request.body
 
         await download(fileRequest);
+
+        response.status(201)
+    })
+
+    fastify.delete<{ Body: DownloadableFile }>('/', {
+        schema: {
+            body: downloadableFileSchema
+        }
+    }, async (request, response) => {
+        const fileRequest = request.body
+
+        const outcome = cancel(fileRequest)
+
+        if (!outcome) {
+            response.status(404)
+        }
     })
 
 }
