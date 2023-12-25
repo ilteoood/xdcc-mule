@@ -5,6 +5,7 @@ import fastifyCron from "fastify-cron";
 import { join } from "path";
 import apiController from "./routes/api.js";
 import { refresh } from "./utils/xdccDatabase.js";
+import config from "./utils/config.js";
 
 const app = fastify();
 
@@ -25,4 +26,4 @@ app.register(fastifyCron.default, {
 	],
 });
 
-await app.listen({ port: 3000, host: "::" });
+await app.listen({ port: config.port, host: "::" });
