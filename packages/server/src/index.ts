@@ -5,7 +5,7 @@ import fastifyCron from "fastify-cron";
 import { join } from "path";
 import apiController from "./routes/api.js";
 import { refresh } from "./utils/xdccDatabase.js";
-import config from "./utils/config.js";
+import { config } from "./utils/config.js";
 
 const app = fastify();
 
