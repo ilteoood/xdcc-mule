@@ -31,7 +31,49 @@ const downloads = new Map<string, DownloadingFile>();
 const buildJobKey = (file: DownloadableFile) =>
 	`${file.network}-${file.channelName}-${file.botName}-${file.fileNumber}-${file.fileName}-${file.fileSize}`;
 
-export const download = (fileToDownload: DownloadableFile) => {
+const downloadFile = async (
+	xdcc: XDCC.default,
+	fileToDownload: DownloadableFile,
+	jobKey: string,
+) => {
+	const job = await xdcc.download(
+		fileToDownload.botName,
+		fileToDownload.fileNumber,
+	);
+	jobs.set(jobKey, job);
+
+	const downloadData = {
+		...fileToDownload,
+		percentage: 0,
+		status: "pending" as StatusOption,
+		errorMessage: undefined,
+	};
+
+	downloads.set(jobKey, downloadData);
+
+	job.on("downloading", (_fileInfo, _received, percentage) => {
+		downloadData.percentage = percentage;
+		downloadData.status = "downloading";
+	});
+
+	job.on("downloaded", () => {
+		downloadData.status = "downloaded";
+		jobs.delete(jobKey);
+	});
+
+	job.on("error", (error) => {
+		downloadData.status = "error";
+		downloadData.errorMessage = error;
+		jobs.delete(jobKey);
+	});
+
+	job.on("cancel", () => {
+		downloadData.status = "cancelled";
+		jobs.delete(jobKey);
+	});
+};
+
+export const download = (fileToDownload: DownloadableFile): Promise<void> => {
 	const jobKey = buildJobKey(fileToDownload);
 
 	if (jobs.has(jobKey)) {
@@ -39,73 +81,37 @@ export const download = (fileToDownload: DownloadableFile) => {
 	}
 
 	if (!clients.has(fileToDownload.network)) {
-		clients.set(
-			fileToDownload.network,
-			new XDCC.default({
-				host: fileToDownload.network,
-				port: 6667,
-				chan: [fileToDownload.channelName],
-				nickname: config.nickname,
-				randomizeNick: true,
-				path: config.downloadPath,
-				verbose: true,
-				queue: /.*coda.*/,
-			} as XDCC.Params),
-		);
+		const xdcc = new XDCC.default({
+			host: fileToDownload.network,
+			port: 6667,
+			chan: [fileToDownload.channelName],
+			nickname: config.nickname,
+			randomizeNick: true,
+			path: config.downloadPath,
+			verbose: true,
+			queue: /.*coda.*/,
+		} as XDCC.Params);
+		clients.set(fileToDownload.network, xdcc);
+
+		return new Promise<void>((resolve, rejects) => {
+			xdcc.on("ready", async () => {
+				await downloadFile(xdcc, fileToDownload, jobKey);
+				resolve();
+			});
+
+			xdcc.on("error", (error) => {
+				rejects(error);
+			});
+
+			xdcc.on("can-quit", () => {
+				xdcc.quit();
+				clients.delete(fileToDownload.network);
+			});
+		});
 	}
 
 	const xdcc = clients.get(fileToDownload.network);
-
-	return new Promise<void>((resolve, rejects) => {
-		xdcc.on("ready", async () => {
-			const job = await xdcc.download(
-				fileToDownload.botName,
-				fileToDownload.fileNumber,
-			);
-			jobs.set(jobKey, job);
-
-			const downloadData = {
-				...fileToDownload,
-				percentage: 0,
-				status: "pending" as StatusOption,
-				errorMessage: undefined,
-			};
-
-			downloads.set(jobKey, downloadData);
-
-			job.on("downloading", (_fileInfo, _received, percentage) => {
-				downloadData.percentage = percentage;
-				downloadData.status = "downloading";
-			});
-
-			job.on("downloaded", () => {
-				downloadData.status = "downloaded";
-				jobs.delete(jobKey);
-			});
-
-			job.on("error", (error) => {
-				downloadData.status = "error";
-				downloadData.errorMessage = error;
-				jobs.delete(jobKey);
-			});
-
-			job.on("cancel", () => {
-				downloadData.status = "cancelled";
-				jobs.delete(jobKey);
-			});
-
-			resolve();
-		});
-
-		xdcc.on("error", (error) => {
-			rejects(error);
-		});
-
-		xdcc.on("can-quit", () => {
-			xdcc.quit();
-			clients.delete(fileToDownload.network);
-		});
-	});
+	return downloadFile(xdcc, fileToDownload, jobKey);
 };
 
 export const statuses = () => new Array(...downloads.values());
