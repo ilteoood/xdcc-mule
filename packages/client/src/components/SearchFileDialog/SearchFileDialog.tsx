@@ -4,7 +4,7 @@ import { Button } from "primereact/button";
 import { DataView as PrimeReactDataView } from "primereact/dataview";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useCallback, useState } from "react";
 import { searchFile } from "../../services/files";
 import { downloadableItem } from "../DownloadableItem/DownloadableItem";
 import { ErrorBoundary } from "../ErrorBoundary";
@@ -37,6 +37,15 @@ export const SearchFileDialog = () => {
 		[],
 	);
 
+	const onEnter = useCallback(
+		(e: KeyboardEvent<HTMLInputElement>) => {
+			if (e.key === "Enter") {
+				refetch();
+			}
+		},
+		[refetch],
+	);
+
 	return (
 		<>
 			<DoubleIconButton
@@ -61,6 +70,7 @@ export const SearchFileDialog = () => {
 								<InputText
 									value={fileName}
 									placeholder="File name"
+									onKeyDownCapture={onEnter}
 									onChange={onFileNameChange}
 								/>
 							</span>
