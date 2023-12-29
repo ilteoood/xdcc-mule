@@ -51,9 +51,11 @@ const downloadFile = async (
 
 	downloads.set(jobKey, downloadData);
 
-	job.on("downloading", (_fileInfo, _received, percentage) => {
-		downloadData.percentage = percentage;
-		downloadData.status = "downloading";
+	job.on("downloading", (fileInfo, _received, percentage) => {
+		if (fileInfo.file === fileToDownload.fileName) {
+			downloadData.percentage = percentage;
+			downloadData.status = "downloading";
+		}
 	});
 
 	job.on("downloaded", () => {
