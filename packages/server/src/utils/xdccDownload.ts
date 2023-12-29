@@ -31,6 +31,11 @@ const downloads = new Map<string, DownloadingFile>();
 const buildJobKey = (file: DownloadableFile) =>
 	`${file.network}-${file.channelName}-${file.botName}-${file.fileNumber}-${file.fileName}-${file.fileSize}`;
 
+const isSameFile = (
+	fileInfo: XDCC.FileInfo,
+	fileToDownload: DownloadableFile,
+) => fileInfo.file === fileToDownload.fileName;
+
 const downloadFile = async (
 	xdcc: XDCC.default,
 	fileToDownload: DownloadableFile,
@@ -52,25 +57,31 @@ const downloadFile = async (
 	downloads.set(jobKey, downloadData);
 
 	job.on("downloading", (fileInfo, _received, percentage) => {
-		if (fileInfo.file === fileToDownload.fileName) {
+		if (isSameFile(fileInfo, fileToDownload)) {
 			downloadData.percentage = percentage;
 			downloadData.status = "downloading";
 		}
 	});
 
-	job.on("downloaded", () => {
-		downloadData.status = "downloaded";
-		jobs.delete(jobKey);
+	job.on("downloaded", (fileInfo) => {
+		if (isSameFile(fileInfo, fileToDownload)) {
+			downloadData.status = "downloaded";
+		}
 	});
 
-	job.on("error", (error) => {
-		downloadData.status = "error";
-		downloadData.errorMessage = error;
-		jobs.delete(jobKey);
+	job.on("error", (error, fileInfo) => {
+		if (isSameFile(fileInfo, fileToDownload)) {
+			downloadData.status = "error";
+			downloadData.errorMessage = error;
+		}
 	});
 
 	job.on("cancel", () => {
 		downloadData.status = "cancelled";
+		jobs.delete(jobKey);
+	});
+
+	job.on("done", () => {
 		jobs.delete(jobKey);
 	});
 };
