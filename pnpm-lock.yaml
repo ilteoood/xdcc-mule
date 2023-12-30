@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  xdccjs@5.1.5:
+    hash: bnw4ykldk47gy3gxp6nzcjrkeq
+    path: patches/xdccjs@5.1.5.patch
+
 importers:
 
   .:
@@ -80,7 +85,7 @@ importers:
         version: 6.2.1
       xdccjs:
         specifier: ^5.1.5
-        version: 5.1.5
+        version: 5.1.5(patch_hash=bnw4ykldk47gy3gxp6nzcjrkeq)
     devDependencies:
       '@types/node':
         specifier: ^20.10.5
@@ -3575,7 +3580,7 @@ packages:
     requiresBuild: true
     dev: false
 
-  /xdccjs@5.1.5:
+  /xdccjs@5.1.5(patch_hash=bnw4ykldk47gy3gxp6nzcjrkeq):
     resolution: {integrity: sha512-tngoZSbUrUK6cbAEX2R4JAyKig04+dKEqCIZKqUVN2txN7FgiVuwr/S+uKdU1YhF6E97NKMBdtdgDJiDrRkmNw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
@@ -3590,6 +3595,7 @@ packages:
     transitivePeerDependencies:
       - debug
     dev: false
+    patched: true
 
   /yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
