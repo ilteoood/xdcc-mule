@@ -2,7 +2,7 @@ import sqlite3 from "sqlite3";
 import { Agent, fetch, setGlobalDispatcher } from "undici";
 import { config } from "./config.js";
 
-setGlobalDispatcher(new Agent({ connect: { timeout: 30_000 } }));
+setGlobalDispatcher(new Agent({ connect: { timeout: 60_000 } }));
 
 type DatabaseContent = {
 	channelName: string;
