@@ -86,7 +86,9 @@ export const create = async (database: DatabaseContent[]) => {
 			preparedStatement.run(channelName, network, fileNumber, botName, fileSize, fileName.join(" "));
 		}
 
-		preparedStatement.finalize();
+		return new Promise<void>((resolve) => {
+			preparedStatement.finalize(() => resolve());
+		})
 	});
 
 	await Promise.allSettled(promises);
