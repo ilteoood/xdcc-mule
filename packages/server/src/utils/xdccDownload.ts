@@ -51,7 +51,7 @@ const downloadFile = async (
 		...fileToDownload,
 		percentage: 0,
 		status: "pending" as StatusOption,
-		errorMessage: undefined,
+		errorMessage: undefined as string | undefined,
 	};
 
 	downloads.set(jobKey, downloadData);
@@ -70,7 +70,7 @@ const downloadFile = async (
 	});
 
 	job.on("error", (error, fileInfo) => {
-		if (isSameFile(fileInfo, fileToDownload)) {
+		if (!fileInfo || isSameFile(fileInfo, fileToDownload)) {
 			downloadData.status = "error";
 			downloadData.errorMessage = error;
 		}
@@ -90,7 +90,7 @@ export const download = (fileToDownload: DownloadableFile): Promise<void> => {
 	const jobKey = buildJobKey(fileToDownload);
 
 	if (jobs.has(jobKey)) {
-		return;
+		return Promise.resolve();
 	}
 
 	if (!clients.has(fileToDownload.network)) {
@@ -123,7 +123,7 @@ export const download = (fileToDownload: DownloadableFile): Promise<void> => {
 		});
 	}
 
-	const xdcc = clients.get(fileToDownload.network);
+	const xdcc = clients.get(fileToDownload.network) as XDCC.default;
 	return downloadFile(xdcc, fileToDownload, jobKey);
 };
 
@@ -133,7 +133,7 @@ export const cancel = (fileToCancel: DownloadableFile) => {
 	const jobKey = buildJobKey(fileToCancel);
 
 	if (jobs.has(jobKey)) {
-		jobs.get(jobKey).cancel();
+		jobs.get(jobKey)?.cancel();
 	}
 
 	downloads.delete(jobKey);

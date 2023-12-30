@@ -3,6 +3,7 @@
         "module": "NodeNext",
         "target": "ESNext",
         "moduleResolution": "NodeNext",
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "strict": true
     },
 }
