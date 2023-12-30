@@ -8,15 +8,9 @@ interface ErrorBoundaryProps {
 	children: React.ReactNode;
 }
 
-const ErrorMessage = () => (
-	<Message severity="error" text="Something went wrong" />
-);
+const ErrorMessage = () => <Message severity="error" text="Something went wrong" />;
 
-export const ErrorBoundary = ({
-	children,
-	isLoading,
-	isError,
-}: ErrorBoundaryProps) => {
+export const ErrorBoundary = ({ children, isLoading, isError }: ErrorBoundaryProps) => {
 	if (isLoading) {
 		return (
 			<div className="flex justify-content-center">
@@ -29,9 +23,5 @@ export const ErrorBoundary = ({
 		return <ErrorMessage />;
 	}
 
-	return (
-		<ReactErrorBoundary fallback={<ErrorMessage />}>
-			{children}
-		</ReactErrorBoundary>
-	);
+	return <ReactErrorBoundary fallback={<ErrorMessage />}>{children}</ReactErrorBoundary>;
 };

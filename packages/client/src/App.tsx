@@ -21,12 +21,7 @@ function App() {
 			<div className="flex justify-content-between">
 				<div className="flex align-items-center mb-2">
 					<div className="mr-2">Status:</div>
-					<Dropdown
-						value={statusOption}
-						options={statusOptions}
-						onChange={onStatusChange}
-						showClear
-					/>
+					<Dropdown value={statusOption} options={statusOptions} onChange={onStatusChange} showClear />
 				</div>
 
 				<div className="flex gap-2">

@@ -61,6 +61,14 @@ const createDbInstance = () => {
 
 let sqliteDb: sqlite3.Database;
 
+const adaptScriptLine = (line: string) =>
+	line
+		.split(" ")
+		.map((item) => item.trim())
+		.filter(Boolean);
+
+const filterValidEntries = (line: string[]) => line.length >= COLUMNS_PER_FILE;
+
 export const create = async (database: DatabaseContent[]) => {
 	sqliteDb?.close();
 
@@ -70,24 +78,12 @@ export const create = async (database: DatabaseContent[]) => {
 		const { channelName, network } = channel;
 		const scriptContent = await retrieveScriptContent(channel.scriptUrl);
 
-		const preparedStatement = sqliteDb.prepare(
-			"INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)",
-		);
+		const preparedStatement = sqliteDb.prepare("INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)");
 
-		const validLines = scriptContent
-			.split("\n")
-			.map((line) => line.split(" ").filter(Boolean))
-			.filter((file) => file.filter(Boolean).length === COLUMNS_PER_FILE);
+		const validLines = scriptContent.split("\n").map(adaptScriptLine).filter(filterValidEntries);
 
-		for (const [fileNumber, botName, fileSize, fileName] of validLines) {
-			preparedStatement.run(
-				channelName,
-				network,
-				fileNumber,
-				botName,
-				fileSize,
-				fileName.trim(),
-			);
+		for (const [fileNumber, botName, fileSize, ...fileName] of validLines) {
+			preparedStatement.run(channelName, network, fileNumber, botName, fileSize, fileName.join(" "));
 		}
 
 		preparedStatement.finalize();
@@ -108,10 +104,8 @@ export const search = async (value: string) => {
 
 	return new Promise((resolve) => {
 		const likeableValue = value.split(" ").filter(Boolean).join("%");
-		sqliteDb.all(
-			"SELECT * FROM files WHERE fileName LIKE ?",
-			[`%${likeableValue}%`],
-			(err, rows = []) => resolve(rows),
+		sqliteDb.all("SELECT * FROM files WHERE fileName LIKE ?", [`%${likeableValue}%`], (_err, rows = []) =>
+			resolve(rows),
 		);
 	});
 };

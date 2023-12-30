@@ -4,12 +4,7 @@ import { ProgressBar } from "primereact/progressbar";
 import { classNames } from "primereact/utils";
 import { useCallback } from "react";
 
-import {
-	DownloadableFile,
-	DownloadingFile,
-	cancelDownload,
-	downloadFile,
-} from "../../services/downloads";
+import { DownloadableFile, DownloadingFile, cancelDownload, downloadFile } from "../../services/downloads";
 
 import style from "./DownloadableItem.module.css";
 
@@ -22,14 +17,9 @@ const iconsMap: Record<string, string> = {
 	delete: "pi pi-trash",
 };
 
-const buttonActionsMap: Record<
-	string,
-	(downloadableFile: DownloadableFile) => Promise<Response>
-> = {
-	download: (downloadableFile: DownloadableFile) =>
-		downloadFile(downloadableFile),
-	delete: (downloadableFile: DownloadableFile) =>
-		cancelDownload(downloadableFile),
+const buttonActionsMap: Record<string, (downloadableFile: DownloadableFile) => Promise<Response>> = {
+	download: (downloadableFile: DownloadableFile) => downloadFile(downloadableFile),
+	delete: (downloadableFile: DownloadableFile) => cancelDownload(downloadableFile),
 };
 
 const styleMap: Record<string, ButtonProps["severity"]> = {
@@ -37,8 +27,7 @@ const styleMap: Record<string, ButtonProps["severity"]> = {
 };
 
 export const downloadableItem =
-	(props: DownloadableItemProps) =>
-	(downloadableFile: DownloadableFile & DownloadingFile) => {
+	(props: DownloadableItemProps) => (downloadableFile: DownloadableFile & DownloadingFile) => {
 		const [isButtonDisabled, { setTrue: disableButton }] = useBoolean(false);
 
 		const onButtonClick = useCallback(() => {
@@ -52,14 +41,11 @@ export const downloadableItem =
 					<div>
 						<div>Name: {downloadableFile.fileName}</div>
 						<div>
-							Location: {downloadableFile.network} -{" "}
-							{downloadableFile.channelName} - {downloadableFile.botName}
+							Location: {downloadableFile.network} - {downloadableFile.channelName} - {downloadableFile.botName}
 						</div>
 						<div>Package number: {downloadableFile.fileName}</div>
 						<div>Size: {downloadableFile.fileSize}</div>
-						{downloadableFile.status && (
-							<div>Status: {downloadableFile.status}</div>
-						)}
+						{downloadableFile.status && <div>Status: {downloadableFile.status}</div>}
 					</div>
 					<div className="flex align-items-center gap-2">
 						{props?.action && (
@@ -74,10 +60,7 @@ export const downloadableItem =
 					</div>
 				</div>
 				{downloadableFile.percentage > 0 && (
-					<ProgressBar
-						className="mt-2"
-						value={downloadableFile.percentage.toFixed(2)}
-					/>
+					<ProgressBar className="mt-2" value={downloadableFile.percentage.toFixed(2)} />
 				)}
 			</div>
 		);

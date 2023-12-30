@@ -1,12 +1,7 @@
 import XDCC from "xdccjs";
 import { config } from "./config.js";
 
-type StatusOption =
-	| "pending"
-	| "downloading"
-	| "downloaded"
-	| "error"
-	| "cancelled";
+type StatusOption = "pending" | "downloading" | "downloaded" | "error" | "cancelled";
 
 export interface DownloadableFile {
 	channelName: string;
@@ -31,20 +26,11 @@ const downloads = new Map<string, DownloadingFile>();
 const buildJobKey = (file: DownloadableFile) =>
 	`${file.network}-${file.channelName}-${file.botName}-${file.fileNumber}-${file.fileName}-${file.fileSize}`;
 
-const isSameFile = (
-	fileInfo: XDCC.FileInfo,
-	fileToDownload: DownloadableFile,
-) => fileInfo.file === fileToDownload.fileName;
+const isSameFile = (fileInfo: XDCC.FileInfo, fileToDownload: DownloadableFile) =>
+	fileInfo.file === fileToDownload.fileName;
 
-const downloadFile = async (
-	xdcc: XDCC.default,
-	fileToDownload: DownloadableFile,
-	jobKey: string,
-) => {
-	const job = await xdcc.download(
-		fileToDownload.botName,
-		fileToDownload.fileNumber,
-	);
+const downloadFile = async (xdcc: XDCC.default, fileToDownload: DownloadableFile, jobKey: string) => {
+	const job = await xdcc.download(fileToDownload.botName, fileToDownload.fileNumber);
 	jobs.set(jobKey, job);
 
 	const downloadData = {

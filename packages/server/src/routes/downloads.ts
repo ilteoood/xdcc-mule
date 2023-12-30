@@ -1,10 +1,5 @@
 import { FastifyInstance } from "fastify";
-import {
-	DownloadableFile,
-	cancel,
-	download,
-	statuses,
-} from "../utils/xdccDownload.js";
+import { DownloadableFile, cancel, download, statuses } from "../utils/xdccDownload.js";
 
 const downloadableFileSchema = {
 	type: "object",
@@ -28,13 +23,7 @@ export default async function (fastify: FastifyInstance) {
 					properties: {
 						status: {
 							type: "string",
-							enum: [
-								"pending",
-								"downloading",
-								"downloaded",
-								"error",
-								"cancelled",
-							],
+							enum: ["pending", "downloading", "downloaded", "error", "cancelled"],
 						},
 					},
 				},
@@ -58,9 +47,7 @@ export default async function (fastify: FastifyInstance) {
 			const { status } = request.query;
 			const downloads = statuses();
 
-			return status
-				? downloads.filter((download) => download.status === status)
-				: downloads;
+			return status ? downloads.filter((download) => download.status === status) : downloads;
 		},
 	);
 

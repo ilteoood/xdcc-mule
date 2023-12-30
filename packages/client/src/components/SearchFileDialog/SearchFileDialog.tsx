@@ -15,8 +15,7 @@ import style from "./SearchFileDialog.module.css";
 const FILE_OPTIONS = { action: "download" };
 
 export const SearchFileDialog = () => {
-	const [isVisible, { setTrue: setVisible, setFalse: setInvisible }] =
-		useBoolean(false);
+	const [isVisible, { setTrue: setVisible, setFalse: setInvisible }] = useBoolean(false);
 	const [fileName, setFileName] = useState("");
 
 	const {
@@ -32,10 +31,7 @@ export const SearchFileDialog = () => {
 		enabled: false,
 	});
 
-	const onFileNameChange = useCallback(
-		(e: ChangeEvent<HTMLInputElement>) => setFileName(e.target.value),
-		[],
-	);
+	const onFileNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setFileName(e.target.value), []);
 
 	const onEnter = useCallback(
 		(e: KeyboardEvent<HTMLInputElement>) => {
@@ -48,21 +44,9 @@ export const SearchFileDialog = () => {
 
 	return (
 		<>
-			<DoubleIconButton
-				icon="pi pi-file"
-				onClick={setVisible}
-				className="pi pi-search"
-			/>
-			<Dialog
-				header="Search file"
-				visible={isVisible}
-				onHide={setInvisible}
-				className={style.dialogContainer}
-			>
-				<ErrorBoundary
-					isLoading={isLoading || isRefetching}
-					isError={isError || isRefetchError}
-				>
+			<DoubleIconButton icon="pi pi-file" onClick={setVisible} className="pi pi-search" />
+			<Dialog header="Search file" visible={isVisible} onHide={setInvisible} className={style.dialogContainer}>
+				<ErrorBoundary isLoading={isLoading || isRefetching} isError={isError || isRefetchError}>
 					<div className="m-0">
 						<div className="flex justify-content-between mb-2">
 							<span className="p-input-icon-left">
@@ -74,18 +58,10 @@ export const SearchFileDialog = () => {
 									onChange={onFileNameChange}
 								/>
 							</span>
-							<Button
-								disabled={!fileName}
-								label="Search"
-								icon="pi pi-search"
-								onClick={() => refetch()}
-							/>
+							<Button disabled={!fileName} label="Search" icon="pi pi-search" onClick={() => refetch()} />
 						</div>
 
-						<PrimeReactDataView
-							value={data}
-							itemTemplate={downloadableItem(FILE_OPTIONS)}
-						/>
+						<PrimeReactDataView value={data} itemTemplate={downloadableItem(FILE_OPTIONS)} />
 					</div>
 				</ErrorBoundary>
 			</Dialog>

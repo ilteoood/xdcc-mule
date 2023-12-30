@@ -1,9 +1,4 @@
-export type StatusOption =
-	| "pending"
-	| "downloading"
-	| "downloaded"
-	| "error"
-	| "cancelled";
+export type StatusOption = "pending" | "downloading" | "downloaded" | "error" | "cancelled";
 
 export interface DownloadableFile {
 	channelName: string;
@@ -20,13 +15,7 @@ export interface DownloadingFile extends DownloadableFile {
 	errorMessage?: string;
 }
 
-export const statusOptions: StatusOption[] = [
-	"pending",
-	"downloading",
-	"downloaded",
-	"error",
-	"cancelled",
-];
+export const statusOptions: StatusOption[] = ["pending", "downloading", "downloaded", "error", "cancelled"];
 
 const ENDPOINT = "/api/downloads";
 
@@ -50,12 +39,8 @@ export const cancelDownload = (file: DownloadableFile) => {
 	});
 };
 
-export const getDownloads = (
-	statusOption?: StatusOption,
-): Promise<DownloadingFile[]> => {
-	const endpoint = statusOption
-		? `${ENDPOINT}?status=${statusOption}`
-		: ENDPOINT;
+export const getDownloads = (statusOption?: StatusOption): Promise<DownloadingFile[]> => {
+	const endpoint = statusOption ? `${ENDPOINT}?status=${statusOption}` : ENDPOINT;
 
 	return fetch(endpoint, {
 		method: "GET",

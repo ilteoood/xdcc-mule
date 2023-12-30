@@ -25,10 +25,7 @@ export const DownloadList = ({ statusOption }: DownloadableItemProps) => {
 
 	return (
 		<ErrorBoundary isLoading={isLoading} isError={isError}>
-			<PrimeReactDataView
-				value={data}
-				itemTemplate={downloadableItem(FILE_OPTIONS)}
-			/>
+			<PrimeReactDataView value={data} itemTemplate={downloadableItem(FILE_OPTIONS)} />
 		</ErrorBoundary>
 	);
 };
