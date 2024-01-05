@@ -43,7 +43,7 @@ export const downloadableItem =
 						<div>
 							Location: {downloadableFile.network} - {downloadableFile.channelName} - {downloadableFile.botName}
 						</div>
-						<div>Package number: {downloadableFile.fileName}</div>
+						<div>Package number: {downloadableFile.fileNumber}</div>
 						<div>Size: {downloadableFile.fileSize}</div>
 						{downloadableFile.status && <div>Status: {downloadableFile.status}</div>}
 					</div>
