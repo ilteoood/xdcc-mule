@@ -6,7 +6,7 @@ COPY ./packages/server/dist .
 COPY ./packages/server/package.json .
 COPY ./packages/client/dist ./public
 
-RUN npm install --production
+RUN npm install --omit=dev
 
 EXPOSE 3000
 
