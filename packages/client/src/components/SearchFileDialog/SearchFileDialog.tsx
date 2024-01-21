@@ -61,7 +61,7 @@ export const SearchFileDialog = () => {
 							<Button disabled={!fileName} label="Search" icon="pi pi-search" onClick={() => refetch()} />
 						</div>
 
-						<PrimeReactDataView value={data} itemTemplate={downloadableItem(FILE_OPTIONS)} />
+						<PrimeReactDataView value={data} paginator rows={100} itemTemplate={downloadableItem(FILE_OPTIONS)} />
 					</div>
 				</ErrorBoundary>
 			</Dialog>

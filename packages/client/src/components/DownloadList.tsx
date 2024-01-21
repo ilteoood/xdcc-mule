@@ -5,7 +5,7 @@ import { StatusOption, getDownloads } from "../services/downloads";
 import { downloadableItem } from "./DownloadableItem/DownloadableItem";
 import { ErrorBoundary } from "./ErrorBoundary";
 
-const REFETCH_INTERVAL = 100;
+const REFETCH_INTERVAL = 1000;
 const FILE_OPTIONS = { action: "delete" };
 
 interface DownloadableItemProps {
