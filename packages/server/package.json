@@ -17,7 +17,7 @@
     "fastify-cron": "^1.3.1",
     "sqlite3": "^5.1.7",
     "tsx": "^4.7.1",
-    "undici": "^6.6.2",
+    "undici": "^6.11.1",
     "xdccjs": "^5.1.5"
   },
   "devDependencies": {
