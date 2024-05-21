@@ -36,16 +36,18 @@ const downloadFile = async (xdcc: XDCC.default, fileToDownload: DownloadableFile
 	const downloadData = {
 		...fileToDownload,
 		percentage: 0,
+		eta: Number.POSITIVE_INFINITY,
 		status: "pending" as StatusOption,
 		errorMessage: undefined as string | undefined,
 	};
 
 	downloads.set(jobKey, downloadData);
 
-	job.on("downloading", (fileInfo, _received, percentage) => {
+	job.on("downloading", (fileInfo, _received, percentage, eta) => {
 		if (isSameFile(fileInfo, fileToDownload)) {
 			downloadData.percentage = percentage;
 			downloadData.status = "downloading";
+			downloadData.eta = eta;
 		}
 	});
 
