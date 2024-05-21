@@ -13,6 +13,7 @@ export interface DownloadingFile extends DownloadableFile {
 	status: StatusOption;
 	percentage: number;
 	errorMessage?: string;
+	eta: number;
 }
 
 export const statusOptions: StatusOption[] = ["pending", "downloading", "downloaded", "error", "cancelled"];
