@@ -15,11 +15,6 @@
   "author": "Matteo Pietro Dazzi",
   "license": "MIT",
   "dependencies": {
-    "@biomejs/biome": "^1.4.1"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "xdccjs@5.1.5": "patches/xdccjs@5.1.5.patch"
-    }
+    "@biomejs/biome": "^1.7.3"
   }
 }

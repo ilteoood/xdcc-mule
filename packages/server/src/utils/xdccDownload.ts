@@ -85,6 +85,7 @@ export const download = (fileToDownload: DownloadableFile): Promise<void> => {
 			port: 6667,
 			chan: [fileToDownload.channelName],
 			nickname: config.nickname,
+			username: config.nickname,
 			randomizeNick: true,
 			path: config.downloadPath,
 			verbose: true,
