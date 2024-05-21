@@ -1,4 +1,5 @@
 import { useBoolean } from "@fluentui/react-hooks";
+import prettyMilliseconds from 'pretty-ms';
 import { Button, ButtonProps } from "primereact/button";
 import { ProgressBar } from "primereact/progressbar";
 import { classNames } from "primereact/utils";
@@ -46,6 +47,7 @@ export const downloadableItem =
 						<div>Package number: {downloadableFile.fileNumber}</div>
 						<div>Size: {downloadableFile.fileSize}</div>
 						{downloadableFile.status && <div>Status: {downloadableFile.status}</div>}
+						{downloadableFile.eta > 0 && <div>ETA: {prettyMilliseconds(downloadableFile.eta)}</div>}
 					</div>
 					<div className="flex align-items-center gap-2">
 						{props?.action && (

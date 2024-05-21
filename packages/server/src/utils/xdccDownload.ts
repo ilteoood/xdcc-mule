@@ -36,16 +36,18 @@ const downloadFile = async (xdcc: XDCC.default, fileToDownload: DownloadableFile
 	const downloadData = {
 		...fileToDownload,
 		percentage: 0,
+		eta: -1,
 		status: "pending" as StatusOption,
 		errorMessage: undefined as string | undefined,
 	};
 
 	downloads.set(jobKey, downloadData);
 
-	job.on("downloading", (fileInfo, _received, percentage) => {
+	job.on("downloading", (fileInfo, _received, percentage, eta) => {
 		if (isSameFile(fileInfo, fileToDownload)) {
 			downloadData.percentage = percentage;
 			downloadData.status = "downloading";
+			downloadData.eta = eta;
 		}
 	});
 
@@ -85,6 +87,7 @@ export const download = (fileToDownload: DownloadableFile): Promise<void> => {
 			port: 6667,
 			chan: [fileToDownload.channelName],
 			nickname: config.nickname,
+			username: config.nickname,
 			randomizeNick: true,
 			path: config.downloadPath,
 			verbose: true,

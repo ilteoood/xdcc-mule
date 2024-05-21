@@ -36,6 +36,7 @@ export default async function (fastify: FastifyInstance) {
 								...downloadableFileSchema.properties,
 								status: { type: "string" },
 								percentage: { type: "number" },
+								eta: { type: "number" },
 								errorMessage: { type: "string" },
 							},
 						},

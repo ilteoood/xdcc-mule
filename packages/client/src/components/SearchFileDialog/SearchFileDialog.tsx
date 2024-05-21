@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "primereact/button";
 import { DataView as PrimeReactDataView } from "primereact/dataview";
 import { Dialog } from "primereact/dialog";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import { ChangeEvent, KeyboardEvent, useCallback, useState } from "react";
 import { searchFile } from "../../services/files";
@@ -49,18 +51,17 @@ export const SearchFileDialog = () => {
 				<ErrorBoundary isLoading={isLoading || isRefetching} isError={isError || isRefetchError}>
 					<div className="m-0">
 						<div className="flex justify-content-between mb-2">
-							<span className="p-input-icon-left">
-								<i className="pi pi-file" />
+							<IconField iconPosition="left">
+								<InputIcon className="pi pi-file" />
 								<InputText
 									value={fileName}
 									placeholder="File name"
 									onKeyDownCapture={onEnter}
 									onChange={onFileNameChange}
 								/>
-							</span>
+							</IconField>
 							<Button disabled={!fileName} label="Search" icon="pi pi-search" onClick={() => refetch()} />
 						</div>
-
 						{
 							fileName && <PrimeReactDataView value={data} paginator={Boolean(data.length)} rows={100} itemTemplate={downloadableItem(FILE_OPTIONS)} />
 						}

@@ -7,6 +7,8 @@ import { SearchFileDialog } from "./components/SearchFileDialog/SearchFileDialog
 import { StatusOption, statusOptions } from "./services/downloads";
 import { refreshDatabase } from "./services/files";
 
+const dropdownOptions = statusOptions.map((option) => ({ label: option, value: option }));
+
 function App() {
 	const [statusOption, setStatusOption] = useState<StatusOption>();
 
@@ -21,7 +23,7 @@ function App() {
 			<div className="flex justify-content-between">
 				<div className="flex align-items-center mb-2">
 					<div className="mr-2">Status:</div>
-					<Dropdown value={statusOption} options={statusOptions} onChange={onStatusChange} showClear />
+					<Dropdown value={statusOption} options={dropdownOptions} onChange={onStatusChange} showClear />
 				</div>
 
 				<div className="flex gap-2">
