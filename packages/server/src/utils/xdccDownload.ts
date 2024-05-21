@@ -36,7 +36,7 @@ const downloadFile = async (xdcc: XDCC.default, fileToDownload: DownloadableFile
 	const downloadData = {
 		...fileToDownload,
 		percentage: 0,
-		eta: Number.POSITIVE_INFINITY,
+		eta: -1,
 		status: "pending" as StatusOption,
 		errorMessage: undefined as string | undefined,
 	};
