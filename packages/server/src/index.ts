@@ -2,10 +2,10 @@ import fastifyStatic from "@fastify/static";
 import { dirname } from "desm";
 import fastify from "fastify";
 import fastifyCron from "fastify-cron";
-import { join } from "path";
+import { join } from "node:path";
 import apiController from "./routes/api.js";
-import { refresh } from "./utils/xdccDatabase.js";
 import { config } from "./utils/config.js";
+import { refresh } from "./utils/xdccDatabase.js";
 
 const app = fastify();
 
