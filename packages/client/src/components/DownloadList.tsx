@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { DataView as PrimeReactDataView } from "primereact/dataview";
 
-import { StatusOption, getDownloads } from "../services/downloads";
+import { type StatusOption, getDownloads } from "../services/downloads";
 import { downloadableItem } from "./DownloadableItem/DownloadableItem";
 import { ErrorBoundary } from "./ErrorBoundary";
 

@@ -1,5 +1,5 @@
-import { FastifyInstance } from "fastify";
-import { DownloadableFile, cancel, download, statuses } from "../utils/xdccDownload.js";
+import type { FastifyInstance } from "fastify";
+import { type DownloadableFile, cancel, download, statuses } from "../utils/xdccDownload.js";
 
 const downloadableFileSchema = {
 	type: "object",

@@ -6,7 +6,7 @@ import { Dialog } from "primereact/dialog";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
-import { ChangeEvent, KeyboardEvent, useCallback, useState } from "react";
+import { type ChangeEvent, type KeyboardEvent, useCallback, useState } from "react";
 import { searchFile } from "../../services/files";
 import { downloadableItem } from "../DownloadableItem/DownloadableItem";
 import { ErrorBoundary } from "../ErrorBoundary";
@@ -62,9 +62,14 @@ export const SearchFileDialog = () => {
 							</IconField>
 							<Button disabled={!fileName} label="Search" icon="pi pi-search" onClick={() => refetch()} />
 						</div>
-						{
-							fileName && <PrimeReactDataView value={data} paginator={Boolean(data.length)} rows={100} itemTemplate={downloadableItem(FILE_OPTIONS)} />
-						}
+						{fileName && (
+							<PrimeReactDataView
+								value={data}
+								paginator={Boolean(data.length)}
+								rows={100}
+								itemTemplate={downloadableItem(FILE_OPTIONS)}
+							/>
+						)}
 					</div>
 				</ErrorBoundary>
 			</Dialog>

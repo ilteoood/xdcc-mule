@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from "primereact/button";
+import { Button, type ButtonProps } from "primereact/button";
 import { classNames } from "primereact/utils";
 
 import style from "./DoubleIconButton.module.css";

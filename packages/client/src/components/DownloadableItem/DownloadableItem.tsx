@@ -1,11 +1,11 @@
 import { useBoolean } from "@fluentui/react-hooks";
-import prettyMilliseconds from 'pretty-ms';
-import { Button, ButtonProps } from "primereact/button";
+import prettyMilliseconds from "pretty-ms";
+import { Button, type ButtonProps } from "primereact/button";
 import { ProgressBar } from "primereact/progressbar";
 import { classNames } from "primereact/utils";
 import { useCallback } from "react";
 
-import { DownloadableFile, DownloadingFile, cancelDownload, downloadFile } from "../../services/downloads";
+import { type DownloadableFile, type DownloadingFile, cancelDownload, downloadFile } from "../../services/downloads";
 
 import style from "./DownloadableItem.module.css";
 

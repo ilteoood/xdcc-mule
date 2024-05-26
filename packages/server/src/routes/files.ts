@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
 import { refresh, search } from "../utils/xdccDatabase.js";
 
 export default async function (fastify: FastifyInstance) {

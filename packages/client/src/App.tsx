@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { Dropdown, type DropdownChangeEvent } from "primereact/dropdown";
 import { useCallback, useState } from "react";
 import { DoubleIconButton } from "./components/DoubleIconButton/DoubleIconButton";
 import { DownloadList } from "./components/DownloadList";
 import { SearchFileDialog } from "./components/SearchFileDialog/SearchFileDialog";
-import { StatusOption, statusOptions } from "./services/downloads";
+import { type StatusOption, statusOptions } from "./services/downloads";
 import { refreshDatabase } from "./services/files";
 
 const dropdownOptions = statusOptions.map((option) => ({ label: option, value: option }));

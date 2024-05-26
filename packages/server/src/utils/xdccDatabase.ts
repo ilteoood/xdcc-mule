@@ -88,7 +88,7 @@ export const create = async (database: DatabaseContent[]) => {
 
 		return new Promise<void>((resolve) => {
 			preparedStatement.finalize(() => resolve());
-		})
+		});
 	});
 
 	await Promise.allSettled(promises);
