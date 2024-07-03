@@ -26,4 +26,6 @@ app.register(fastifyCron.default, {
 	],
 });
 
-await app.listen({ port: config.port, host: "::" });
+app.listen({ port: config.port, host: "::" }, () => {
+	app.cron.startAllJobs()
+});
