@@ -9,21 +9,21 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@fluentui/react-hooks": "^8.8.2",
-		"@tanstack/react-query": "^5.37.1",
+		"@fluentui/react-hooks": "^8.8.9",
+		"@tanstack/react-query": "^5.49.2",
 		"pretty-ms": "^9.0.0",
 		"primeflex": "^3.3.1",
 		"primeicons": "^7.0.0",
-		"primereact": "^10.6.5",
+		"primereact": "^10.7.0",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-error-boundary": "^4.0.13"
 	},
 	"devDependencies": {
-		"@types/react": "^18.3.2",
+		"@types/react": "^18.3.3",
 		"@types/react-dom": "^18.3.0",
-		"@vitejs/plugin-react-swc": "^3.6.0",
-		"typescript": "^5.4.5",
-		"vite": "^5.2.11"
+		"@vitejs/plugin-react-swc": "^3.7.0",
+		"typescript": "^5.5.3",
+		"vite": "^5.3.3"
 	}
 }
