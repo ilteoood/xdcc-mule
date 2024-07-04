@@ -1,9 +1,11 @@
 import type { FastifyInstance } from "fastify";
-import { type DownloadableFile, cancel, download, statuses } from "../utils/xdccDownload.js";
+import type { DownloadableFile } from "../utils/utils.js";
+import { cancel, download, statuses } from "../utils/xdccDownload.js";
 
 const downloadableFileSchema = {
 	type: "object",
 	properties: {
+		id: { type: "string" },
 		channelName: { type: "string" },
 		network: { type: "string" },
 		fileNumber: { type: "string" },

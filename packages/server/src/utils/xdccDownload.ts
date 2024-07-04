@@ -1,30 +1,11 @@
 import XDCC from "xdccjs";
 import { config } from "./config.js";
-
-type StatusOption = "pending" | "downloading" | "downloaded" | "error" | "cancelled";
-
-export interface DownloadableFile {
-	channelName: string;
-	network: string;
-	fileNumber: string;
-	botName: string;
-	fileSize: string;
-	fileName: string;
-}
-
-export interface DownloadingFile extends DownloadableFile {
-	status: StatusOption;
-	percentage: number;
-	errorMessage?: string;
-}
+import { addJobKey, buildJobKey, type DownloadableFile, type DownloadingFile, type StatusOption } from "./utils.js";
 
 const clients = new Map<string, XDCC.default>();
 const jobs = new Map<string, XDCC.Job>();
 
 const downloads = new Map<string, DownloadingFile>();
-
-const buildJobKey = (file: DownloadableFile) =>
-	`${file.network}-${file.channelName}-${file.botName}-${file.fileNumber}-${file.fileName}-${file.fileSize}`;
 
 const isSameFile = (fileInfo: XDCC.FileInfo, fileToDownload: DownloadableFile) =>
 	fileInfo.file === fileToDownload.fileName;
@@ -116,7 +97,7 @@ export const download = (fileToDownload: DownloadableFile): Promise<void> => {
 	return downloadFile(xdcc, fileToDownload, jobKey);
 };
 
-export const statuses = () => new Array(...downloads.values());
+export const statuses = () => new Array(...downloads.values()).map(addJobKey);
 
 export const cancel = (fileToCancel: DownloadableFile) => {
 	const jobKey = buildJobKey(fileToCancel);
