@@ -7,9 +7,9 @@
     "build": "pnpm -r build",
     "format": "biome format ./packages",
     "format:fix": "pnpm run format --write",
-    "sort": "biome check --apply-unsafe ./packages",
+    "sort": "biome check --write --unsafe ./packages",
     "lint": "biome lint ./packages",
-    "lint:fix": "biome check --apply ./packages"
+    "lint:fix": "biome check --write ./packages"
   },
   "keywords": [],
   "author": "Matteo Pietro Dazzi",
