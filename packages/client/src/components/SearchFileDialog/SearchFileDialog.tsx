@@ -64,6 +64,7 @@ export const SearchFileDialog = () => {
 						</div>
 						{fileName && (
 							<PrimeReactDataView
+								dataKey="id"
 								value={data}
 								paginator={Boolean(data.length)}
 								rows={100}

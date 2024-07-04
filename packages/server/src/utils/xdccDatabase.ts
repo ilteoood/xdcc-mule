@@ -1,6 +1,7 @@
 import sqlite3 from "sqlite3";
 import { Agent, fetch, setGlobalDispatcher } from "undici";
 import { config } from "./config.js";
+import { addJobKey, type DownloadableFile } from "./utils.js";
 
 setGlobalDispatcher(new Agent({ connect: { timeout: 300_000 } }));
 
@@ -106,8 +107,10 @@ export const search = async (value: string) => {
 
 	return new Promise((resolve) => {
 		const likeableValue = value.split(" ").filter(Boolean).join("%");
-		sqliteDb.all("SELECT * FROM files WHERE fileName LIKE ?", [`%${likeableValue}%`], (_err, rows = []) =>
-			resolve(rows),
+		sqliteDb.all(
+			"SELECT * FROM files WHERE fileName LIKE ?",
+			[`%${likeableValue}%`],
+			(_err, rows: DownloadableFile[] = []) => resolve(rows.map(addJobKey)),
 		);
 	});
 };

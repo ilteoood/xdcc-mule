@@ -20,12 +20,14 @@ export const statusOptions: StatusOption[] = ["pending", "downloading", "downloa
 
 const ENDPOINT = "/api/downloads";
 
+const JSON_RESPONSE = {
+	"Content-Type": "application/json",
+};
+
 export const downloadFile = (file: DownloadableFile) => {
 	return fetch(ENDPOINT, {
 		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
+		headers: JSON_RESPONSE,
 		body: JSON.stringify(file),
 	});
 };
@@ -33,9 +35,7 @@ export const downloadFile = (file: DownloadableFile) => {
 export const cancelDownload = (file: DownloadableFile) => {
 	return fetch(ENDPOINT, {
 		method: "DELETE",
-		headers: {
-			"Content-Type": "application/json",
-		},
+		headers: JSON_RESPONSE,
 		body: JSON.stringify(file),
 	});
 };
@@ -45,8 +45,6 @@ export const getDownloads = (statusOption?: StatusOption): Promise<DownloadingFi
 
 	return fetch(endpoint, {
 		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-		},
+		headers: JSON_RESPONSE,
 	}).then((res) => res.json());
 };
