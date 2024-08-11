@@ -75,9 +75,6 @@ importers:
       sqlite3:
         specifier: ^5.1.7
         version: 5.1.7
-      tsx:
-        specifier: ^4.16.2
-        version: 4.16.2
       undici:
         specifier: ^6.19.2
         version: 6.19.2
@@ -91,6 +88,9 @@ importers:
       tsup:
         specifier: ^8.1.0
         version: 8.1.0(@swc/core@1.6.7)(postcss@8.4.39)(typescript@5.5.3)
+      tsx:
+        specifier: ^4.16.2
+        version: 4.16.2
       typescript:
         specifier: ^5.5.3
         version: 5.5.3
