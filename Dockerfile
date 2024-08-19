@@ -6,7 +6,7 @@ COPY ./packages/server/dist .
 COPY ./packages/server/package.json .
 COPY ./packages/client/dist ./public
 
-RUN npm install --omit=dev
+RUN npm install --omit=dev && rm -rf ~/.npm
 
 EXPOSE 3000
 
