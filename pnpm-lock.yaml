@@ -63,15 +63,15 @@ importers:
       '@fastify/static':
         specifier: ^8.0.2
         version: 8.0.2
-      '@kakang/fastify-cronjob':
-        specifier: ^1.1.1
-        version: 1.1.1
       desm:
         specifier: ^1.3.1
         version: 1.3.1
       fastify:
         specifier: ^5.0.0
         version: 5.0.0
+      node-cron:
+        specifier: ^3.0.3
+        version: 3.0.3
       sqlite3:
         specifier: ^5.1.7
         version: 5.1.7
@@ -85,6 +85,9 @@ importers:
       '@types/node':
         specifier: ^22.7.7
         version: 22.7.7
+      '@types/node-cron':
+        specifier: ^3.0.11
+        version: 3.0.11
       tsup:
         specifier: ^8.3.0
         version: 8.3.0(@swc/core@1.7.36)(postcss@8.4.47)(tsx@4.19.1)(typescript@5.6.3)
@@ -581,14 +584,6 @@ packages:
   '@jridgewell/trace-mapping@0.3.20':
     resolution: {integrity: sha512-R8LcPeWZol2zR8mmH3JeKQ6QRCFb7XgUhV9ZlGhHLGyg4wpPiPZNQOOWhFZhxKw8u//yTbNGI42Bx/3paXEQ+Q==}
 
-  '@kakang/fastify-cronjob@1.1.1':
-    resolution: {integrity: sha512-hkacZ8zBqevY1wLXLhuyrigAVXz8qJ4kZ2E+seyVM78qSgtMp9nUjA3hckCWycdGvJd7Z5c2wrJmPCFnGpZgcQ==}
-    peerDependencies:
-      mongodb: ^6.9.0
-    peerDependenciesMeta:
-      mongodb:
-        optional: true
-
   '@lukeed/ms@2.0.2':
     resolution: {integrity: sha512-9I2Zn6+NJLfaGoz9jN3lpwDgAYvfGeNYdbAIjJOqzs4Tpc+VU3Jqq4IofSUBKajiDS8k9fZIg18/z13mpk1bsA==}
     engines: {node: '>=8'}
@@ -879,6 +874,9 @@ packages:
 
   '@types/luxon@3.3.7':
     resolution: {integrity: sha512-gKc9P2d4g5uYwmy4s/MO/yOVPmvHyvzka1YH6i5dM03UrFofHSmgc0D0ymbDRStFWHusk6cwwF6nhLm/ckBbbQ==}
+
+  '@types/node-cron@3.0.11':
+    resolution: {integrity: sha512-0ikrnug3/IyneSHqCBeslAhlK2aBfYek1fGo4bP4QnZPmiqSGRK+Oy7ZMisLWkesffJvQ1cqAcBnJC+8+nxIAg==}
 
   '@types/node@20.14.9':
     resolution: {integrity: sha512-06OCtnTXtWOZBJlRApleWndH4JsRVs1pDCc8dLSQp+7PpUpX3ePdHyeNSFTeSe7FtKyQkrlPvHwJOW3SLd8Oyg==}
@@ -1203,10 +1201,6 @@ packages:
 
   core-js@3.34.0:
     resolution: {integrity: sha512-aDdvlDder8QmY91H88GzNi9EtQi2TjvQhpCX6B1v/dAZHU1AuLgHvRh54RiOerpEhEW46Tkf+vgAViB/CWC0ag==}
-
-  cron-parser@4.9.0:
-    resolution: {integrity: sha512-p0SaNjrHOnQeR8/VnfGbmg9te2kfyYSQ7Sc/j/6DtPL3JQvKxmjO9TSjNFpujqV3vEYYBvNNvXSxzyksBWAx1Q==}
-    engines: {node: '>=12.0.0'}
 
   cron@2.4.4:
     resolution: {integrity: sha512-MHlPImXJj3K7x7lyUHjtKEOl69CSlTOWxS89jiFgNkzXfvhVjhMz/nc7/EIfN9vgooZp8XTtXJ1FREdmbyXOiQ==}
@@ -1903,6 +1897,10 @@ packages:
     resolution: {integrity: sha512-mNcltoe1R8o7STTegSOHdnJNN7s5EUvhoS7ShnTHDyOSd+8H+UdWODq6qSv67PjC8Zc5JRT8+oLAMCr0SIXw7g==}
     engines: {node: ^16 || ^18 || >= 20}
 
+  node-cron@3.0.3:
+    resolution: {integrity: sha512-dOal67//nohNgYWb+nWmg5dkFdIwDm8EpeGYMekPMrngV3637lqnX0lbUcCtgibHTz6SEz7DAIjKvKDFYCnO1A==}
+    engines: {node: '>=6.0.0'}
+
   node-gyp@8.4.1:
     resolution: {integrity: sha512-olTJRgUtAb/hOXG0E93wZDs5YiJlgbXxTwQAFHyNlRsXQnYzUaF2aGgujZbw+hR8aF4ZG/rST57bWMWD16jr9w==}
     engines: {node: '>= 10.12.0'}
@@ -2586,6 +2584,10 @@ packages:
   util@0.12.5:
     resolution: {integrity: sha512-kZf/K6hEIrWHI6XqOFUiiMa+79wE/D8Q+NCNAWclkyg3b4d2k7s0QGepNjiABc+aR3N1PAyHL7p6UcLY6LmrnA==}
 
+  uuid@8.3.2:
+    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    hasBin: true
+
   vite-node@1.6.0:
     resolution: {integrity: sha512-de6HJgzC+TFzOu0NTC4RAIsyf/DY/ibWDYQUcuEA84EMHhcefTUGkjFHKKEJhQN4A+6I0u++kr3l36ZF2d7XRw==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -3057,11 +3059,6 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  '@kakang/fastify-cronjob@1.1.1':
-    dependencies:
-      cron-parser: 4.9.0
-      fastify-plugin: 5.0.1
-
   '@lukeed/ms@2.0.2': {}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -3260,6 +3257,8 @@ snapshots:
   '@types/estree@1.0.6': {}
 
   '@types/luxon@3.3.7': {}
+
+  '@types/node-cron@3.0.11': {}
 
   '@types/node@20.14.9':
     dependencies:
@@ -3637,10 +3636,6 @@ snapshots:
   cookie@0.7.2: {}
 
   core-js@3.34.0: {}
-
-  cron-parser@4.9.0:
-    dependencies:
-      luxon: 3.3.0
 
   cron@2.4.4:
     dependencies:
@@ -4420,6 +4415,10 @@ snapshots:
 
   node-addon-api@7.1.0: {}
 
+  node-cron@3.0.3:
+    dependencies:
+      uuid: 8.3.2
+
   node-gyp@8.4.1:
     dependencies:
       env-paths: 2.2.1
@@ -5134,6 +5133,8 @@ snapshots:
       is-generator-function: 1.0.10
       is-typed-array: 1.1.12
       which-typed-array: 1.1.13
+
+  uuid@8.3.2: {}
 
   vite-node@1.6.0(@types/node@20.14.9):
     dependencies:
