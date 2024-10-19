@@ -1,7 +1,7 @@
 import fastifyStatic from "@fastify/static";
+import { fastifyCronJob } from '@kakang/fastify-cronjob';
 import { dirname } from "desm";
 import fastify from "fastify";
-import fastifyCron from "fastify-cron";
 import { join } from "node:path";
 import apiController from "./routes/api.js";
 import { config } from "./utils/config.js";
@@ -17,15 +17,8 @@ app.register(fastifyStatic, {
 	root: join(dirname(import.meta.url), "public"),
 });
 
-app.register(fastifyCron.default, {
-	jobs: [
-		{
-			cronTime: "0 * * * *",
-			onTick: refresh,
-		},
-	],
-});
+app.register(fastifyCronJob);
 
-app.listen({ port: config.port, host: "::" }, () => {
-	app.cron.startAllJobs();
-});
+app.cronjob.setCronJob(refresh, "0 * * * *", 'async')
+
+app.listen({ port: config.port, host: "::" });
