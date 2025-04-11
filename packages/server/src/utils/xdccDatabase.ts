@@ -1,9 +1,7 @@
 import sqlite3 from "sqlite3";
-import { Agent, fetch, setGlobalDispatcher } from "undici";
+import { Agent, fetch } from "undici";
 import { config } from "./config.js";
 import { addJobKey, type DownloadableFile } from "./utils.js";
-
-setGlobalDispatcher(new Agent({ connect: { timeout: 300_000 } }));
 
 type DatabaseContent = {
 	channelName: string;
@@ -14,7 +12,9 @@ type DatabaseContent = {
 const COLUMNS_PER_FILE = 4;
 
 const retrieveDatabaseContent = async () => {
-	const databaseContent = await fetch(config.databaseUrl);
+	const databaseContent = await fetch(config.databaseUrl, {
+		dispatcher: new Agent({ connect: { timeout: 300_000 } }),
+	});
 	return databaseContent.text();
 };
 
