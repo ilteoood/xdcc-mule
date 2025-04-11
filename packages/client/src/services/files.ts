@@ -1,4 +1,3 @@
-
 export const searchFile = (name: string) =>
 	fetch(`/api/files?name=${name}`, {
 		method: "GET",
