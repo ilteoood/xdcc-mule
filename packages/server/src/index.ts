@@ -1,7 +1,7 @@
 import fastifyStatic from "@fastify/static";
 import { dirname } from "desm";
 import fastify from "fastify";
-import cron from 'node-cron';
+import cron from "node-cron";
 import { join } from "node:path";
 import apiController from "./routes/api.js";
 import { config } from "./utils/config.js";
@@ -18,5 +18,5 @@ app.register(fastifyStatic, {
 });
 
 app.listen({ port: config.port, host: "::" }, () => {
-	cron.schedule('0 * * * *', refresh);
+	cron.schedule("0 * * * *", refresh);
 });
