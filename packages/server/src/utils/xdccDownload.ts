@@ -97,7 +97,7 @@ export const download = (fileToDownload: DownloadableFile): Promise<void> => {
 	return downloadFile(xdcc, fileToDownload, jobKey);
 };
 
-export const statuses = () => new Array(...downloads.values()).map(addJobKey);
+export const statuses = () => [...downloads.values()].map(addJobKey);
 
 export const cancel = (fileToCancel: DownloadableFile) => {
 	const jobKey = buildJobKey(fileToCancel);
