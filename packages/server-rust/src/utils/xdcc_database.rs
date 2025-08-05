@@ -20,7 +20,7 @@ const COLUMNS_PER_FILE: usize = 4;
 fn get_http_client() -> &'static reqwest::Client {
     HTTP_CLIENT.get_or_init(|| {
         reqwest::Client::builder()
-            .timeout(std::time::Duration::from_secs(60))
+            .timeout(std::time::Duration::from_secs(300))
             .pool_max_idle_per_host(10)
             .build()
             .expect("Failed to create HTTP client")
