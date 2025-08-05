@@ -2,7 +2,6 @@ mod config;
 mod routes;
 mod utils;
 
-use actix_files::Files;
 use actix_web::{web, App, HttpServer, middleware::Logger};
 use config::Config;
 use tokio_cron_scheduler::{JobScheduler, Job};
@@ -42,7 +41,6 @@ async fn main() -> std::io::Result<()> {
                 web::scope("/api")
                     .configure(routes::configure_routes)
             )
-            .service(Files::new("/", "./public").index_file("index.html"))
     })
     .bind(format!("[::]:{}", port))?
     .run()

@@ -21,3 +21,4 @@ log = "0.4"
 anyhow = "1.0"
 tokio-cron-scheduler = "0.14"
 chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4.5", features = ["derive", "env"] }
