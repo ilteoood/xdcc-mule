@@ -1,6 +1,7 @@
 use crate::config::Config;
 use crate::utils::{add_job_key, DownloadableFile, DownloadableFileWithId};
 use anyhow::{anyhow, Result};
+use futures::future::join_all;
 use rusqlite::{Connection, Result as SqliteResult};
 use std::sync::{Arc, Mutex, OnceLock};
 
@@ -95,23 +96,40 @@ fn filter_valid_entries(line: &[String]) -> bool {
 async fn create_database(database: Vec<DatabaseContent>) -> Result<()> {
     let mut conn = create_db_instance()?;
 
-    // Fetch all script contents first
-    let mut channel_data = Vec::new();
-    for channel in database {
-        match retrieve_script_content(&channel.script_url).await {
-            Ok(script_content) => {
-                let valid_lines: Vec<Vec<String>> = script_content
-                    .lines()
-                    .map(adapt_script_line)
-                    .filter(|line| filter_valid_entries(line))
-                    .collect();
+    // Create tasks for parallel script content retrieval
+    let fetch_tasks: Vec<_> = database
+        .into_iter()
+        .map(|channel| {
+            tokio::spawn(async move {
+                match retrieve_script_content(&channel.script_url).await {
+                    Ok(script_content) => {
+                        let valid_lines: Vec<Vec<String>> = script_content
+                            .lines()
+                            .map(adapt_script_line)
+                            .filter(|line| filter_valid_entries(line))
+                            .collect();
+                        Some((channel, valid_lines))
+                    }
+                    Err(e) => {
+                        log::warn!("Failed to retrieve script content for {} ({}): {}",
+                                  channel.channel_name, channel.script_url, e);
+                        None
+                    }
+                }
+            })
+        })
+        .collect();
 
-                channel_data.push((channel, valid_lines));
-            }
-            Err(e) => {
-                log::warn!("Failed to retrieve script content for {} ({}): {}",
-                          channel.channel_name, channel.script_url, e);
-            }
+    // Wait for all tasks to complete
+    let results = join_all(fetch_tasks).await;
+    
+    // Collect successful results
+    let mut channel_data = Vec::new();
+    for result in results {
+        match result {
+            Ok(Some(data)) => channel_data.push(data),
+            Ok(None) => {}, // Already logged warning above
+            Err(e) => log::error!("Task failed: {}", e),
         }
     }
 
