@@ -1,6 +1,6 @@
 use crate::config::Config;
-use crate::utils::{add_job_key, DownloadableFile, DownloadableFileWithId};
-use anyhow::{anyhow, Result};
+use crate::utils::{DownloadableFile, DownloadableFileWithId, add_job_key};
+use anyhow::{Result, anyhow};
 use futures::future::join_all;
 use rusqlite::{Connection, Result as SqliteResult};
 use std::sync::{Arc, Mutex, OnceLock};
@@ -13,14 +13,22 @@ struct DatabaseContent {
 }
 
 static DB_CONNECTION: OnceLock<Arc<Mutex<Connection>>> = OnceLock::new();
+static HTTP_CLIENT: OnceLock<reqwest::Client> = OnceLock::new();
 
 const COLUMNS_PER_FILE: usize = 4;
 
-async fn retrieve_database_content(database_url: &str) -> Result<String> {
-    let client = reqwest::Client::builder()
-        .timeout(std::time::Duration::from_secs(300))
-        .build()?;
+fn get_http_client() -> &'static reqwest::Client {
+    HTTP_CLIENT.get_or_init(|| {
+        reqwest::Client::builder()
+            .timeout(std::time::Duration::from_secs(60))
+            .pool_max_idle_per_host(10)
+            .build()
+            .expect("Failed to create HTTP client")
+    })
+}
 
+async fn retrieve_database_content(database_url: &str) -> Result<String> {
+    let client = get_http_client();
     let response = client.get(database_url).send().await?;
     let content = response.text().await?;
     Ok(content)
@@ -61,7 +69,8 @@ async fn parse(config: &Config) -> Result<Vec<DatabaseContent>> {
 }
 
 async fn retrieve_script_content(script_url: &str) -> Result<String> {
-    let response = reqwest::get(script_url).await?;
+    let client = get_http_client();
+    let response = client.get(script_url).send().await?;
     let content = response.text().await?;
     Ok(content)
 }
@@ -82,15 +91,17 @@ fn create_db_instance() -> SqliteResult<Connection> {
     Ok(conn)
 }
 
-fn adapt_script_line(line: &str) -> Vec<String> {
-    line.split_whitespace()
+fn adapt_script_line(line: &str) -> Option<Vec<String>> {
+    let parts: Vec<String> = line
+        .split_whitespace()
         .map(|s| s.trim().to_string())
         .filter(|s| !s.is_empty())
-        .collect()
-}
-
-fn filter_valid_entries(line: &[String]) -> bool {
-    line.len() >= COLUMNS_PER_FILE
+        .collect();
+    if parts.len() >= COLUMNS_PER_FILE {
+        Some(parts)
+    } else {
+        None
+    }
 }
 
 async fn create_database(database: Vec<DatabaseContent>) -> Result<()> {
@@ -103,16 +114,19 @@ async fn create_database(database: Vec<DatabaseContent>) -> Result<()> {
             tokio::spawn(async move {
                 match retrieve_script_content(&channel.script_url).await {
                     Ok(script_content) => {
-                        let valid_lines: Vec<Vec<String>> = script_content
+                        let valid_lines: Vec<_> = script_content
                             .lines()
-                            .map(adapt_script_line)
-                            .filter(|line| filter_valid_entries(line))
+                            .filter_map(adapt_script_line)
                             .collect();
                         Some((channel, valid_lines))
                     }
                     Err(e) => {
-                        log::warn!("Failed to retrieve script content for {} ({}): {}",
-                                  channel.channel_name, channel.script_url, e);
+                        log::warn!(
+                            "Failed to retrieve script content for {} ({}): {}",
+                            channel.channel_name,
+                            channel.script_url,
+                            e
+                        );
                         None
                     }
                 }
@@ -122,39 +136,39 @@ async fn create_database(database: Vec<DatabaseContent>) -> Result<()> {
 
     // Wait for all tasks to complete
     let results = join_all(fetch_tasks).await;
-    
-    // Collect successful results
-    let mut channel_data = Vec::new();
-    for result in results {
-        match result {
-            Ok(Some(data)) => channel_data.push(data),
-            Ok(None) => {}, // Already logged warning above
-            Err(e) => log::error!("Task failed: {}", e),
-        }
-    }
 
-    // Now insert all data in a transaction (no more awaits)
+    // Now process results in a transaction with optimized inserts
     let tx = conn.transaction()?;
     {
         let mut stmt = tx.prepare("INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)")?;
 
-        for (channel, valid_lines) in channel_data {
-            let DatabaseContent { channel_name, network, .. } = channel;
+        for result in results {
+            match result {
+                Ok(Some((channel, valid_lines))) => {
+                    let DatabaseContent {
+                        channel_name,
+                        network,
+                        ..
+                    } = channel;
 
-            for line in valid_lines {
-                let file_number = &line[0];
-                let bot_name = &line[1];
-                let file_size = &line[2];
-                let file_name = line[3..].join(" ");
+                    for line in valid_lines {
+                        let file_number = &line[0];
+                        let bot_name = &line[1];
+                        let file_size = &line[2];
+                        let file_name = line[3..].join(" ");
 
-                stmt.execute([
-                    &channel_name,
-                    &network,
-                    file_number,
-                    bot_name,
-                    file_size,
-                    &file_name,
-                ])?;
+                        stmt.execute([
+                            &channel_name,
+                            &network,
+                            file_number,
+                            bot_name,
+                            file_size,
+                            &file_name,
+                        ])?;
+                    }
+                }
+                Ok(None) => {} // Already logged warning above
+                Err(e) => log::error!("Task failed: {}", e),
             }
         }
     }
@@ -162,7 +176,8 @@ async fn create_database(database: Vec<DatabaseContent>) -> Result<()> {
     tx.commit()?;
 
     // Store the connection globally
-    DB_CONNECTION.set(Arc::new(Mutex::new(conn)))
+    DB_CONNECTION
+        .set(Arc::new(Mutex::new(conn)))
         .map_err(|_| anyhow!("Failed to set database connection"))?;
 
     Ok(())
@@ -186,7 +201,9 @@ pub async fn search(value: &str) -> Result<Vec<DownloadableFileWithId>> {
         .get()
         .ok_or_else(|| anyhow!("Database not initialized"))?;
 
-    let conn = db.lock().map_err(|_| anyhow!("Failed to acquire database lock"))?;
+    let conn = db
+        .lock()
+        .map_err(|_| anyhow!("Failed to acquire database lock"))?;
 
     let likeable_value = value
         .split_whitespace()

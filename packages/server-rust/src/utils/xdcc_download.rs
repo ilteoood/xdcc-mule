@@ -1,8 +1,8 @@
-use crate::utils::{build_job_key, DownloadableFile, DownloadingFile, StatusOption};
+use crate::utils::{DownloadableFile, DownloadingFile, StatusOption, build_job_key};
 use std::collections::HashMap;
-use std::sync::{Arc, Mutex};
 use std::sync::OnceLock;
-use tokio::time::{sleep, Duration};
+use std::sync::{Arc, Mutex};
+use tokio::time::{Duration, sleep};
 
 static DOWNLOADS: OnceLock<Arc<Mutex<HashMap<String, DownloadingFile>>>> = OnceLock::new();
 
@@ -10,7 +10,9 @@ fn get_downloads() -> &'static Arc<Mutex<HashMap<String, DownloadingFile>>> {
     DOWNLOADS.get_or_init(|| Arc::new(Mutex::new(HashMap::new())))
 }
 
-pub async fn download(file_to_download: DownloadableFile) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn download(
+    file_to_download: DownloadableFile,
+) -> Result<(), Box<dyn std::error::Error>> {
     let job_key = build_job_key(&file_to_download);
     let downloads = get_downloads();
     let mut downloads_map = downloads.lock().unwrap();
@@ -19,9 +21,12 @@ pub async fn download(file_to_download: DownloadableFile) -> Result<(), Box<dyn 
     if let Some(existing) = downloads_map.get(&job_key) {
         match existing.status {
             StatusOption::Pending | StatusOption::Downloading => {
-                log::info!("Download already in progress for: {}", file_to_download.file_name);
+                log::info!(
+                    "Download already in progress for: {}",
+                    file_to_download.file_name
+                );
                 return Ok(());
-            },
+            }
             _ => {
                 // Remove completed/failed downloads to allow restart
                 downloads_map.remove(&job_key);

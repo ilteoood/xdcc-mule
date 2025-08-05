@@ -1,6 +1,6 @@
-use actix_web::{web, HttpResponse, Result};
-use serde::Deserialize;
 use crate::utils::xdcc_database;
+use actix_web::{HttpResponse, Result, web};
+use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub struct SearchQuery {
@@ -20,9 +20,13 @@ async fn search_files(query: web::Query<SearchQuery>) -> Result<HttpResponse> {
 
     match xdcc_database::search(search_term).await {
         Ok(files) => {
-            log::info!("Search for '{}' returned {} results", search_term, files.len());
+            log::info!(
+                "Search for '{}' returned {} results",
+                search_term,
+                files.len()
+            );
             Ok(HttpResponse::Ok().json(files))
-        },
+        }
         Err(e) => {
             log::error!("Failed to search files for '{}': {}", search_term, e);
             Ok(HttpResponse::InternalServerError().json(serde_json::json!({
@@ -41,7 +45,7 @@ async fn refresh_database() -> Result<HttpResponse> {
             Ok(HttpResponse::Ok().json(serde_json::json!({
                 "message": "Database refreshed successfully"
             })))
-        },
+        }
         Err(e) => {
             log::error!("Failed to refresh database: {}", e);
             Ok(HttpResponse::InternalServerError().json(serde_json::json!({
@@ -54,5 +58,5 @@ async fn refresh_database() -> Result<HttpResponse> {
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.route("", web::get().to(search_files))
-       .route("", web::delete().to(refresh_database));
+        .route("", web::delete().to(refresh_database));
 }

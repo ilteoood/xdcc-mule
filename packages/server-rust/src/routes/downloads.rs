@@ -1,6 +1,6 @@
-use actix_web::{web, HttpResponse, Result};
+use crate::utils::{DownloadableFile, StatusOption, xdcc_download};
+use actix_web::{HttpResponse, Result, web};
 use serde::Deserialize;
-use crate::utils::{xdcc_download, DownloadableFile, StatusOption};
 
 #[derive(Deserialize)]
 pub struct StatusQuery {
@@ -38,17 +38,24 @@ async fn create_download(body: web::Json<DownloadableFile>) -> Result<HttpRespon
     let file = body.into_inner();
 
     // Validate the download request
-    if file.channel_name.is_empty() || file.network.is_empty() ||
-       file.file_number.is_empty() || file.bot_name.is_empty() ||
-       file.file_name.is_empty() {
+    if file.channel_name.is_empty()
+        || file.network.is_empty()
+        || file.file_number.is_empty()
+        || file.bot_name.is_empty()
+        || file.file_name.is_empty()
+    {
         return Ok(HttpResponse::BadRequest().json(serde_json::json!({
             "error": "Invalid download request",
             "message": "All fields (channelName, network, fileNumber, botName, fileName) are required"
         })));
     }
 
-    log::info!("Download requested: {} from {} on {}",
-               file.file_name, file.bot_name, file.network);
+    log::info!(
+        "Download requested: {} from {} on {}",
+        file.file_name,
+        file.bot_name,
+        file.network
+    );
 
     match xdcc_download::download(file.clone()).await {
         Ok(_) => Ok(HttpResponse::Created().json(serde_json::json!({
@@ -78,6 +85,6 @@ async fn cancel_download(body: web::Json<DownloadableFile>) -> Result<HttpRespon
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.route("", web::get().to(get_downloads))
-       .route("", web::post().to(create_download))
-       .route("", web::delete().to(cancel_download));
+        .route("", web::post().to(create_download))
+        .route("", web::delete().to(cancel_download));
 }
