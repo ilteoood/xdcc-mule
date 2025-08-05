@@ -94,8 +94,6 @@ fn filter_valid_entries(line: &[String]) -> bool {
 
 async fn create_database(database: Vec<DatabaseContent>) -> Result<()> {
     let mut conn = create_db_instance()?;
-    let mut total_files = 0;
-    let mut successful_channels = 0;
 
     // Fetch all script contents first
     let mut channel_data = Vec::new();
@@ -125,45 +123,25 @@ async fn create_database(database: Vec<DatabaseContent>) -> Result<()> {
         for (channel, valid_lines) in channel_data {
             let DatabaseContent { channel_name, network, .. } = channel;
 
-            let mut channel_files = 0;
             for line in valid_lines {
-                if line.len() >= 4 {
-                    let file_number = &line[0];
-                    let bot_name = &line[1];
-                    let file_size = &line[2];
-                    let file_name = line[3..].join(" ");
+                let file_number = &line[0];
+                let bot_name = &line[1];
+                let file_size = &line[2];
+                let file_name = line[3..].join(" ");
 
-                    match stmt.execute([
-                        &channel_name,
-                        &network,
-                        file_number,
-                        bot_name,
-                        file_size,
-                        &file_name,
-                    ]) {
-                        Ok(_) => {
-                            channel_files += 1;
-                            total_files += 1;
-                        },
-                        Err(e) => {
-                            log::warn!("Failed to insert file entry: {}", e);
-                        }
-                    }
-                }
-            }
-
-            if channel_files > 0 {
-                successful_channels += 1;
-                log::debug!("Loaded {} files from channel {} on {}",
-                           channel_files, channel_name, network);
+                stmt.execute([
+                    &channel_name,
+                    &network,
+                    file_number,
+                    bot_name,
+                    file_size,
+                    &file_name,
+                ])?;
             }
         }
     }
 
     tx.commit()?;
-
-    log::info!("Database created with {} files from {} channels",
-               total_files, successful_channels);
 
     // Store the connection globally
     DB_CONNECTION.set(Arc::new(Mutex::new(conn)))
