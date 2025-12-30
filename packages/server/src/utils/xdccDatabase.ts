@@ -72,6 +72,8 @@ const adaptScriptLine = (line: string) =>
 
 const filterValidEntries = (line: string[]) => line.length >= COLUMNS_PER_FILE;
 
+const isChannelExcluded = (channelName: string): boolean => config.excludedChannels.includes(channelName);
+
 export const create = async (database: DatabaseContent[]) => {
 	sqliteDb?.close();
 
@@ -79,7 +81,9 @@ export const create = async (database: DatabaseContent[]) => {
 
 	const preparedStatement: StatementSync = sqliteDb.prepare("INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)");
 
-	const promises = database.map(async (channel) => {
+	const filteredDatabase = database.filter((channel) => !isChannelExcluded(channel.channelName));
+
+	const promises = filteredDatabase.map(async (channel) => {
 		const { channelName, network } = channel;
 		const scriptContent = await retrieveScriptContent(channel.scriptUrl);
 
