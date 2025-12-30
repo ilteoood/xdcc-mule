@@ -99,6 +99,10 @@ describe("xdccDatabase", () => {
 	});
 
 	describe("create", () => {
+		afterEach(() => {
+			config.excludedChannels = new Set();
+		});
+
 		it("should create database and populate with channel data", async () => {
 			mockFetch.mockResolvedValue({
 				text: () =>
@@ -144,8 +148,6 @@ invalid line
 
 			expect(mockFetch).toHaveBeenCalledTimes(1);
 			expect(mockFetch).toHaveBeenCalledWith("http://www.pierpaolo.org/scripts.php");
-
-			config.excludedChannels = new Set();
 		});
 
 		it("should filter out multiple excluded channels", async () => {
@@ -158,8 +160,6 @@ invalid line
 			await create(parsedXdccDatabase);
 
 			expect(mockFetch).not.toHaveBeenCalled();
-
-			config.excludedChannels = new Set();
 		});
 
 		it("should not filter when excludedChannels is empty", async () => {
@@ -172,8 +172,6 @@ invalid line
 			await create(parsedXdccDatabase);
 
 			expect(mockFetch).toHaveBeenCalledTimes(2);
-
-			config.excludedChannels = new Set();
 		});
 	});
 
