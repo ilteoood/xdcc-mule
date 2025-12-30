@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as undici from "undici";
+import { parse, create, search, refresh } from "../../src/utils/xdccDatabase.js";
+import sqlite3 from "sqlite3";
 
 vi.mock("undici", () => ({
 	Agent: vi.fn(),
@@ -44,6 +46,7 @@ vi.mock("sqlite3", () => ({
 
 describe("xdccDatabase", () => {
 	const mockFetch = vi.mocked(undici.fetch);
+	const mockSqlite3 = vi.mocked(sqlite3);
 
 	const parsedXdccDatabase = [
 		{
@@ -76,7 +79,6 @@ describe("xdccDatabase", () => {
 2=#Pierpaolo*http://www.pierpaolo.org/scripts.php*1 Mix*public`),
 			} as Response);
 
-			const { parse } = await import("../../src/utils/xdccDatabase.js");
 			const database = await parse();
 
 			expect(database).toStrictEqual(parsedXdccDatabase);
@@ -87,7 +89,6 @@ describe("xdccDatabase", () => {
 				text: () => Promise.resolve(""),
 			} as Response);
 
-			const { parse } = await import("../../src/utils/xdccDatabase.js");
 			const database = await parse();
 
 			expect(database).toStrictEqual([]);
@@ -98,7 +99,6 @@ describe("xdccDatabase", () => {
 				text: () => Promise.resolve("[section1]\n[section2]"),
 			} as Response);
 
-			const { parse } = await import("../../src/utils/xdccDatabase.js");
 			const database = await parse();
 
 			expect(database).toStrictEqual([]);
@@ -113,11 +113,9 @@ describe("xdccDatabase", () => {
 #2   AeC|1P|01 1.9G Foo-Fuugther.part02.rar`),
 			} as Response);
 
-			const { create } = await import("../../src/utils/xdccDatabase.js");
 			await create(parsedXdccDatabase);
 
-			const sqlite3 = (await import("sqlite3")).default;
-			expect(sqlite3.Database).toHaveBeenCalledWith(":memory:");
+			expect(mockSqlite3.Database).toHaveBeenCalledWith(":memory:");
 			expect(mockPrepare).toHaveBeenCalledWith("INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)");
 		});
 
@@ -131,7 +129,6 @@ invalid line
 #3   Bot2 200M Another Valid.txt`),
 			} as Response);
 
-			const { create } = await import("../../src/utils/xdccDatabase.js");
 			await create([
 				{
 					channelName: "#test",
@@ -161,7 +158,6 @@ invalid line
 				callback(null, testResults);
 			});
 
-			const { search } = await import("../../src/utils/xdccDatabase.js");
 			const result = await search("some name");
 
 			expect(result).toHaveLength(1);
@@ -176,7 +172,6 @@ invalid line
 				callback(null, []);
 			});
 
-			const { search } = await import("../../src/utils/xdccDatabase.js");
 			const result = await search("nonexistent");
 
 			expect(Array.isArray(result)).toBe(true);
@@ -189,7 +184,6 @@ invalid line
 				callback(null, []);
 			});
 
-			const { search } = await import("../../src/utils/xdccDatabase.js");
 			await search("test file");
 		});
 
@@ -198,7 +192,6 @@ invalid line
 				callback(null, undefined as unknown as unknown[]);
 			});
 
-			const { search } = await import("../../src/utils/xdccDatabase.js");
 			const result = await search("test");
 
 			expect(Array.isArray(result)).toBe(true);
@@ -218,7 +211,6 @@ invalid line
 					text: () => Promise.resolve(`#1   Bot1 100M TestFile.txt`),
 				} as Response);
 
-			const { refresh } = await import("../../src/utils/xdccDatabase.js");
 			await refresh();
 
 			expect(mockFetch).toHaveBeenCalledTimes(2);

@@ -1,6 +1,7 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import fastify from "fastify";
 import type { FastifyInstance } from "fastify";
+import apiController from "../../src/routes/api.js";
 
 vi.mock("../../src/utils/xdccDatabase.js", () => ({
 	search: vi.fn().mockResolvedValue([]),
@@ -19,7 +20,6 @@ describe("api route", () => {
 	beforeEach(async () => {
 		vi.clearAllMocks();
 		app = fastify();
-		const apiController = (await import("../../src/routes/api.js")).default;
 		await app.register(apiController, { prefix: "/api" });
 		await app.ready();
 	});

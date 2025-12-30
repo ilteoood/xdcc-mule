@@ -2,6 +2,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import fastify from "fastify";
 import type { FastifyInstance } from "fastify";
 import { search, refresh } from "../../src/utils/xdccDatabase.js";
+import filesController from "../../src/routes/files.js";
 
 vi.mock("../../src/utils/xdccDatabase.js", () => ({
 	search: vi.fn(),
@@ -16,7 +17,6 @@ describe("files route", () => {
 	beforeEach(async () => {
 		vi.clearAllMocks();
 		app = fastify();
-		const filesController = (await import("../../src/routes/files.js")).default;
 		await app.register(filesController);
 		await app.ready();
 	});

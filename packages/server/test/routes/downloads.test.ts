@@ -2,6 +2,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import fastify from "fastify";
 import type { FastifyInstance } from "fastify";
 import { download, statuses, cancel } from "../../src/utils/xdccDownload.js";
+import downloadsController from "../../src/routes/downloads.js";
 
 vi.mock("../../src/utils/xdccDownload.js", () => ({
 	download: vi.fn(),
@@ -18,7 +19,6 @@ describe("downloads route", () => {
 	beforeEach(async () => {
 		vi.clearAllMocks();
 		app = fastify();
-		const downloadsController = (await import("../../src/routes/downloads.js")).default;
 		await app.register(downloadsController);
 		await app.ready();
 	});

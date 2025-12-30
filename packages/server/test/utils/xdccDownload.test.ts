@@ -1,6 +1,7 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import type { DownloadableFile, DownloadingFile } from "../../src/utils/utils.js";
 import { buildJobKey, addJobKey } from "../../src/utils/utils.js";
+import { statuses, cancel } from "../../src/utils/xdccDownload.js";
 
 vi.mock("../../src/utils/config.js", () => ({
 	config: {
@@ -36,17 +37,13 @@ describe("xdccDownload", () => {
 	});
 
 	describe("statuses", () => {
-		it("should return an array", async () => {
-			const { statuses } = await import("../../src/utils/xdccDownload.js");
-
+		it("should return an array", () => {
 			const result = statuses();
 
 			expect(Array.isArray(result)).toBe(true);
 		});
 
-		it("should return empty array when no downloads exist", async () => {
-			const { statuses } = await import("../../src/utils/xdccDownload.js");
-
+		it("should return empty array when no downloads exist", () => {
 			const result = statuses();
 
 			expect(result).toEqual([]);
@@ -54,9 +51,7 @@ describe("xdccDownload", () => {
 	});
 
 	describe("cancel", () => {
-		it("should handle cancelling non-existent download gracefully", async () => {
-			const { cancel } = await import("../../src/utils/xdccDownload.js");
-
+		it("should handle cancelling non-existent download gracefully", () => {
 			expect(() => cancel(sampleFile)).not.toThrow();
 		});
 	});
