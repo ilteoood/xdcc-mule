@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "pnpm -r build",
-    "test": "pnpm --filter xdcc-mule-server test -- --coverage --run",
+    "test": "pnpm -r test",
     "format": "biome format ./packages",
     "format:fix": "pnpm run format --write",
     "sort": "biome check --write --unsafe ./packages",

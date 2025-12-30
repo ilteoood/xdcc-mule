@@ -1,5 +1,8 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.1.3/schema.json",
+	"files": {
+		"includes": ["packages/**/src/**/*.ts", "packages/**/src/**/*.tsx", "packages/**/src/**/*.css", "packages/**/test/**/*.ts", "packages/**/test/**/*.tsx"]
+	},
 	"assist": { "actions": { "source": { "organizeImports": "off" } } },
 	"linter": {
 		"enabled": true,
