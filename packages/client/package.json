@@ -7,7 +7,7 @@
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
-		"test": "vitest --coverage --run"
+		"test": "vitest"
 	},
 	"dependencies": {
 		"@fluentui/react-hooks": "^8.8.19",
