@@ -1,12 +1,10 @@
-const parseExcludedChannels = (value: string | undefined): string[] => {
-	if (!value) {
-		return [];
-	}
-	return value
-		.split(",")
-		.map((channel) => channel.trim())
-		.filter(Boolean);
-};
+const parseExcludedChannels = (excludedChannels = ""): Set<string> =>
+	new Set(
+		excludedChannels
+			.split(",")
+			.map((channel) => channel.trim())
+			.filter(Boolean),
+	);
 
 export const config = {
 	databaseUrl: process.env.DATABASE_URL as string,

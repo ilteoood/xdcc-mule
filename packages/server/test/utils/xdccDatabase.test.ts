@@ -14,7 +14,7 @@ vi.mock("../../src/utils/config.js", () => ({
 		nickname: "test-bot",
 		downloadPath: "./downloads",
 		port: 3000,
-		excludedChannels: [] as string[],
+		excludedChannels: new Set<string>(),
 	},
 }));
 
@@ -134,7 +134,7 @@ invalid line
 		});
 
 		it("should filter out excluded channels", async () => {
-			config.excludedChannels = ["#a-b-c"];
+			config.excludedChannels = new Set(["#a-b-c"]);
 
 			mockFetch.mockResolvedValue({
 				text: () => Promise.resolve(`#1   Bot1 100M TestFile.txt`),
@@ -145,11 +145,11 @@ invalid line
 			expect(mockFetch).toHaveBeenCalledTimes(1);
 			expect(mockFetch).toHaveBeenCalledWith("http://www.pierpaolo.org/scripts.php");
 
-			config.excludedChannels = [];
+			config.excludedChannels = new Set();
 		});
 
 		it("should filter out multiple excluded channels", async () => {
-			config.excludedChannels = ["#a-b-c", "#Pierpaolo"];
+			config.excludedChannels = new Set(["#a-b-c", "#Pierpaolo"]);
 
 			mockFetch.mockResolvedValue({
 				text: () => Promise.resolve(`#1   Bot1 100M TestFile.txt`),
@@ -159,11 +159,11 @@ invalid line
 
 			expect(mockFetch).not.toHaveBeenCalled();
 
-			config.excludedChannels = [];
+			config.excludedChannels = new Set();
 		});
 
 		it("should not filter when excludedChannels is empty", async () => {
-			config.excludedChannels = [];
+			config.excludedChannels = new Set();
 
 			mockFetch.mockResolvedValue({
 				text: () => Promise.resolve(`#1   Bot1 100M TestFile.txt`),
@@ -173,7 +173,7 @@ invalid line
 
 			expect(mockFetch).toHaveBeenCalledTimes(2);
 
-			config.excludedChannels = [];
+			config.excludedChannels = new Set();
 		});
 	});
 

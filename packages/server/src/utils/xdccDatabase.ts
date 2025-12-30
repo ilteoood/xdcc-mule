@@ -72,7 +72,7 @@ const adaptScriptLine = (line: string) =>
 
 const filterValidEntries = (line: string[]) => line.length >= COLUMNS_PER_FILE;
 
-const isChannelExcluded = (channelName: string): boolean => config.excludedChannels.includes(channelName);
+const isChannelExcluded = (channelName: string): boolean => config.excludedChannels.has(channelName);
 
 export const create = async (database: DatabaseContent[]) => {
 	sqliteDb?.close();

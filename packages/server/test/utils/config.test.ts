@@ -53,15 +53,15 @@ describe("config", () => {
 
 			const { config } = await import("../../src/utils/config.js");
 
-			expect(config.excludedChannels).toStrictEqual(["#channel1", "#channel2", "#channel3"]);
+			expect(config.excludedChannels).toStrictEqual(new Set(["#channel1", "#channel2", "#channel3"]));
 		});
 
-		it("should return empty array when EXCLUDED_CHANNELS is not set", async () => {
+		it("should return empty set when EXCLUDED_CHANNELS is not set", async () => {
 			delete process.env.EXCLUDED_CHANNELS;
 
 			const { config } = await import("../../src/utils/config.js");
 
-			expect(config.excludedChannels).toStrictEqual([]);
+			expect(config.excludedChannels).toStrictEqual(new Set());
 		});
 
 		it("should trim whitespace from channel names", async () => {
@@ -69,7 +69,7 @@ describe("config", () => {
 
 			const { config } = await import("../../src/utils/config.js");
 
-			expect(config.excludedChannels).toStrictEqual(["#channel1", "#channel2", "#channel3"]);
+			expect(config.excludedChannels).toStrictEqual(new Set(["#channel1", "#channel2", "#channel3"]));
 		});
 
 		it("should filter out empty channel names", async () => {
@@ -77,15 +77,15 @@ describe("config", () => {
 
 			const { config } = await import("../../src/utils/config.js");
 
-			expect(config.excludedChannels).toStrictEqual(["#channel1", "#channel2"]);
+			expect(config.excludedChannels).toStrictEqual(new Set(["#channel1", "#channel2"]));
 		});
 
-		it("should return empty array for empty string", async () => {
+		it("should return empty set for empty string", async () => {
 			process.env.EXCLUDED_CHANNELS = "";
 
 			const { config } = await import("../../src/utils/config.js");
 
-			expect(config.excludedChannels).toStrictEqual([]);
+			expect(config.excludedChannels).toStrictEqual(new Set());
 		});
 	});
 });
