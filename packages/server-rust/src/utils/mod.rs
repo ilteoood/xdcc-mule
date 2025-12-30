@@ -1,3 +1,5 @@
+pub mod dcc_download;
+pub mod irc_client;
 pub mod xdcc_database;
 pub mod xdcc_download;
 

@@ -23,3 +23,7 @@ tokio-cron-scheduler = "0.14"
 chrono = { version = "0.4", features = ["serde"] }
 clap = { version = "4.5", features = ["derive", "env"] }
 futures = "0.3"
+tokio-util = { version = "0.7", features = ["codec"] }
+bytes = "1.0"
+rand = "0.8"
+irc = "1.1.0"
