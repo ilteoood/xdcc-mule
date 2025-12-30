@@ -1,7 +1,6 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as undici from "undici";
-import { parse, create, search, refresh } from "../../src/utils/xdccDatabase.js";
-import sqlite3 from "sqlite3";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { create, parse, refresh, search } from "../../src/utils/xdccDatabase.js";
 
 vi.mock("undici", () => ({
 	Agent: vi.fn(),
@@ -17,36 +16,28 @@ vi.mock("../../src/utils/config.js", () => ({
 	},
 }));
 
-const mockRun = vi.fn((_query: string, _params?: unknown[], callback?: (err: Error | null) => void) => {
-	if (callback) callback(null);
-	return mockDb;
-});
-const mockAll = vi.fn(
-	(_query: string, _params: unknown[], callback: (err: Error | null, rows: unknown[]) => void) => {
-		callback(null, []);
-	},
-);
+const mockRun = vi.fn();
+// biome-ignore lint/suspicious/noExplicitAny: Mock type flexibility needed
+const mockAll: ReturnType<typeof vi.fn<any>> = vi.fn(() => []);
 const mockPrepare = vi.fn(() => ({
-	run: vi.fn(),
-	finalize: vi.fn((callback: () => void) => callback()),
-}));
-const mockClose = vi.fn();
-const mockDb = {
 	run: mockRun,
 	all: mockAll,
-	prepare: mockPrepare,
-	close: mockClose,
-};
-
-vi.mock("sqlite3", () => ({
-	default: {
-		Database: vi.fn(() => mockDb),
-	},
 }));
+const mockExec = vi.fn();
+const mockClose = vi.fn();
+
+vi.mock("node:sqlite", () => {
+	return {
+		DatabaseSync: class {
+			exec = mockExec;
+			prepare = mockPrepare;
+			close = mockClose;
+		},
+	};
+});
 
 describe("xdccDatabase", () => {
 	const mockFetch = vi.mocked(undici.fetch);
-	const mockSqlite3 = vi.mocked(sqlite3);
 
 	const parsedXdccDatabase = [
 		{
@@ -115,7 +106,7 @@ describe("xdccDatabase", () => {
 
 			await create(parsedXdccDatabase);
 
-			expect(mockSqlite3.Database).toHaveBeenCalledWith(":memory:");
+			expect(mockExec).toHaveBeenCalled();
 			expect(mockPrepare).toHaveBeenCalledWith("INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)");
 		});
 
@@ -125,7 +116,7 @@ describe("xdccDatabase", () => {
 					Promise.resolve(`#1   Bot1 100M Valid File.txt
 invalid line
 #2
-   
+
 #3   Bot2 200M Another Valid.txt`),
 			} as Response);
 
@@ -152,9 +143,7 @@ invalid line
 				fileName: "Some File Name.txt",
 			};
 
-			mockAll.mockImplementation((_query, _params, callback) => {
-				callback(null, [dbRow]);
-			});
+			mockAll.mockReturnValue([dbRow]);
 
 			const result = await search("some name");
 
@@ -167,9 +156,7 @@ invalid line
 		});
 
 		it("should handle empty search results", async () => {
-			mockAll.mockImplementation((_query, _params, callback) => {
-				callback(null, []);
-			});
+			mockAll.mockReturnValue([]);
 
 			const result = await search("nonexistent");
 
@@ -177,9 +164,9 @@ invalid line
 		});
 
 		it("should convert search terms to LIKE pattern", async () => {
-			mockAll.mockImplementation((_query, params, callback) => {
-				expect(params[0]).toBe("%test%file%");
-				callback(null, []);
+			mockAll.mockImplementation(function (this: unknown, param: unknown) {
+				expect(param).toBe("%test%file%");
+				return [];
 			});
 
 			const result = await search("test file");
@@ -188,9 +175,7 @@ invalid line
 		});
 
 		it("should handle undefined rows gracefully", async () => {
-			mockAll.mockImplementation((_query, _params, callback) => {
-				callback(null, undefined as unknown as unknown[]);
-			});
+			mockAll.mockReturnValue([]);
 
 			const result = await search("test");
 

@@ -5,7 +5,6 @@ onlyBuiltDependencies:
   - '@swc/core'
   - core-js
   - esbuild
-  - sqlite3
 
 overrides:
   '@babel/runtime@<7.26.10': '>=7.26.10'

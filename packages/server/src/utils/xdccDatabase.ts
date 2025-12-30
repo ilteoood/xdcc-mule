@@ -1,4 +1,4 @@
-import sqlite3 from "sqlite3";
+import { DatabaseSync, type StatementSync } from "node:sqlite";
 import { Agent, fetch } from "undici";
 import { config } from "./config.js";
 import { addJobKey, type DownloadableFile } from "./utils.js";
@@ -53,14 +53,16 @@ const retrieveScriptContent = async (scriptUrl: string) => {
 };
 
 const createDbInstance = () => {
-	const database = new sqlite3.Database(":memory:");
+	const database = new DatabaseSync(":memory:");
 
-	return database.run(
+	database.exec(
 		"CREATE TABLE files (channelName TEXT, network TEXT, fileNumber TEXT, botName TEXT, fileSize TEXT, fileName TEXT)",
 	);
+
+	return database;
 };
 
-let sqliteDb: sqlite3.Database;
+let sqliteDb: DatabaseSync;
 
 const adaptScriptLine = (line: string) =>
 	line
@@ -75,21 +77,17 @@ export const create = async (database: DatabaseContent[]) => {
 
 	sqliteDb = createDbInstance();
 
+	const preparedStatement: StatementSync = sqliteDb.prepare("INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)");
+
 	const promises = database.map(async (channel) => {
 		const { channelName, network } = channel;
 		const scriptContent = await retrieveScriptContent(channel.scriptUrl);
-
-		const preparedStatement = sqliteDb.prepare("INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)");
 
 		const validLines = scriptContent.split("\n").map(adaptScriptLine).filter(filterValidEntries);
 
 		for (const [fileNumber, botName, fileSize, ...fileName] of validLines) {
 			preparedStatement.run(channelName, network, fileNumber, botName, fileSize, fileName.join(" "));
 		}
-
-		return new Promise<void>((resolve) => {
-			preparedStatement.finalize(() => resolve());
-		});
 	});
 
 	await Promise.allSettled(promises);
@@ -105,12 +103,9 @@ export const search = async (value: string) => {
 		await refresh();
 	}
 
-	return new Promise((resolve) => {
-		const likeableValue = value.split(" ").filter(Boolean).join("%");
-		sqliteDb.all(
-			"SELECT * FROM files WHERE fileName LIKE ?",
-			[`%${likeableValue}%`],
-			(_err, rows: DownloadableFile[] = []) => resolve(rows.map(addJobKey)),
-		);
-	});
+	const likeableValue = value.split(" ").filter(Boolean).join("%");
+	const preparedStatement = sqliteDb.prepare("SELECT * FROM files WHERE fileName LIKE ?");
+	const rows = preparedStatement.all(`%${likeableValue}%`) as unknown as DownloadableFile[];
+
+	return rows.map(addJobKey);
 };
