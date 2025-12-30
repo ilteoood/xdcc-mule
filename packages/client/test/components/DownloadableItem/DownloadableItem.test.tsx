@@ -47,7 +47,6 @@ describe("downloadableItem", () => {
 		render(<ItemComponent {...mockFile} />);
 
 		const button = screen.getByRole("button");
-		expect(button).toBeInTheDocument();
 		expect(button.querySelector(".pi-download")).toBeInTheDocument();
 	});
 
@@ -56,7 +55,6 @@ describe("downloadableItem", () => {
 		render(<ItemComponent {...mockFile} />);
 
 		const button = screen.getByRole("button");
-		expect(button).toBeInTheDocument();
 		expect(button.querySelector(".pi-trash")).toBeInTheDocument();
 		expect(button).toHaveClass("p-button-danger");
 	});

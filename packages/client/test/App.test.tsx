@@ -1,8 +1,8 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import App from "../src/App";
+import { createWrapper } from "./utils/testWrapper";
 
 vi.mock("../src/services/downloads", () => ({
 	getDownloads: vi.fn().mockResolvedValue([]),
@@ -22,19 +22,6 @@ vi.mock("react-error-boundary", () => ({
 
 import { getDownloads } from "../src/services/downloads";
 import { refreshDatabase } from "../src/services/files";
-
-const createWrapper = () => {
-	const queryClient = new QueryClient({
-		defaultOptions: {
-			queries: {
-				retry: false,
-			},
-		},
-	});
-	return ({ children }: { children: React.ReactNode }) => (
-		<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-	);
-};
 
 describe("App", () => {
 	beforeEach(() => {

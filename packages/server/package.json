@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
-		"test": "vitest",
+		"test": "vitest --coverage --run",
 		"start": "tsx --inspect --watch ./src/index.ts",
 		"build": "tsup"
 	},
