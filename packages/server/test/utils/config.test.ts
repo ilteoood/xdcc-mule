@@ -44,8 +44,6 @@ describe("config", () => {
 
 		const { config } = await import("../../src/utils/config.js");
 
-		// Number.parseInt("invalid") returns NaN, but with || fallback it returns 3000
-		// This tests that the config falls back to default when port parsing fails
 		expect(config.port).toBe(3000);
 	});
 });

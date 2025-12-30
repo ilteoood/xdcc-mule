@@ -15,7 +15,6 @@ vi.mock("../../src/utils/config.js", () => ({
 	},
 }));
 
-// Create mock functions for sqlite3
 const mockRun = vi.fn((_query: string, _params?: unknown[], callback?: (err: Error | null) => void) => {
 	if (callback) callback(null);
 	return mockDb;
@@ -117,11 +116,8 @@ describe("xdccDatabase", () => {
 			const { create } = await import("../../src/utils/xdccDatabase.js");
 			await create(parsedXdccDatabase);
 
-			// Verify database was created
 			const sqlite3 = (await import("sqlite3")).default;
 			expect(sqlite3.Database).toHaveBeenCalledWith(":memory:");
-
-			// Verify prepare was called for inserts
 			expect(mockPrepare).toHaveBeenCalledWith("INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)");
 		});
 
@@ -144,7 +140,6 @@ invalid line
 				},
 			]);
 
-			// The valid lines should have been processed
 			expect(mockPrepare).toHaveBeenCalled();
 		});
 	});
@@ -190,7 +185,6 @@ invalid line
 
 		it("should convert search terms to LIKE pattern", async () => {
 			mockAll.mockImplementation((_query, params, callback) => {
-				// Verify the LIKE pattern is formed correctly
 				expect(params[0]).toBe("%test%file%");
 				callback(null, []);
 			});
@@ -227,7 +221,6 @@ invalid line
 			const { refresh } = await import("../../src/utils/xdccDatabase.js");
 			await refresh();
 
-			// Verify both parse and create were called
 			expect(mockFetch).toHaveBeenCalledTimes(2);
 		});
 	});

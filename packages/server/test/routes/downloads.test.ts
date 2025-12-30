@@ -1,8 +1,8 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import fastify from "fastify";
 import type { FastifyInstance } from "fastify";
+import { download, statuses, cancel } from "../../src/utils/xdccDownload.js";
 
-// Mock xdccDownload module
 vi.mock("../../src/utils/xdccDownload.js", () => ({
 	download: vi.fn(),
 	statuses: vi.fn(),
@@ -11,6 +11,9 @@ vi.mock("../../src/utils/xdccDownload.js", () => ({
 
 describe("downloads route", () => {
 	let app: FastifyInstance;
+	const mockDownload = vi.mocked(download);
+	const mockStatuses = vi.mocked(statuses);
+	const mockCancel = vi.mocked(cancel);
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
@@ -20,14 +23,10 @@ describe("downloads route", () => {
 		await app.ready();
 	});
 
-	afterEach(async () => {
-		await app.close();
-	});
+	afterEach(() => app.close());
 
 	describe("GET /", () => {
 		it("should return all downloads statuses", async () => {
-			const { statuses } = await import("../../src/utils/xdccDownload.js");
-			const mockStatuses = vi.mocked(statuses);
 			mockStatuses.mockReturnValue([
 				{
 					id: "test-id",
@@ -55,8 +54,6 @@ describe("downloads route", () => {
 		});
 
 		it("should filter downloads by status", async () => {
-			const { statuses } = await import("../../src/utils/xdccDownload.js");
-			const mockStatuses = vi.mocked(statuses);
 			mockStatuses.mockReturnValue([
 				{
 					id: "id-1",
@@ -94,8 +91,6 @@ describe("downloads route", () => {
 		});
 
 		it("should return empty array when no downloads match status", async () => {
-			const { statuses } = await import("../../src/utils/xdccDownload.js");
-			const mockStatuses = vi.mocked(statuses);
 			mockStatuses.mockReturnValue([
 				{
 					id: "id-1",
@@ -123,8 +118,6 @@ describe("downloads route", () => {
 
 	describe("POST /", () => {
 		it("should start a download and return 201", async () => {
-			const { download } = await import("../../src/utils/xdccDownload.js");
-			const mockDownload = vi.mocked(download);
 			mockDownload.mockResolvedValue();
 
 			const fileRequest = {
@@ -149,9 +142,6 @@ describe("downloads route", () => {
 
 	describe("DELETE /", () => {
 		it("should cancel a download", async () => {
-			const { cancel } = await import("../../src/utils/xdccDownload.js");
-			const mockCancel = vi.mocked(cancel);
-
 			const fileRequest = {
 				channelName: "#test",
 				network: "irc.test.net",

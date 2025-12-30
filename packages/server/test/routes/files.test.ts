@@ -1,8 +1,8 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import fastify from "fastify";
 import type { FastifyInstance } from "fastify";
+import { search, refresh } from "../../src/utils/xdccDatabase.js";
 
-// Mock xdccDatabase module
 vi.mock("../../src/utils/xdccDatabase.js", () => ({
 	search: vi.fn(),
 	refresh: vi.fn(),
@@ -10,6 +10,8 @@ vi.mock("../../src/utils/xdccDatabase.js", () => ({
 
 describe("files route", () => {
 	let app: FastifyInstance;
+	const mockSearch = vi.mocked(search);
+	const mockRefresh = vi.mocked(refresh);
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
@@ -19,14 +21,10 @@ describe("files route", () => {
 		await app.ready();
 	});
 
-	afterEach(async () => {
-		await app.close();
-	});
+	afterEach(() => app.close());
 
 	describe("GET /", () => {
 		it("should search files by name", async () => {
-			const { search } = await import("../../src/utils/xdccDatabase.js");
-			const mockSearch = vi.mocked(search);
 			mockSearch.mockResolvedValue([
 				{
 					id: "test-id",
@@ -52,8 +50,6 @@ describe("files route", () => {
 		});
 
 		it("should handle empty search results", async () => {
-			const { search } = await import("../../src/utils/xdccDatabase.js");
-			const mockSearch = vi.mocked(search);
 			mockSearch.mockResolvedValue([]);
 
 			const response = await app.inject({
@@ -67,8 +63,6 @@ describe("files route", () => {
 		});
 
 		it("should search with undefined name parameter", async () => {
-			const { search } = await import("../../src/utils/xdccDatabase.js");
-			const mockSearch = vi.mocked(search);
 			mockSearch.mockResolvedValue([]);
 
 			const response = await app.inject({
@@ -83,8 +77,6 @@ describe("files route", () => {
 
 	describe("DELETE /", () => {
 		it("should call refresh to rebuild database", async () => {
-			const { refresh } = await import("../../src/utils/xdccDatabase.js");
-			const mockRefresh = vi.mocked(refresh);
 			mockRefresh.mockResolvedValue();
 
 			const response = await app.inject({

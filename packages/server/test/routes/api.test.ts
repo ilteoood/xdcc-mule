@@ -2,7 +2,6 @@ import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import fastify from "fastify";
 import type { FastifyInstance } from "fastify";
 
-// Mock child routes
 vi.mock("../../src/utils/xdccDatabase.js", () => ({
 	search: vi.fn().mockResolvedValue([]),
 	refresh: vi.fn().mockResolvedValue(undefined),
@@ -25,9 +24,7 @@ describe("api route", () => {
 		await app.ready();
 	});
 
-	afterEach(async () => {
-		await app.close();
-	});
+	afterEach(() => app.close());
 
 	describe("route registration", () => {
 		it("should register files route under /api/files", async () => {
@@ -36,7 +33,6 @@ describe("api route", () => {
 				url: "/api/files",
 			});
 
-			// Route exists (not 404)
 			expect(response.statusCode).toBe(200);
 		});
 
@@ -46,7 +42,6 @@ describe("api route", () => {
 				url: "/api/downloads",
 			});
 
-			// Route exists (not 404)
 			expect(response.statusCode).toBe(200);
 		});
 	});

@@ -2,7 +2,6 @@ import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import type { DownloadableFile, DownloadingFile } from "../../src/utils/utils.js";
 import { buildJobKey, addJobKey } from "../../src/utils/utils.js";
 
-// Mock the config module
 vi.mock("../../src/utils/config.js", () => ({
 	config: {
 		databaseUrl: "http://example.com/database",
@@ -12,7 +11,6 @@ vi.mock("../../src/utils/config.js", () => ({
 	},
 }));
 
-// Mock XDCC module - complex external integration
 vi.mock("xdccjs", () => ({
 	default: {
 		default: vi.fn(),
@@ -59,7 +57,6 @@ describe("xdccDownload", () => {
 		it("should handle cancelling non-existent download gracefully", async () => {
 			const { cancel } = await import("../../src/utils/xdccDownload.js");
 
-			// Should not throw
 			expect(() => cancel(sampleFile)).not.toThrow();
 		});
 	});
