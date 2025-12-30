@@ -25,17 +25,16 @@ describe("files route", () => {
 
 	describe("GET /", () => {
 		it("should search files by name", async () => {
-			mockSearch.mockResolvedValue([
-				{
-					id: "test-id",
-					channelName: "#test",
-					network: "irc.test.net",
-					fileNumber: "#1",
-					botName: "Bot1",
-					fileSize: "100M",
-					fileName: "TestFile.rar",
-				},
-			]);
+			const mockFile = {
+				id: "irc.test.net-#test-TestBot-#1-TestFile.rar-100M",
+				channelName: "#test",
+				network: "irc.test.net",
+				fileNumber: "#1",
+				botName: "TestBot",
+				fileSize: "100M",
+				fileName: "TestFile.rar",
+			};
+			mockSearch.mockResolvedValue([mockFile]);
 
 			const response = await app.inject({
 				method: "GET",
@@ -43,9 +42,16 @@ describe("files route", () => {
 			});
 
 			expect(response.statusCode).toBe(200);
-			const body = JSON.parse(response.body);
-			expect(body).toHaveLength(1);
-			expect(body[0].fileName).toBe("TestFile.rar");
+			expect(response.json()).toStrictEqual([
+				{
+					channelName: "#test",
+					network: "irc.test.net",
+					fileNumber: "#1",
+					botName: "TestBot",
+					fileSize: "100M",
+					fileName: "TestFile.rar",
+				},
+			]);
 			expect(mockSearch).toHaveBeenCalledWith("test");
 		});
 
@@ -58,8 +64,7 @@ describe("files route", () => {
 			});
 
 			expect(response.statusCode).toBe(200);
-			const body = JSON.parse(response.body);
-			expect(body).toEqual([]);
+			expect(response.json()).toStrictEqual([]);
 		});
 
 		it("should search with undefined name parameter", async () => {
@@ -71,6 +76,7 @@ describe("files route", () => {
 			});
 
 			expect(response.statusCode).toBe(200);
+			expect(response.json()).toStrictEqual([]);
 			expect(mockSearch).toHaveBeenCalledWith(undefined);
 		});
 	});

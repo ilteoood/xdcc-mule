@@ -34,6 +34,7 @@ describe("api route", () => {
 			});
 
 			expect(response.statusCode).toBe(200);
+			expect(response.json()).toStrictEqual([]);
 		});
 
 		it("should register downloads route under /api/downloads", async () => {
@@ -43,6 +44,7 @@ describe("api route", () => {
 			});
 
 			expect(response.statusCode).toBe(200);
+			expect(response.json()).toStrictEqual([]);
 		});
 	});
 });

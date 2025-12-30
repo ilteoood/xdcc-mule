@@ -143,28 +143,27 @@ invalid line
 
 	describe("search", () => {
 		it("should search by filename", async () => {
-			const testResults = [
-				{
-					channelName: "#test-channel",
-					network: "irc.test.net",
-					fileNumber: "#1",
-					botName: "TestBot",
-					fileSize: "500M",
-					fileName: "Some File Name.txt",
-				},
-			];
+			const dbRow = {
+				channelName: "#test-channel",
+				network: "irc.test.net",
+				fileNumber: "#1",
+				botName: "TestBot",
+				fileSize: "500M",
+				fileName: "Some File Name.txt",
+			};
 
 			mockAll.mockImplementation((_query, _params, callback) => {
-				callback(null, testResults);
+				callback(null, [dbRow]);
 			});
 
 			const result = await search("some name");
 
-			expect(result).toHaveLength(1);
-			expect(result[0]).toMatchObject({
-				fileName: "Some File Name.txt",
-				id: "irc.test.net-#test-channel-TestBot-#1-Some File Name.txt-500M",
-			});
+			expect(result).toStrictEqual([
+				{
+					...dbRow,
+					id: "irc.test.net-#test-channel-TestBot-#1-Some File Name.txt-500M",
+				},
+			]);
 		});
 
 		it("should handle empty search results", async () => {
@@ -174,8 +173,7 @@ invalid line
 
 			const result = await search("nonexistent");
 
-			expect(Array.isArray(result)).toBe(true);
-			expect(result).toHaveLength(0);
+			expect(result).toStrictEqual([]);
 		});
 
 		it("should convert search terms to LIKE pattern", async () => {
@@ -184,7 +182,9 @@ invalid line
 				callback(null, []);
 			});
 
-			await search("test file");
+			const result = await search("test file");
+
+			expect(result).toStrictEqual([]);
 		});
 
 		it("should handle undefined rows gracefully", async () => {
@@ -194,7 +194,7 @@ invalid line
 
 			const result = await search("test");
 
-			expect(Array.isArray(result)).toBe(true);
+			expect(result).toStrictEqual([]);
 		});
 	});
 
@@ -214,6 +214,8 @@ invalid line
 			await refresh();
 
 			expect(mockFetch).toHaveBeenCalledTimes(2);
+			expect(mockFetch).toHaveBeenNthCalledWith(1, "http://example.com/database", expect.any(Object));
+			expect(mockFetch).toHaveBeenNthCalledWith(2, "http://test.com/script.php");
 		});
 	});
 });

@@ -52,19 +52,10 @@ describe("utils", () => {
 		it("should add id property to file object", () => {
 			const result = addJobKey(sampleFile);
 
-			expect(result).toHaveProperty("id");
-			expect(result.id).toBe(buildJobKey(sampleFile));
-		});
-
-		it("should preserve all original properties", () => {
-			const result = addJobKey(sampleFile);
-
-			expect(result.channelName).toBe(sampleFile.channelName);
-			expect(result.network).toBe(sampleFile.network);
-			expect(result.fileNumber).toBe(sampleFile.fileNumber);
-			expect(result.botName).toBe(sampleFile.botName);
-			expect(result.fileSize).toBe(sampleFile.fileSize);
-			expect(result.fileName).toBe(sampleFile.fileName);
+			expect(result).toStrictEqual({
+				...sampleFile,
+				id: "irc.test.net-#test-channel-TestBot-#123-TestFile.rar-500M",
+			});
 		});
 
 		it("should work with extended file types", () => {
@@ -79,8 +70,10 @@ describe("utils", () => {
 
 			const result = addJobKey(extendedFile);
 
-			expect(result.extraProp).toBe("extra value");
-			expect(result.id).toBe(buildJobKey(extendedFile));
+			expect(result).toStrictEqual({
+				...extendedFile,
+				id: "irc.test.net-#test-channel-TestBot-#123-TestFile.rar-500M",
+			});
 		});
 	});
 });
