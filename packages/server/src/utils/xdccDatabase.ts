@@ -72,6 +72,8 @@ const adaptScriptLine = (line: string) =>
 
 const filterValidEntries = (line: string[]) => line.length >= COLUMNS_PER_FILE;
 
+const isChannelExcluded = (channelName: string): boolean => config.excludedChannels.has(channelName);
+
 export const create = async (database: DatabaseContent[]) => {
 	sqliteDb?.close();
 
@@ -79,16 +81,18 @@ export const create = async (database: DatabaseContent[]) => {
 
 	const preparedStatement: StatementSync = sqliteDb.prepare("INSERT INTO files VALUES (?, ?, ?, ?, ?, ?)");
 
-	const promises = database.map(async (channel) => {
-		const { channelName, network } = channel;
-		const scriptContent = await retrieveScriptContent(channel.scriptUrl);
+	const promises = database
+		.filter((channel) => !isChannelExcluded(channel.channelName))
+		.map(async (channel) => {
+			const { channelName, network } = channel;
+			const scriptContent = await retrieveScriptContent(channel.scriptUrl);
 
-		const validLines = scriptContent.split("\n").map(adaptScriptLine).filter(filterValidEntries);
+			const validLines = scriptContent.split("\n").map(adaptScriptLine).filter(filterValidEntries);
 
-		for (const [fileNumber, botName, fileSize, ...fileName] of validLines) {
-			preparedStatement.run(channelName, network, fileNumber, botName, fileSize, fileName.join(" "));
-		}
-	});
+			for (const [fileNumber, botName, fileSize, ...fileName] of validLines) {
+				preparedStatement.run(channelName, network, fileNumber, botName, fileSize, fileName.join(" "));
+			}
+		});
 
 	await Promise.allSettled(promises);
 };

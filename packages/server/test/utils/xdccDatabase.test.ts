@@ -1,6 +1,7 @@
 import * as undici from "undici";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { create, parse, refresh, search } from "../../src/utils/xdccDatabase.js";
+import { config } from "../../src/utils/config.js";
 
 vi.mock("undici", () => ({
 	Agent: vi.fn(),
@@ -13,6 +14,7 @@ vi.mock("../../src/utils/config.js", () => ({
 		nickname: "test-bot",
 		downloadPath: "./downloads",
 		port: 3000,
+		excludedChannels: new Set<string>(),
 	},
 }));
 
@@ -97,6 +99,10 @@ describe("xdccDatabase", () => {
 	});
 
 	describe("create", () => {
+		afterEach(() => {
+			config.excludedChannels = new Set();
+		});
+
 		it("should create database and populate with channel data", async () => {
 			mockFetch.mockResolvedValue({
 				text: () =>
@@ -129,6 +135,43 @@ invalid line
 			]);
 
 			expect(mockPrepare).toHaveBeenCalled();
+		});
+
+		it("should filter out excluded channels", async () => {
+			config.excludedChannels = new Set(["#a-b-c"]);
+
+			mockFetch.mockResolvedValue({
+				text: () => Promise.resolve(`#1   Bot1 100M TestFile.txt`),
+			} as Response);
+
+			await create(parsedXdccDatabase);
+
+			expect(mockFetch).toHaveBeenCalledTimes(1);
+			expect(mockFetch).toHaveBeenCalledWith("http://www.pierpaolo.org/scripts.php");
+		});
+
+		it("should filter out multiple excluded channels", async () => {
+			config.excludedChannels = new Set(["#a-b-c", "#Pierpaolo"]);
+
+			mockFetch.mockResolvedValue({
+				text: () => Promise.resolve(`#1   Bot1 100M TestFile.txt`),
+			} as Response);
+
+			await create(parsedXdccDatabase);
+
+			expect(mockFetch).not.toHaveBeenCalled();
+		});
+
+		it("should not filter when excludedChannels is empty", async () => {
+			config.excludedChannels = new Set();
+
+			mockFetch.mockResolvedValue({
+				text: () => Promise.resolve(`#1   Bot1 100M TestFile.txt`),
+			} as Response);
+
+			await create(parsedXdccDatabase);
+
+			expect(mockFetch).toHaveBeenCalledTimes(2);
 		});
 	});
 

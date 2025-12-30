@@ -46,4 +46,46 @@ describe("config", () => {
 
 		expect(config.port).toBe(3000);
 	});
+
+	describe("excludedChannels", () => {
+		it("should parse comma-separated excluded channels", async () => {
+			process.env.EXCLUDED_CHANNELS = "#channel1,#channel2,#channel3";
+
+			const { config } = await import("../../src/utils/config.js");
+
+			expect(config.excludedChannels).toStrictEqual(new Set(["#channel1", "#channel2", "#channel3"]));
+		});
+
+		it("should return empty set when EXCLUDED_CHANNELS is not set", async () => {
+			delete process.env.EXCLUDED_CHANNELS;
+
+			const { config } = await import("../../src/utils/config.js");
+
+			expect(config.excludedChannels).toStrictEqual(new Set());
+		});
+
+		it("should trim whitespace from channel names", async () => {
+			process.env.EXCLUDED_CHANNELS = " #channel1 , #channel2 , #channel3 ";
+
+			const { config } = await import("../../src/utils/config.js");
+
+			expect(config.excludedChannels).toStrictEqual(new Set(["#channel1", "#channel2", "#channel3"]));
+		});
+
+		it("should filter out empty channel names", async () => {
+			process.env.EXCLUDED_CHANNELS = "#channel1,,#channel2,";
+
+			const { config } = await import("../../src/utils/config.js");
+
+			expect(config.excludedChannels).toStrictEqual(new Set(["#channel1", "#channel2"]));
+		});
+
+		it("should return empty set for empty string", async () => {
+			process.env.EXCLUDED_CHANNELS = "";
+
+			const { config } = await import("../../src/utils/config.js");
+
+			expect(config.excludedChannels).toStrictEqual(new Set());
+		});
+	});
 });
