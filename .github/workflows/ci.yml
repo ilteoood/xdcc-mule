@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   schedule:
     - cron: '0 3 * * 1'
 jobs:
@@ -19,8 +22,10 @@ jobs:
           version: latest
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
+      - run: pnpm test
       - run: pnpm build
       - uses: ilteoood/docker_buildx@master
+        if: github.ref == 'refs/heads/main'
         with:
           tag: latest,1.0.0
           imageName: ilteoood/xdcc-mule
