@@ -1,5 +1,11 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
-import { downloadFile, cancelDownload, getDownloads, statusOptions, type DownloadableFile } from "../../src/services/downloads";
+import {
+	downloadFile,
+	cancelDownload,
+	getDownloads,
+	statusOptions,
+	type DownloadableFile,
+} from "../../src/services/downloads";
 
 describe("downloads service", () => {
 	const mockFetch = vi.fn();

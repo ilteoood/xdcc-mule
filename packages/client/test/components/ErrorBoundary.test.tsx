@@ -13,7 +13,7 @@ describe("ErrorBoundary", () => {
 		render(
 			<ErrorBoundary isLoading={true} isError={false}>
 				<div>Child content</div>
-			</ErrorBoundary>
+			</ErrorBoundary>,
 		);
 
 		expect(screen.getByRole("progressbar")).toBeInTheDocument();
@@ -24,7 +24,7 @@ describe("ErrorBoundary", () => {
 		render(
 			<ErrorBoundary isLoading={false} isError={true}>
 				<div>Child content</div>
-			</ErrorBoundary>
+			</ErrorBoundary>,
 		);
 
 		expect(screen.getByText("Something went wrong")).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe("ErrorBoundary", () => {
 		render(
 			<ErrorBoundary isLoading={false} isError={false}>
 				<div>Child content</div>
-			</ErrorBoundary>
+			</ErrorBoundary>,
 		);
 
 		expect(screen.getByText("Child content")).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe("ErrorBoundary", () => {
 		render(
 			<ErrorBoundary isLoading={true} isError={true}>
 				<div>Child content</div>
-			</ErrorBoundary>
+			</ErrorBoundary>,
 		);
 
 		expect(screen.getByRole("progressbar")).toBeInTheDocument();

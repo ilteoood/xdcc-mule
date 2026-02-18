@@ -34,7 +34,7 @@ export const downloadableItem =
 		const onButtonClick = useCallback(() => {
 			disableButton();
 			buttonActionsMap[props.action](downloadableFile);
-		}, [props, disableButton, downloadableFile]);
+		}, [disableButton, downloadableFile]);
 
 		return (
 			<div className={classNames(style.container, "flex", "flex-column")}>
