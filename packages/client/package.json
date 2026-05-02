@@ -11,13 +11,13 @@
 	},
 	"dependencies": {
 		"@fluentui/react-hooks": "^8.10.2",
-		"@tanstack/react-query": "^5.90.21",
+		"@tanstack/react-query": "^5.100.8",
 		"pretty-ms": "^9.3.0",
 		"primeflex": "^4.0.0",
 		"primeicons": "^7.0.0",
 		"primereact": "^10.9.7",
-		"react": "^19.2.4",
-		"react-dom": "^19.2.4",
+		"react": "^19.2.5",
+		"react-dom": "^19.2.5",
 		"react-error-boundary": "^6.1.1"
 	},
 	"devDependencies": {
@@ -25,14 +25,14 @@
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/react": "^16.3.2",
 		"@testing-library/user-event": "^14.6.1",
-		"@types/node": "^24.10.13",
+		"@types/node": "^25.6.0",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
-		"@vitejs/plugin-react-swc": "^4.2.3",
-		"@vitest/coverage-v8": "^4.0.18",
-		"happy-dom": "^20.8.9",
-		"typescript": "^5.9.3",
-		"vite": "^7.3.2",
-		"vitest": "^4.0.18"
+		"@vitejs/plugin-react-swc": "^4.3.0",
+		"@vitest/coverage-v8": "^4.1.5",
+		"happy-dom": "^20.9.0",
+		"typescript": "^6.0.3",
+		"vite": "^8.0.10",
+		"vitest": "^4.1.5"
 	}
 }

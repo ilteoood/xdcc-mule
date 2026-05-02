@@ -16,6 +16,6 @@
   "author": "Matteo Pietro Dazzi",
   "license": "MIT",
   "dependencies": {
-    "@biomejs/biome": "^2.4.2"
+    "@biomejs/biome": "^2.4.14"
   }
 }
