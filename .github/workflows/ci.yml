@@ -20,8 +20,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: latest
-      - run: pnpm approve-builds @swc/core core-js esbuild
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm lint
       - run: pnpm test
       - run: pnpm build
