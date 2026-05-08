@@ -19,7 +19,7 @@ jobs:
           node-version-file: ".nvmrc"
       - uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: latest
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm test
