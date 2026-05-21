@@ -11,7 +11,7 @@
 	},
 	"dependencies": {
 		"@fluentui/react-hooks": "^8.10.2",
-		"@tanstack/react-query": "^5.100.8",
+		"@tanstack/react-query": "^5.100.10",
 		"pretty-ms": "^9.3.0",
 		"primeflex": "^4.0.0",
 		"primeicons": "^7.0.0",
