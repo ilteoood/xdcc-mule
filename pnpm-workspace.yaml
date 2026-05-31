@@ -6,6 +6,9 @@ allowBuilds:
   core-js: true
   esbuild: true
 
+minimumReleaseAgeExclude:
+  - tsx@4.22.4
+
 onlyBuiltDependencies:
   - '@swc/core'
   - core-js
