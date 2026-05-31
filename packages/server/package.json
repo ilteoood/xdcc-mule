@@ -19,11 +19,11 @@
 		"xdccjs": "^5.4.11"
 	},
 	"devDependencies": {
-		"@types/node": "^25.8.0",
+		"@types/node": "^25.9.1",
 		"@types/node-cron": "^3.0.11",
-		"@vitest/coverage-v8": "^4.1.5",
-		"tsdown": "^0.22.0",
-		"tsx": "^4.22.3",
+		"@vitest/coverage-v8": "^4.1.7",
+		"tsdown": "^0.22.1",
+		"tsx": "^4.22.4",
 		"typescript": "^6.0.3",
 		"vitest": "^4.1.7"
 	}
