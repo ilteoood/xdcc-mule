@@ -16,8 +16,8 @@
 		"primeflex": "^4.0.0",
 		"primeicons": "^7.0.0",
 		"primereact": "^10.9.8",
-		"react": "^19.2.6",
-		"react-dom": "^19.2.6",
+		"react": "^19.2.7",
+		"react-dom": "^19.2.7",
 		"react-error-boundary": "^6.1.2"
 	},
 	"devDependencies": {
