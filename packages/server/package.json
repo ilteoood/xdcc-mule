@@ -19,7 +19,7 @@
 		"xdccjs": "^5.4.11"
 	},
 	"devDependencies": {
-		"@types/node": "25.9.2",
+		"@types/node": "26.0.0",
 		"@types/node-cron": "^3.0.11",
 		"@vitest/coverage-v8": "^4.1.8",
 		"tsdown": "^0.22.2",
