@@ -1,26 +1,15 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/"
+    directories:
+      - "/"
+      - "/packages/*"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-    commit-message:
-      prefix: "deps"
-
-  - package-ecosystem: "npm"
-    directory: "/packages/client"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 10
-    commit-message:
-      prefix: "deps"
-
-  - package-ecosystem: "npm"
-    directory: "/packages/server"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 10
+    groups:
+      monorepo-dependencies:
+        group-by: dependency-name
     commit-message:
       prefix: "deps"
 
