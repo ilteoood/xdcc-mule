@@ -94,8 +94,8 @@ importers:
         specifier: ^5.8.5
         version: 5.8.5
       node-cron:
-        specifier: ^4.5.0
-        version: 4.5.0
+        specifier: ^4.6.0
+        version: 4.6.0
       undici:
         specifier: ^8.6.0
         version: 8.6.0
@@ -1485,8 +1485,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  node-cron@4.5.0:
-    resolution: {integrity: sha512-4Trh+kjvbXokyJkwQumvD5YAgeJfgHLR/sKyu71uSmxfCR5QMO1hldpvmFZOICN5pLgNY+J5Y8+ar3XKo5/4tQ==}
+  node-cron@4.6.0:
+    resolution: {integrity: sha512-Si/bzYiKRHOB8/a99T2+SDGN582ONDMSTlJr5oCkT6GtnqPjZ2s10eoQRYkW9ZHwjVxONL+W8Fb+qR0AHMQsdg==}
     engines: {node: '>=20'}
 
   object-assign@4.1.1:
@@ -3168,7 +3168,7 @@ snapshots:
 
   nanoid@3.3.15: {}
 
-  node-cron@4.5.0: {}
+  node-cron@4.6.0: {}
 
   object-assign@4.1.1: {}
 
