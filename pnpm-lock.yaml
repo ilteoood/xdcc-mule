@@ -97,8 +97,8 @@ importers:
         specifier: ^4.5.0
         version: 4.6.0
       undici:
-        specifier: ^8.6.0
-        version: 8.6.0
+        specifier: ^8.7.0
+        version: 8.7.0
       xdccjs:
         specifier: ^5.4.11
         version: 5.4.11
@@ -122,7 +122,7 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
       vitest:
-        specifier: ^4.1.10
+        specifier: ^4.1.9
         version: 4.1.10(@types/node@26.1.0)(@vitest/coverage-v8@4.1.10)(happy-dom@20.10.6)(vite@8.1.4(@types/node@26.1.0)(esbuild@0.28.0)(tsx@4.22.4))
 
 packages:
@@ -1884,8 +1884,8 @@ packages:
   undici-types@8.3.0:
     resolution: {integrity: sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ==}
 
-  undici@8.6.0:
-    resolution: {integrity: sha512-l2FlC6I510GawyEd1qgcE/okihKrzy+BRTEBlu6T0fdbM9m5yxtIH5Oa3ysRsH0zC4EhmWUEaSDsy2QngBeRlw==}
+  undici@8.7.0:
+    resolution: {integrity: sha512-N7iQtfyLhIMOFgQubvmLV26svHpO0bqKnAiWotTQCVKCmWrcGbBotPuW1x+xwYZ2VHdSTVUfPQQnlEt1/LouTQ==}
     engines: {node: '>=22.19.0'}
 
   util-deprecate@1.0.2:
@@ -3546,7 +3546,7 @@ snapshots:
 
   undici-types@8.3.0: {}
 
-  undici@8.6.0: {}
+  undici@8.7.0: {}
 
   util-deprecate@1.0.2: {}
 
