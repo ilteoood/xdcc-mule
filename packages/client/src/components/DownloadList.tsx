@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { DataView as PrimeReactDataView } from "primereact/dataview";
 
 import { type StatusOption, getDownloads } from "../services/downloads";
 import { downloadableItem } from "./DownloadableItem/DownloadableItem";
@@ -8,11 +7,11 @@ import { ErrorBoundary } from "./ErrorBoundary";
 const REFETCH_INTERVAL = 1000;
 const FILE_OPTIONS = { action: "delete" };
 
-interface DownloadableItemProps {
+interface DownloadListProps {
 	statusOption?: StatusOption;
 }
 
-export const DownloadList = ({ statusOption }: DownloadableItemProps) => {
+export const DownloadList = ({ statusOption }: DownloadListProps) => {
 	const {
 		data = [],
 		isLoading,
@@ -23,9 +22,15 @@ export const DownloadList = ({ statusOption }: DownloadableItemProps) => {
 		refetchInterval: REFETCH_INTERVAL,
 	});
 
+	const ItemComponent = downloadableItem(FILE_OPTIONS);
+
 	return (
 		<ErrorBoundary isLoading={isLoading} isError={isError}>
-			<PrimeReactDataView dataKey="id" value={data} itemTemplate={downloadableItem(FILE_OPTIONS)} />
+			<div data-scope="dataview">
+				{data.map((file) => (
+					<ItemComponent key={file.fileName} {...file} />
+				))}
+			</div>
 		</ErrorBoundary>
 	);
 };

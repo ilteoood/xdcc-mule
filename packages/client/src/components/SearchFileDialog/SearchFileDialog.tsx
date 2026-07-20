@@ -1,15 +1,14 @@
 import { useBoolean } from "@fluentui/react-hooks";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "primereact/button";
-import { DataView as PrimeReactDataView } from "primereact/dataview";
 import { Dialog } from "primereact/dialog";
 import { IconField } from "primereact/iconfield";
-import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import { type ChangeEvent, type KeyboardEvent, useCallback, useState } from "react";
 import { searchFile } from "../../services/files";
 import { downloadableItem } from "../DownloadableItem/DownloadableItem";
 import { ErrorBoundary } from "../ErrorBoundary";
+import type { DownloadingFile } from "../../services/downloads";
 
 import { DoubleIconButton } from "../DoubleIconButton/DoubleIconButton";
 import style from "./SearchFileDialog.module.css";
@@ -33,6 +32,8 @@ export const SearchFileDialog = () => {
 		enabled: false,
 	});
 
+	const ItemComponent = downloadableItem(FILE_OPTIONS);
+
 	const onFileNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setFileName(e.target.value), []);
 
 	const onEnter = useCallback(
@@ -47,33 +48,41 @@ export const SearchFileDialog = () => {
 	return (
 		<>
 			<DoubleIconButton icon="pi pi-file" onClick={setVisible} className="pi pi-search" />
-			<Dialog header="Search file" visible={isVisible} onHide={setInvisible} className={style.dialogContainer}>
-				<ErrorBoundary isLoading={isLoading || isRefetching} isError={isError || isRefetchError}>
-					<div className="m-0">
-						<div className="flex justify-content-between mb-2">
-							<IconField iconPosition="left">
-								<InputIcon className="pi pi-file" />
-								<InputText
-									value={fileName}
-									placeholder="File name"
-									onKeyDownCapture={onEnter}
-									onChange={onFileNameChange}
-								/>
-							</IconField>
-							<Button disabled={!fileName} label="Search" icon="pi pi-search" onClick={() => refetch()} />
-						</div>
-						{fileName && (
-							<PrimeReactDataView
-								dataKey="id"
-								value={data}
-								paginator={Boolean(data.length)}
-								rows={100}
-								itemTemplate={downloadableItem(FILE_OPTIONS)}
-							/>
-						)}
-					</div>
-				</ErrorBoundary>
-			</Dialog>
+			<Dialog.Root open={isVisible} onOpenChange={(e: { value: boolean | undefined }) => !e.value && setInvisible()}>
+				<Dialog.Portal>
+					<Dialog.Popup className={style.dialogContainer}>
+						<Dialog.Header>
+							<Dialog.Title>Search file</Dialog.Title>
+							<Dialog.Close aria-label="Close" icon="pi pi-times" />
+						</Dialog.Header>
+						<ErrorBoundary isLoading={isLoading || isRefetching} isError={isError || isRefetchError}>
+							<div className="m-0">
+								<div className="flex justify-content-between mb-2">
+									<IconField.Root iconPosition="left">
+										<IconField.Inset className="pi pi-file" />
+										<InputText
+											value={fileName}
+											placeholder="File name"
+											onKeyDownCapture={onEnter}
+											onChange={onFileNameChange}
+										/>
+									</IconField.Root>
+									<Button disabled={!fileName} icon="pi pi-search" onClick={() => refetch()}>
+										Search
+									</Button>
+								</div>
+								{fileName && (
+									<div data-scope="dataview">
+										{data.map((file: DownloadingFile) => (
+											<ItemComponent key={file.fileName} {...file} />
+										))}
+									</div>
+								)}
+							</div>
+						</ErrorBoundary>
+					</Dialog.Popup>
+				</Dialog.Portal>
+			</Dialog.Root>
 		</>
 	);
 };

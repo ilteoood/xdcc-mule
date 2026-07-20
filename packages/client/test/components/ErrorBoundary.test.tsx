@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ErrorBoundary } from "../../src/components/ErrorBoundary";
+import { createWrapper } from "../utils/testWrapper";
 
 vi.mock("react-error-boundary", () => ({
 	ErrorBoundary: ({ children }: { children: React.ReactNode; fallback: React.ReactNode }) => (
@@ -14,6 +15,7 @@ describe("ErrorBoundary", () => {
 			<ErrorBoundary isLoading={true} isError={false}>
 				<div>Child content</div>
 			</ErrorBoundary>,
+			{ wrapper: createWrapper() },
 		);
 
 		expect(screen.getByRole("progressbar")).toBeInTheDocument();
@@ -25,6 +27,7 @@ describe("ErrorBoundary", () => {
 			<ErrorBoundary isLoading={false} isError={true}>
 				<div>Child content</div>
 			</ErrorBoundary>,
+			{ wrapper: createWrapper() },
 		);
 
 		expect(screen.getByText("Something went wrong")).toBeInTheDocument();
@@ -36,6 +39,7 @@ describe("ErrorBoundary", () => {
 			<ErrorBoundary isLoading={false} isError={false}>
 				<div>Child content</div>
 			</ErrorBoundary>,
+			{ wrapper: createWrapper() },
 		);
 
 		expect(screen.getByText("Child content")).toBeInTheDocument();
@@ -46,6 +50,7 @@ describe("ErrorBoundary", () => {
 			<ErrorBoundary isLoading={true} isError={true}>
 				<div>Child content</div>
 			</ErrorBoundary>,
+			{ wrapper: createWrapper() },
 		);
 
 		expect(screen.getByRole("progressbar")).toBeInTheDocument();

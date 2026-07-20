@@ -1,9 +1,9 @@
 import { useBoolean } from "@fluentui/react-hooks";
 import prettyMilliseconds from "pretty-ms";
-import { Button, type ButtonProps } from "primereact/button";
+import { Button } from "primereact/button";
 import { ProgressBar } from "primereact/progressbar";
-import { classNames } from "primereact/utils";
-import { useCallback } from "react";
+import { classNames } from "@primeuix/utils";
+import { type ComponentProps, useCallback } from "react";
 
 import { type DownloadableFile, type DownloadingFile, cancelDownload, downloadFile } from "../../services/downloads";
 
@@ -12,6 +12,8 @@ import style from "./DownloadableItem.module.css";
 interface DownloadableItemProps {
 	action: string;
 }
+
+type ButtonProps = NonNullable<ComponentProps<typeof Button>>;
 
 const iconsMap: Record<string, string> = {
 	download: "pi pi-download",
@@ -62,7 +64,11 @@ export const downloadableItem =
 					</div>
 				</div>
 				{downloadableFile.percentage > 0 && (
-					<ProgressBar className="mt-2" value={downloadableFile.percentage.toFixed(2)} />
+					<ProgressBar.Root className="mt-2" value={Number(downloadableFile.percentage.toFixed(2))}>
+						<ProgressBar.Track>
+							<ProgressBar.Value />
+						</ProgressBar.Track>
+					</ProgressBar.Root>
 				)}
 			</div>
 		);

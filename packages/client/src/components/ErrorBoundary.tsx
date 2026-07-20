@@ -8,13 +8,19 @@ interface ErrorBoundaryProps {
 	children: React.ReactNode;
 }
 
-const ErrorMessage = () => <Message severity="error" text="Something went wrong" />;
+const ErrorMessage = () => (
+	<Message.Root severity="error">
+		<Message.Content>
+			<Message.Text>Something went wrong</Message.Text>
+		</Message.Content>
+	</Message.Root>
+);
 
 export const ErrorBoundary = ({ children, isLoading, isError }: ErrorBoundaryProps) => {
 	if (isLoading) {
 		return (
 			<div className="flex justify-content-center">
-				<ProgressSpinner />
+				<ProgressSpinner.Root />
 			</div>
 		);
 	}
