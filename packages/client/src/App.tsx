@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { Dropdown, type DropdownChangeEvent } from "primereact/dropdown";
+import { Select } from "primereact/select";
 import { useCallback, useState } from "react";
 import { DoubleIconButton } from "./components/DoubleIconButton/DoubleIconButton";
 import { DownloadList } from "./components/DownloadList";
@@ -12,8 +12,8 @@ const dropdownOptions = statusOptions.map((option) => ({ label: option, value: o
 function App() {
 	const [statusOption, setStatusOption] = useState<StatusOption>();
 
-	const onStatusChange = useCallback((event: DropdownChangeEvent) => {
-		setStatusOption(event.value);
+	const onStatusChange = useCallback((event: { value: unknown }) => {
+		setStatusOption(event.value as StatusOption);
 	}, []);
 
 	const { isPending, mutate } = useMutation({ mutationFn: refreshDatabase });
@@ -23,7 +23,22 @@ function App() {
 			<div className="flex justify-content-between">
 				<div className="flex align-items-center mb-2">
 					<div className="mr-2">Status:</div>
-					<Dropdown value={statusOption} options={dropdownOptions} onChange={onStatusChange} showClear />
+					<Select.Root
+						value={statusOption}
+						onValueChange={onStatusChange}
+						options={dropdownOptions}
+						optionLabel="label"
+						optionValue="value"
+					>
+						<Select.Trigger>
+							<Select.Value placeholder="Select status" />
+						</Select.Trigger>
+						<Select.Portal>
+							<Select.Popup>
+								<Select.List />
+							</Select.Popup>
+						</Select.Portal>
+					</Select.Root>
 				</div>
 
 				<div className="flex gap-2">

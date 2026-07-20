@@ -46,14 +46,16 @@ describe("App", () => {
 		render(<App />, { wrapper: createWrapper() });
 
 		const buttons = screen.getAllByRole("button");
-		expect(buttons.some((btn) => btn.querySelector(".pi-file"))).toBe(true);
+		expect(buttons.some((btn) => btn.getAttribute("icon") === "pi pi-file")).toBe(true);
 	});
 
 	it("should call refreshDatabase when refresh button is clicked", async () => {
 		const user = userEvent.setup();
 		render(<App />, { wrapper: createWrapper() });
 
-		const refreshButton = screen.getAllByRole("button").find((btn) => btn.querySelector(".pi-database"));
+		const refreshButton = screen
+			.getAllByRole("button")
+			.find((btn) => btn.getAttribute("icon") === "pi pi-database");
 		if (refreshButton) {
 			await user.click(refreshButton);
 		}
