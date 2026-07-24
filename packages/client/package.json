@@ -19,7 +19,7 @@
 		"primeflex": "^4.0.0",
 		"primeicons": "^8.0.0",
 		"primereact": "^11.0.0",
-		"react": "^19.2.7",
+		"react": "^19.2.8",
 		"react-dom": "^19.2.7",
 		"react-error-boundary": "^6.1.2"
 	},
