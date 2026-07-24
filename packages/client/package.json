@@ -12,7 +12,7 @@
 	"dependencies": {
 		"@fluentui/react-hooks": "^8.10.2",
 		"@primereact/core": "^11.0.0",
-		"@primeuix/themes": "^1.0.0",
+		"@primeuix/themes": "^3.0.0",
 		"@primeuix/utils": "^0.8.0",
 		"@tanstack/react-query": "^5.101.2",
 		"pretty-ms": "^9.3.0",
