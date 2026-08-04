@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Stack } from "@chakra-ui/react";
 
 import { type StatusOption, getDownloads } from "../services/downloads";
 import { downloadableItem } from "./DownloadableItem/DownloadableItem";
@@ -26,11 +27,11 @@ export const DownloadList = ({ statusOption }: DownloadListProps) => {
 
 	return (
 		<ErrorBoundary isLoading={isLoading} isError={isError}>
-			<div data-scope="dataview">
+			<Stack gap={2}>
 				{data.map((file) => (
 					<ItemComponent key={file.fileName} {...file} />
 				))}
-			</div>
+			</Stack>
 		</ErrorBoundary>
 	);
 };

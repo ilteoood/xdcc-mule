@@ -1,5 +1,4 @@
-import { Message } from "primereact/message";
-import { ProgressSpinner } from "primereact/progressspinner";
+import { Alert, Center, Spinner } from "@chakra-ui/react";
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 
 interface ErrorBoundaryProps {
@@ -9,19 +8,18 @@ interface ErrorBoundaryProps {
 }
 
 const ErrorMessage = () => (
-	<Message.Root severity="error">
-		<Message.Content>
-			<Message.Text>Something went wrong</Message.Text>
-		</Message.Content>
-	</Message.Root>
+	<Alert.Root status="error">
+		<Alert.Indicator />
+		<Alert.Title>Something went wrong</Alert.Title>
+	</Alert.Root>
 );
 
 export const ErrorBoundary = ({ children, isLoading, isError }: ErrorBoundaryProps) => {
 	if (isLoading) {
 		return (
-			<div className="flex justify-content-center">
-				<ProgressSpinner.Root />
-			</div>
+			<Center>
+				<Spinner role="status" />
+			</Center>
 		);
 	}
 

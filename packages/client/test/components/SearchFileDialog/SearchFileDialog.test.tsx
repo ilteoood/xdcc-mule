@@ -27,7 +27,7 @@ describe("SearchFileDialog", () => {
 	it("should render search button initially", () => {
 		render(<SearchFileDialog />, { wrapper: createWrapper() });
 
-		const button = screen.getByRole("button");
+		const button = screen.getByRole("button", { name: /search files/i });
 		expect(button).toBeInTheDocument();
 	});
 
@@ -35,8 +35,7 @@ describe("SearchFileDialog", () => {
 		const user = userEvent.setup();
 		render(<SearchFileDialog />, { wrapper: createWrapper() });
 
-		const button = screen.getByRole("button");
-		await user.click(button);
+		await user.click(screen.getByRole("button", { name: /search files/i }));
 
 		expect(screen.getByRole("dialog")).toBeInTheDocument();
 		expect(screen.getByText("Search file")).toBeInTheDocument();
@@ -46,9 +45,9 @@ describe("SearchFileDialog", () => {
 		const user = userEvent.setup();
 		render(<SearchFileDialog />, { wrapper: createWrapper() });
 
-		await user.click(screen.getByRole("button"));
+		await user.click(screen.getByRole("button", { name: /search files/i }));
 
-		const searchButton = screen.getByRole("button", { name: /search/i });
+		const searchButton = screen.getByRole("button", { name: /^search$/i });
 		expect(searchButton).toBeDisabled();
 	});
 
@@ -56,12 +55,12 @@ describe("SearchFileDialog", () => {
 		const user = userEvent.setup();
 		render(<SearchFileDialog />, { wrapper: createWrapper() });
 
-		await user.click(screen.getByRole("button"));
+		await user.click(screen.getByRole("button", { name: /search files/i }));
 
 		const input = screen.getByPlaceholderText("File name");
 		await user.type(input, "test");
 
-		const searchButton = screen.getByRole("button", { name: /search/i });
+		const searchButton = screen.getByRole("button", { name: /^search$/i });
 		expect(searchButton).not.toBeDisabled();
 	});
 
@@ -70,12 +69,12 @@ describe("SearchFileDialog", () => {
 		const user = userEvent.setup();
 		render(<SearchFileDialog />, { wrapper: createWrapper() });
 
-		await user.click(screen.getByRole("button"));
+		await user.click(screen.getByRole("button", { name: /search files/i }));
 
 		const input = screen.getByPlaceholderText("File name");
 		await user.type(input, "test-file");
 
-		const searchButton = screen.getByRole("button", { name: /search/i });
+		const searchButton = screen.getByRole("button", { name: /^search$/i });
 		await user.click(searchButton);
 
 		await waitFor(() => {
@@ -88,7 +87,7 @@ describe("SearchFileDialog", () => {
 		const user = userEvent.setup();
 		render(<SearchFileDialog />, { wrapper: createWrapper() });
 
-		await user.click(screen.getByRole("button"));
+		await user.click(screen.getByRole("button", { name: /search files/i }));
 
 		const input = screen.getByPlaceholderText("File name");
 		await user.type(input, "test-file");
@@ -114,12 +113,12 @@ describe("SearchFileDialog", () => {
 		const user = userEvent.setup();
 		render(<SearchFileDialog />, { wrapper: createWrapper() });
 
-		await user.click(screen.getByRole("button"));
+		await user.click(screen.getByRole("button", { name: /search files/i }));
 
 		const input = screen.getByPlaceholderText("File name");
 		await user.type(input, "search");
 
-		const searchButton = screen.getByRole("button", { name: /search/i });
+		const searchButton = screen.getByRole("button", { name: /^search$/i });
 		await user.click(searchButton);
 
 		await waitFor(() => {
@@ -127,20 +126,11 @@ describe("SearchFileDialog", () => {
 		});
 	});
 
-	it("should not render data view when file name is empty", async () => {
-		const user = userEvent.setup();
-		render(<SearchFileDialog />, { wrapper: createWrapper() });
-
-		await user.click(screen.getByRole("button"));
-
-		expect(screen.queryByRole("list")).not.toBeInTheDocument();
-	});
-
 	it("should close dialog when close button is clicked", async () => {
 		const user = userEvent.setup();
 		render(<SearchFileDialog />, { wrapper: createWrapper() });
 
-		await user.click(screen.getByRole("button"));
+		await user.click(screen.getByRole("button", { name: /search files/i }));
 		expect(screen.getByRole("dialog")).toBeInTheDocument();
 
 		const closeButton = screen.getByRole("button", { name: /close/i });

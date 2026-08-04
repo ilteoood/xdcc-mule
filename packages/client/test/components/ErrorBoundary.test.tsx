@@ -18,7 +18,7 @@ describe("ErrorBoundary", () => {
 			{ wrapper: createWrapper() },
 		);
 
-		expect(screen.getByRole("progressbar")).toBeInTheDocument();
+		expect(screen.getByRole("status")).toBeInTheDocument();
 		expect(screen.queryByText("Child content")).not.toBeInTheDocument();
 	});
 
@@ -53,7 +53,7 @@ describe("ErrorBoundary", () => {
 			{ wrapper: createWrapper() },
 		);
 
-		expect(screen.getByRole("progressbar")).toBeInTheDocument();
+		expect(screen.getByRole("status")).toBeInTheDocument();
 		expect(screen.queryByText("Something went wrong")).not.toBeInTheDocument();
 	});
 });

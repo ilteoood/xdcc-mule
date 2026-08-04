@@ -26,7 +26,7 @@ describe("DownloadList", () => {
 
 		render(<DownloadList />, { wrapper: createWrapper() });
 
-		screen.getByRole("progressbar");
+		screen.getByRole("status");
 	});
 
 	it("should render downloads when data is available", async () => {
