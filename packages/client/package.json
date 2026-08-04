@@ -10,30 +10,30 @@
 		"test": "vitest"
 	},
 	"dependencies": {
-		"@chakra-ui/react": "^3.27.0",
+		"@chakra-ui/react": "^3.36.1",
 		"@emotion/react": "^11.14.0",
 		"@fluentui/react-hooks": "^8.10.2",
-		"@tanstack/react-query": "^5.101.2",
-		"lucide-react": "^0.540.0",
+		"@tanstack/react-query": "^5.101.4",
+		"lucide-react": "^0.577.0",
 		"next-themes": "^0.4.6",
 		"pretty-ms": "^9.3.0",
-		"react": "^19.2.7",
-		"react-dom": "^19.2.7",
+		"react": "^19.2.8",
+		"react-dom": "^19.2.8",
 		"react-error-boundary": "^6.1.2"
 	},
 	"devDependencies": {
 		"@testing-library/dom": "^10.4.1",
-		"@testing-library/jest-dom": "^6.9.1",
+		"@testing-library/jest-dom": "^6.10.0",
 		"@testing-library/react": "^16.3.2",
-		"@testing-library/user-event": "^14.6.1",
-		"@types/node": "26.1.1",
-		"@types/react": "^19.2.17",
-		"@types/react-dom": "^19.2.3",
-		"@vitejs/plugin-react-swc": "^4.3.2",
+		"@testing-library/user-event": "^14.6.3",
+		"@types/node": "26.1.2",
+		"@types/react": "^19.2.18",
+		"@types/react-dom": "^19.2.4",
+		"@vitejs/plugin-react-swc": "^4.3.3",
 		"@vitest/coverage-v8": "^4.1.10",
-		"happy-dom": "^20.10.6",
+		"happy-dom": "^20.11.1",
 		"typescript": "^7.0.2",
-		"vite": "^8.1.5",
+		"vite": "^8.2.0",
 		"vitest": "^4.1.10"
 	}
 }
