@@ -1,11 +1,6 @@
-import { Button } from "primereact/button";
-import { classNames } from "@primeuix/utils";
+import { IconButton } from "@chakra-ui/react";
 import type { ComponentProps } from "react";
 
-import style from "./DoubleIconButton.module.css";
+type IconButtonProps = NonNullable<ComponentProps<typeof IconButton>>;
 
-type ButtonProps = NonNullable<ComponentProps<typeof Button>>;
-
-export const DoubleIconButton = (props: ButtonProps) => (
-	<Button {...props} className={classNames(style.withoutLabel, props.className)} />
-);
+export const DoubleIconButton = (props: IconButtonProps) => <IconButton {...props} />;

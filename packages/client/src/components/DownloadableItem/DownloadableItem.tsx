@@ -1,23 +1,20 @@
 import { useBoolean } from "@fluentui/react-hooks";
+import { Flex, HStack, IconButton, Progress, Stack } from "@chakra-ui/react";
+import { Download, Trash2 } from "lucide-react";
 import prettyMilliseconds from "pretty-ms";
-import { Button } from "primereact/button";
-import { ProgressBar } from "primereact/progressbar";
-import { classNames } from "@primeuix/utils";
 import { type ComponentProps, useCallback } from "react";
 
 import { type DownloadableFile, type DownloadingFile, cancelDownload, downloadFile } from "../../services/downloads";
-
-import style from "./DownloadableItem.module.css";
 
 interface DownloadableItemProps {
 	action: string;
 }
 
-type ButtonProps = NonNullable<ComponentProps<typeof Button>>;
+type IconButtonProps = NonNullable<ComponentProps<typeof IconButton>>;
 
-const iconsMap: Record<string, string> = {
-	download: "pi pi-download",
-	delete: "pi pi-trash",
+const iconsMap: Record<string, React.ReactNode> = {
+	download: <Download />,
+	delete: <Trash2 />,
 };
 
 const buttonActionsMap: Record<string, (downloadableFile: DownloadableFile) => Promise<Response>> = {
@@ -25,8 +22,8 @@ const buttonActionsMap: Record<string, (downloadableFile: DownloadableFile) => P
 	delete: (downloadableFile: DownloadableFile) => cancelDownload(downloadableFile),
 };
 
-const styleMap: Record<string, ButtonProps["severity"]> = {
-	delete: "danger",
+const styleMap: Record<string, IconButtonProps["colorPalette"]> = {
+	delete: "red",
 };
 
 export const downloadableItem =
@@ -39,9 +36,9 @@ export const downloadableItem =
 		}, [disableButton, downloadableFile]);
 
 		return (
-			<div className={classNames(style.container, "flex", "flex-column")}>
-				<div className="flex flex-row justify-content-between">
-					<div>
+			<Stack width="100%">
+				<Flex justifyContent="space-between" alignItems="center">
+					<Stack gap={0}>
 						<div>Name: {downloadableFile.fileName}</div>
 						<div>
 							Location: {downloadableFile.network} - {downloadableFile.channelName} - {downloadableFile.botName}
@@ -50,26 +47,29 @@ export const downloadableItem =
 						<div>Size: {downloadableFile.fileSize}</div>
 						{downloadableFile.status && <div>Status: {downloadableFile.status}</div>}
 						{downloadableFile.eta > 0 && <div>ETA: {prettyMilliseconds(downloadableFile.eta)}</div>}
-					</div>
-					<div className="flex align-items-center gap-2">
+					</Stack>
+					<HStack gap={2} alignItems="center">
 						{props?.action && (
-							<Button
+							<IconButton
+								aria-label={props.action}
 								disabled={isButtonDisabled}
-								icon={iconsMap[props.action]}
-								severity={styleMap[props.action]}
-								size="small"
+								colorPalette={styleMap[props.action]}
+								size="sm"
 								onClick={onButtonClick}
-							/>
+							>
+								{iconsMap[props.action]}
+							</IconButton>
 						)}
-					</div>
-				</div>
+					</HStack>
+				</Flex>
 				{downloadableFile.percentage > 0 && (
-					<ProgressBar.Root className="mt-2" value={Number(downloadableFile.percentage.toFixed(2))}>
-						<ProgressBar.Track>
-							<ProgressBar.Value />
-						</ProgressBar.Track>
-					</ProgressBar.Root>
+					<Progress.Root mt={2} value={Number(downloadableFile.percentage.toFixed(1))}>
+						<Progress.Track>
+							<Progress.Range />
+						</Progress.Track>
+						<Progress.Label>{`${downloadableFile.percentage.toFixed(1)}%`}</Progress.Label>
+					</Progress.Root>
 				)}
-			</div>
+			</Stack>
 		);
 	};

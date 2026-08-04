@@ -47,24 +47,21 @@ describe("downloadableItem", () => {
 		const ItemComponent = downloadableItem({ action: "download" });
 		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
 
-		const button = screen.getByRole("button");
-		expect(button.getAttribute("icon")).toBe("pi pi-download");
+		expect(screen.getByRole("button", { name: /download/i })).toBeInTheDocument();
 	});
 
 	it("should render delete button when action is delete", () => {
 		const ItemComponent = downloadableItem({ action: "delete" });
 		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
 
-		const button = screen.getByRole("button");
-		expect(button.getAttribute("icon")).toBe("pi pi-trash");
-		expect(button.getAttribute("data-scope")).toBe("button");
+		expect(screen.getByRole("button", { name: /delete/i })).toBeInTheDocument();
 	});
 
 	it("should call downloadFile when download button is clicked", async () => {
 		const ItemComponent = downloadableItem({ action: "download" });
 		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
 
-		const button = screen.getByRole("button");
+		const button = screen.getByRole("button", { name: /download/i });
 		fireEvent.click(button);
 
 		expect(downloadFile).toHaveBeenCalledWith(mockFile);
@@ -74,7 +71,7 @@ describe("downloadableItem", () => {
 		const ItemComponent = downloadableItem({ action: "delete" });
 		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
 
-		const button = screen.getByRole("button");
+		const button = screen.getByRole("button", { name: /delete/i });
 		fireEvent.click(button);
 
 		expect(cancelDownload).toHaveBeenCalledWith(mockFile);
@@ -84,7 +81,7 @@ describe("downloadableItem", () => {
 		const ItemComponent = downloadableItem({ action: "download" });
 		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
 
-		const button = screen.getByRole("button");
+		const button = screen.getByRole("button", { name: /download/i });
 		expect(button).not.toBeDisabled();
 
 		fireEvent.click(button);

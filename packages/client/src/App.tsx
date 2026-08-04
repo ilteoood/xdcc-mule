@@ -1,58 +1,76 @@
 import { useMutation } from "@tanstack/react-query";
-import { Select } from "primereact/select";
+import { Box, createListCollection, Flex, HStack, Portal, Select } from "@chakra-ui/react";
+import { Database } from "lucide-react";
 import { useCallback, useState } from "react";
-import { DoubleIconButton } from "./components/DoubleIconButton/DoubleIconButton";
 import { DownloadList } from "./components/DownloadList";
+import { DoubleIconButton } from "./components/DoubleIconButton/DoubleIconButton";
 import { SearchFileDialog } from "./components/SearchFileDialog/SearchFileDialog";
 import { type StatusOption, statusOptions } from "./services/downloads";
 import { refreshDatabase } from "./services/files";
 
-const dropdownOptions = statusOptions.map((option) => ({ label: option, value: option }));
+const dropdownOptions = createListCollection({
+	items: statusOptions.map((option) => ({ label: option, value: option })),
+});
 
 function App() {
 	const [statusOption, setStatusOption] = useState<StatusOption>();
 
-	const onStatusChange = useCallback((event: { value: unknown }) => {
-		setStatusOption(event.value as StatusOption);
+	const onStatusChange = useCallback((details: { value: string[] }) => {
+		setStatusOption(details.value[0] as StatusOption);
 	}, []);
 
 	const { isPending, mutate } = useMutation({ mutationFn: refreshDatabase });
 
 	return (
 		<>
-			<div className="flex justify-content-between">
-				<div className="flex align-items-center mb-2">
-					<div className="mr-2">Status:</div>
+			<Flex justifyContent="space-between" mb={2}>
+				<Flex alignItems="center" mb={2}>
+					<Box mr={2}>Status:</Box>
 					<Select.Root
-						value={statusOption}
+						collection={dropdownOptions}
+						value={statusOption ? [statusOption] : []}
 						onValueChange={onStatusChange}
-						options={dropdownOptions}
-						optionLabel="label"
-						optionValue="value"
+						width="200px"
 					>
-						<Select.Trigger>
-							<Select.Value placeholder="Select status" />
-						</Select.Trigger>
-						<Select.Portal>
-							<Select.Popup>
-								<Select.List />
-							</Select.Popup>
-						</Select.Portal>
+						<Select.HiddenSelect />
+						<Select.Control>
+							<Select.Trigger>
+								<Select.ValueText placeholder="Select status" />
+							</Select.Trigger>
+							<Select.IndicatorGroup>
+								<Select.Indicator />
+							</Select.IndicatorGroup>
+						</Select.Control>
+						<Portal>
+							<Select.Positioner>
+								<Select.Content>
+									<Select.List>
+										{dropdownOptions.items.map((option) => (
+											<Select.Item key={option.value} item={option}>
+												<Select.ItemText>{option.label}</Select.ItemText>
+												<Select.ItemIndicator />
+											</Select.Item>
+										))}
+									</Select.List>
+								</Select.Content>
+							</Select.Positioner>
+						</Portal>
 					</Select.Root>
-				</div>
+				</Flex>
 
-				<div className="flex gap-2">
+				<HStack gap={2}>
 					<DoubleIconButton
-						icon="pi pi-database"
-						severity="danger"
-						className="pi pi-times"
-						onClick={mutate as () => void}
+						aria-label="Refresh database"
+						colorPalette="red"
 						disabled={isPending}
-					/>
+						onClick={mutate as () => void}
+					>
+						<Database />
+					</DoubleIconButton>
 
 					<SearchFileDialog />
-				</div>
-			</div>
+				</HStack>
+			</Flex>
 			<DownloadList statusOption={statusOption} />
 		</>
 	);

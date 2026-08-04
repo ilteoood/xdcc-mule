@@ -1,4 +1,4 @@
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import App from "../src/App";
@@ -38,27 +38,21 @@ describe("App", () => {
 	it("should render refresh database button", async () => {
 		render(<App />, { wrapper: createWrapper() });
 
-		const buttons = screen.getAllByRole("button");
-		expect(buttons.length).toBeGreaterThan(0);
+		expect(screen.getByRole("button", { name: /refresh database/i })).toBeInTheDocument();
 	});
 
 	it("should render search file dialog button", async () => {
 		render(<App />, { wrapper: createWrapper() });
 
-		const buttons = screen.getAllByRole("button");
-		expect(buttons.some((btn) => btn.getAttribute("icon") === "pi pi-file")).toBe(true);
+		expect(screen.getByRole("button", { name: /search files/i })).toBeInTheDocument();
 	});
 
 	it("should call refreshDatabase when refresh button is clicked", async () => {
 		const user = userEvent.setup();
 		render(<App />, { wrapper: createWrapper() });
 
-		const refreshButton = screen
-			.getAllByRole("button")
-			.find((btn) => btn.getAttribute("icon") === "pi pi-database");
-		if (refreshButton) {
-			await user.click(refreshButton);
-		}
+		const refreshButton = screen.getByRole("button", { name: /refresh database/i });
+		await user.click(refreshButton);
 
 		await waitFor(() => {
 			expect(refreshDatabase).toHaveBeenCalled();
@@ -80,7 +74,8 @@ describe("App", () => {
 		fireEvent.click(dropdown);
 
 		await waitFor(() => {
-			const pendingOption = screen.getByText("pending");
+			const list = screen.getByRole("listbox");
+			const pendingOption = within(list).getByText("pending");
 			fireEvent.click(pendingOption);
 		});
 
@@ -96,11 +91,12 @@ describe("App", () => {
 		fireEvent.click(dropdown);
 
 		await waitFor(() => {
-			expect(screen.getByText("pending")).toBeInTheDocument();
-			expect(screen.getByText("downloading")).toBeInTheDocument();
-			expect(screen.getByText("downloaded")).toBeInTheDocument();
-			expect(screen.getByText("error")).toBeInTheDocument();
-			expect(screen.getByText("cancelled")).toBeInTheDocument();
+			const list = screen.getByRole("listbox");
+			expect(within(list).getByText("pending")).toBeInTheDocument();
+			expect(within(list).getByText("downloading")).toBeInTheDocument();
+			expect(within(list).getByText("downloaded")).toBeInTheDocument();
+			expect(within(list).getByText("error")).toBeInTheDocument();
+			expect(within(list).getByText("cancelled")).toBeInTheDocument();
 		});
 	});
 });
