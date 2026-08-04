@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { downloadableItem } from "../../../src/components/DownloadableItem/DownloadableItem";
+import { DownloadableItem } from "../../../src/components/DownloadableItem/DownloadableItem";
 import type { DownloadableFile, DownloadingFile } from "../../../src/services/downloads";
 import { createWrapper } from "../../utils/testWrapper";
 
@@ -33,8 +33,7 @@ describe("downloadableItem", () => {
 	});
 
 	it("should render file information correctly", () => {
-		const ItemComponent = downloadableItem({ action: "download" });
-		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={"download"} {...mockFile} />, { wrapper: createWrapper() });
 
 		expect(screen.getByText("Name: test-file.txt")).toBeInTheDocument();
 		expect(screen.getByText(/Location:.*test-network.*test-channel.*test-bot/)).toBeInTheDocument();
@@ -44,22 +43,19 @@ describe("downloadableItem", () => {
 	});
 
 	it("should render download button when action is download", () => {
-		const ItemComponent = downloadableItem({ action: "download" });
-		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={"download"} {...mockFile} />, { wrapper: createWrapper() });
 
 		expect(screen.getByRole("button", { name: /download/i })).toBeInTheDocument();
 	});
 
 	it("should render delete button when action is delete", () => {
-		const ItemComponent = downloadableItem({ action: "delete" });
-		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={"delete"} {...mockFile} />, { wrapper: createWrapper() });
 
 		expect(screen.getByRole("button", { name: /delete/i })).toBeInTheDocument();
 	});
 
 	it("should call downloadFile when download button is clicked", async () => {
-		const ItemComponent = downloadableItem({ action: "download" });
-		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={"download"} {...mockFile} />, { wrapper: createWrapper() });
 
 		const button = screen.getByRole("button", { name: /download/i });
 		fireEvent.click(button);
@@ -68,8 +64,7 @@ describe("downloadableItem", () => {
 	});
 
 	it("should call cancelDownload when delete button is clicked", async () => {
-		const ItemComponent = downloadableItem({ action: "delete" });
-		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={"delete"} {...mockFile} />, { wrapper: createWrapper() });
 
 		const button = screen.getByRole("button", { name: /delete/i });
 		fireEvent.click(button);
@@ -78,8 +73,7 @@ describe("downloadableItem", () => {
 	});
 
 	it("should disable button after click", async () => {
-		const ItemComponent = downloadableItem({ action: "download" });
-		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={"download"} {...mockFile} />, { wrapper: createWrapper() });
 
 		const button = screen.getByRole("button", { name: /download/i });
 		expect(button).not.toBeDisabled();
@@ -91,46 +85,40 @@ describe("downloadableItem", () => {
 
 	it("should render progress bar when percentage > 0", () => {
 		const fileWithProgress = { ...mockFile, percentage: 50.5 };
-		const ItemComponent = downloadableItem({ action: "download" });
-		render(<ItemComponent {...fileWithProgress} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={"download"} {...fileWithProgress} />, { wrapper: createWrapper() });
 
 		expect(screen.getByRole("progressbar")).toBeInTheDocument();
 		expect(screen.getByText("50.5%")).toBeInTheDocument();
 	});
 
 	it("should not render progress bar when percentage is 0", () => {
-		const ItemComponent = downloadableItem({ action: "download" });
-		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={"download"} {...mockFile} />, { wrapper: createWrapper() });
 
 		expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
 	});
 
 	it("should render ETA when eta > 0", () => {
 		const fileWithEta = { ...mockFile, eta: 60000 };
-		const ItemComponent = downloadableItem({ action: "download" });
-		render(<ItemComponent {...fileWithEta} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={"download"} {...fileWithEta} />, { wrapper: createWrapper() });
 
 		expect(screen.getByText(/ETA:/)).toBeInTheDocument();
 	});
 
 	it("should not render ETA when eta is 0", () => {
-		const ItemComponent = downloadableItem({ action: "download" });
-		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={"download"} {...mockFile} />, { wrapper: createWrapper() });
 
 		expect(screen.queryByText(/ETA:/)).not.toBeInTheDocument();
 	});
 
 	it("should not render status when it is not provided", () => {
 		const fileWithoutStatus = { ...mockFile, status: undefined as unknown as "pending" };
-		const ItemComponent = downloadableItem({ action: "download" });
-		render(<ItemComponent {...fileWithoutStatus} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={"download"} {...fileWithoutStatus} />, { wrapper: createWrapper() });
 
 		expect(screen.queryByText(/Status:/)).not.toBeInTheDocument();
 	});
 
 	it("should not render button when action is not provided", () => {
-		const ItemComponent = downloadableItem({ action: "" });
-		render(<ItemComponent {...mockFile} />, { wrapper: createWrapper() });
+		render(<DownloadableItem action={""} {...mockFile} />, { wrapper: createWrapper() });
 
 		expect(screen.queryByRole("button")).not.toBeInTheDocument();
 	});

@@ -14,13 +14,13 @@ import {
 import { File, Search } from "lucide-react";
 import { type ChangeEvent, type KeyboardEvent, useCallback, useState } from "react";
 import { searchFile } from "../../services/files";
-import { downloadableItem } from "../DownloadableItem/DownloadableItem";
+import { DownloadableItem } from "../DownloadableItem/DownloadableItem";
 import { ErrorBoundary } from "../ErrorBoundary";
 import type { DownloadingFile } from "../../services/downloads";
 
 import { DoubleIconButton } from "../DoubleIconButton/DoubleIconButton";
 
-const FILE_OPTIONS = { action: "download" };
+const FILE_OPTIONS = "download";
 
 export const SearchFileDialog = () => {
 	const [isVisible, { setTrue: setVisible, setFalse: setInvisible }] = useBoolean(false);
@@ -38,8 +38,6 @@ export const SearchFileDialog = () => {
 		queryFn: () => searchFile(fileName),
 		enabled: false,
 	});
-
-	const ItemComponent = downloadableItem(FILE_OPTIONS);
 
 	const onFileNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setFileName(e.target.value), []);
 
@@ -95,7 +93,7 @@ export const SearchFileDialog = () => {
 										{fileName && (
 											<Stack gap={2}>
 												{data.map((file: DownloadingFile) => (
-													<ItemComponent key={file.fileName} {...file} />
+													<DownloadableItem key={file.fileName} action={FILE_OPTIONS} {...file} />
 												))}
 											</Stack>
 										)}
