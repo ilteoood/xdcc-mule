@@ -10,4 +10,4 @@ RUN npm install --omit=dev && rm -rf ~/.npm
 
 EXPOSE 3000
 
-ENTRYPOINT ["node", "index.js"]
+ENTRYPOINT ["node", "index.mjs"]
