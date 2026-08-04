@@ -16,3 +16,6 @@ onlyBuiltDependencies:
   - '@swc/core'
   - core-js
   - esbuild
+
+overrides:
+  fast-uri: ^4.1.2
