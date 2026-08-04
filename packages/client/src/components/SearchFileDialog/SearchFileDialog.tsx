@@ -65,9 +65,7 @@ export const SearchFileDialog = () => {
 							<Dialog.Header>
 								<Dialog.Title>Search file</Dialog.Title>
 								<Dialog.CloseTrigger asChild>
-									<CloseButton size="sm" aria-label="Close dialog">
-										<Dialog.CloseTrigger />
-									</CloseButton>
+									<CloseButton size="sm" aria-label="Close dialog" />
 								</Dialog.CloseTrigger>
 							</Dialog.Header>
 							<Dialog.Body>
