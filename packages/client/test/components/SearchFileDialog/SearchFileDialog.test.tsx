@@ -140,4 +140,29 @@ describe("SearchFileDialog", () => {
 			expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 		});
 	});
+
+	it("should re-run the search when the file name changes", async () => {
+		vi.mocked(searchFile).mockResolvedValue([]);
+		const user = userEvent.setup();
+		render(<SearchFileDialog />, { wrapper: createWrapper() });
+
+		await user.click(screen.getByRole("button", { name: /search files/i }));
+		const input = screen.getByPlaceholderText("File name");
+		const searchButton = screen.getByRole("button", { name: /^search$/i });
+
+		await user.type(input, "first");
+		await user.click(searchButton);
+		await waitFor(() => {
+			expect(searchFile).toHaveBeenLastCalledWith("first");
+		});
+
+		await user.clear(input);
+		await user.type(input, "second");
+		await user.click(searchButton);
+		await waitFor(() => {
+			expect(searchFile).toHaveBeenLastCalledWith("second");
+		});
+
+		expect(searchFile).toHaveBeenCalledTimes(2);
+	});
 });

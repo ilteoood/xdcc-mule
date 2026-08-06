@@ -34,7 +34,7 @@ export const SearchFileDialog = () => {
 		isRefetchError,
 		refetch,
 	} = useQuery({
-		queryKey: ["files"],
+		queryKey: ["files", fileName],
 		queryFn: () => searchFile(fileName),
 		enabled: false,
 	});

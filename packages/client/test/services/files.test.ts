@@ -18,6 +18,7 @@ describe("files service", () => {
 		it("should send GET request to /api/files with name parameter", async () => {
 			const mockFiles = [{ fileName: "test.txt" }];
 			mockFetch.mockResolvedValueOnce({
+				ok: true,
 				json: () => Promise.resolve(mockFiles),
 			});
 
@@ -33,6 +34,7 @@ describe("files service", () => {
 		it("should handle special characters in file name", async () => {
 			const mockFiles: unknown[] = [];
 			mockFetch.mockResolvedValueOnce({
+				ok: true,
 				json: () => Promise.resolve(mockFiles),
 			});
 
@@ -43,6 +45,16 @@ describe("files service", () => {
 				headers: { "Content-Type": "application/json" },
 			});
 			expect(result).toStrictEqual(mockFiles);
+		});
+
+		it("should throw when the response is not ok", async () => {
+			mockFetch.mockResolvedValueOnce({
+				ok: false,
+				status: 500,
+				json: () => Promise.resolve({ statusCode: 500, message: "boom" }),
+			});
+
+			await expect(searchFile("test")).rejects.toThrow("Search failed: 500");
 		});
 	});
 
