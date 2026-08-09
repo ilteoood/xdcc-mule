@@ -122,7 +122,7 @@ describe("SearchFileDialog", () => {
 		await user.click(searchButton);
 
 		await waitFor(() => {
-			expect(screen.getByText("Name: search-result.txt")).toBeInTheDocument();
+			expect(screen.getByText("search-result.txt")).toBeInTheDocument();
 		});
 	});
 

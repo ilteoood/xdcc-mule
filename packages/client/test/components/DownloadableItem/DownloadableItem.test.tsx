@@ -35,11 +35,13 @@ describe("downloadableItem", () => {
 	it("should render file information correctly", () => {
 		render(<DownloadableItem action={"download"} {...mockFile} />, { wrapper: createWrapper() });
 
-		expect(screen.getByText("Name: test-file.txt")).toBeInTheDocument();
-		expect(screen.getByText(/Location:.*test-network.*test-channel.*test-bot/)).toBeInTheDocument();
-		expect(screen.getByText("Package number: 42")).toBeInTheDocument();
-		expect(screen.getByText("Size: 100MB")).toBeInTheDocument();
-		expect(screen.getByText("Status: pending")).toBeInTheDocument();
+		expect(screen.getByText("test-file.txt")).toBeInTheDocument();
+		expect(screen.getByText("test-network")).toBeInTheDocument();
+		expect(screen.getByText("test-channel")).toBeInTheDocument();
+		expect(screen.getByText("test-bot")).toBeInTheDocument();
+		expect(screen.getByText("#42")).toBeInTheDocument();
+		expect(screen.getByText("100MB")).toBeInTheDocument();
+		expect(screen.getByText("pending")).toBeInTheDocument();
 	});
 
 	it("should render download button when action is download", () => {
@@ -101,20 +103,20 @@ describe("downloadableItem", () => {
 		const fileWithEta = { ...mockFile, eta: 60000 };
 		render(<DownloadableItem action={"download"} {...fileWithEta} />, { wrapper: createWrapper() });
 
-		expect(screen.getByText(/ETA:/)).toBeInTheDocument();
+		expect(screen.getByText(/ETA\s/)).toBeInTheDocument();
 	});
 
 	it("should not render ETA when eta is 0", () => {
 		render(<DownloadableItem action={"download"} {...mockFile} />, { wrapper: createWrapper() });
 
-		expect(screen.queryByText(/ETA:/)).not.toBeInTheDocument();
+		expect(screen.queryByText(/ETA\s/)).not.toBeInTheDocument();
 	});
 
 	it("should not render status when it is not provided", () => {
 		const fileWithoutStatus = { ...mockFile, status: undefined as unknown as "pending" };
 		render(<DownloadableItem action={"download"} {...fileWithoutStatus} />, { wrapper: createWrapper() });
 
-		expect(screen.queryByText(/Status:/)).not.toBeInTheDocument();
+		expect(screen.queryByText("pending")).not.toBeInTheDocument();
 	});
 
 	it("should not render button when action is not provided", () => {
