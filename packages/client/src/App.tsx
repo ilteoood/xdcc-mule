@@ -23,14 +23,26 @@ function App() {
 
 	return (
 		<Box maxW="6xl" mx="auto" px={{ base: 4, md: 6 }} py={6}>
-			<Flex justifyContent="space-between" mb={4}>
-				<Flex alignItems="center">
-					<Box mr={2}>Status:</Box>
+			<Flex
+				justifyContent="space-between"
+				alignItems={{ base: "stretch", md: "center" }}
+				direction={{ base: "column", md: "row" }}
+				gap={3}
+				mb={4}
+			>
+				<Flex
+					alignItems="center"
+					gap={2}
+					direction={{ base: "column", md: "row" }}
+					align={{ base: "flex-start", md: "center" }}
+					w={{ base: "100%", md: "auto" }}
+				>
+					<Box alignSelf="flex-start">Status:</Box>
 					<Select.Root
 						collection={dropdownOptions}
 						value={statusOption ? [statusOption] : []}
 						onValueChange={onStatusChange}
-						width="200px"
+						width={{ base: "100%", md: "200px" }}
 					>
 						<Select.HiddenSelect />
 						<Select.Control>
