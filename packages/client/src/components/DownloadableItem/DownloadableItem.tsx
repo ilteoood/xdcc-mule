@@ -1,5 +1,16 @@
 import { useBoolean } from "@fluentui/react-hooks";
-import { Flex, HStack, IconButton, Progress, Stack } from "@chakra-ui/react";
+import {
+	Badge,
+	Box,
+	Flex,
+	HStack,
+	Heading,
+	IconButton,
+	Progress,
+	Separator,
+	Stack,
+	Text,
+} from "@chakra-ui/react";
 import { Download, Trash2 } from "lucide-react";
 import prettyMilliseconds from "pretty-ms";
 import { type ComponentProps, useCallback } from "react";
@@ -25,8 +36,16 @@ const buttonActionsMap: Record<string, (downloadableFile: DownloadableFile) => P
 	delete: (downloadableFile: DownloadableFile) => cancelDownload(downloadableFile),
 };
 
-const styleMap: Record<string, IconButtonProps["colorPalette"]> = {
+const buttonPaletteMap: Record<string, IconButtonProps["colorPalette"]> = {
 	delete: "red",
+};
+
+const statusPaletteMap: Record<string, IconButtonProps["colorPalette"]> = {
+	pending: "gray",
+	downloading: "blue",
+	downloaded: "green",
+	error: "red",
+	cancelled: "orange",
 };
 
 export const DownloadableItem = (props: DownloadableItemProps) => {
@@ -40,40 +59,63 @@ export const DownloadableItem = (props: DownloadableItemProps) => {
 	}, [disableButton, props]);
 
 	return (
-		<Stack width="100%">
-			<Flex justifyContent="space-between" alignItems="center">
-				<Stack gap={0}>
-					<div>Name: {downloadableFile.fileName}</div>
-					<div>
-						Location: {downloadableFile.network} - {downloadableFile.channelName} - {downloadableFile.botName}
-					</div>
-					<div>Package number: {downloadableFile.fileNumber}</div>
-					<div>Size: {downloadableFile.fileSize}</div>
-					{downloadableFile.status && <div>Status: {downloadableFile.status}</div>}
-					{Number(downloadableFile.eta) > 0 && <div>ETA: {prettyMilliseconds(Number(downloadableFile.eta))}</div>}
+		<Box bg="bg.panel" borderWidth="1px" borderColor="border.subtle" borderRadius="md" p={4}>
+			<Flex justifyContent="space-between" alignItems="flex-start" gap={3}>
+				<Stack gap={2} flex={1} minW={0}>
+					<Heading size="sm" truncate fontWeight="semibold">
+						{downloadableFile.fileName}
+					</Heading>
+
+					<HStack gap={2} color="fg.muted" fontSize="xs" fontFamily="mono" flexWrap="wrap">
+						<Text>{downloadableFile.network}</Text>
+						<Separator orientation="vertical" height="3" />
+						<Text>{downloadableFile.channelName}</Text>
+						<Separator orientation="vertical" height="3" />
+						<Text>{downloadableFile.botName}</Text>
+						<Separator orientation="vertical" height="3" />
+						<Text>#{downloadableFile.fileNumber}</Text>
+					</HStack>
+
+					<HStack gap={3} fontSize="xs" fontFamily="mono" color="fg.muted" alignItems="center" flexWrap="wrap">
+						<Text>{downloadableFile.fileSize}</Text>
+						{downloadableFile.status && (
+							<Badge
+								colorPalette={statusPaletteMap[downloadableFile.status] ?? "gray"}
+								variant="subtle"
+								size="sm"
+								textTransform="lowercase"
+							>
+								{downloadableFile.status}
+							</Badge>
+						)}
+						{Number(downloadableFile.eta) > 0 && (
+							<Text>ETA {prettyMilliseconds(Number(downloadableFile.eta))}</Text>
+						)}
+					</HStack>
 				</Stack>
-				<HStack gap={2} alignItems="center">
-					{action && (
-						<IconButton
-							aria-label={action}
-							disabled={isButtonDisabled}
-							colorPalette={styleMap[action]}
-							size="sm"
-							onClick={onButtonClick}
-						>
-							{iconsMap[action]}
-						</IconButton>
-					)}
-				</HStack>
+
+				{action && (
+					<IconButton
+						aria-label={action}
+						disabled={isButtonDisabled}
+						colorPalette={buttonPaletteMap[action]}
+						size="sm"
+						variant="ghost"
+						onClick={onButtonClick}
+					>
+						{iconsMap[action]}
+					</IconButton>
+				)}
 			</Flex>
+
 			{Number(downloadableFile.percentage) > 0 && (
-				<Progress.Root mt={2} value={Number(Number(downloadableFile.percentage).toFixed(1))}>
+				<Progress.Root mt={3} size="xs" value={Number(Number(downloadableFile.percentage).toFixed(1))}>
 					<Progress.Track>
 						<Progress.Range />
 					</Progress.Track>
-					<Progress.Label>{`${Number(downloadableFile.percentage).toFixed(1)}%`}</Progress.Label>
+					<Progress.Label fontFamily="mono">{`${Number(downloadableFile.percentage).toFixed(1)}%`}</Progress.Label>
 				</Progress.Root>
 			)}
-		</Stack>
+		</Box>
 	);
 };

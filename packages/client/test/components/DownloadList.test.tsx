@@ -48,7 +48,7 @@ describe("DownloadList", () => {
 
 		render(<DownloadList />, { wrapper: createWrapper() });
 
-		await screen.findByText("Name: test-file.txt");
+		await screen.findByText("test-file.txt");
 	});
 
 	it("should call getDownloads with status filter when provided", async () => {
@@ -88,6 +88,6 @@ describe("DownloadList", () => {
 			expect(getDownloads).toHaveBeenCalled();
 		});
 
-		expect(screen.queryByText(/Name:/)).not.toBeInTheDocument();
+		expect(screen.queryByText("test-file.txt")).not.toBeInTheDocument();
 	});
 });
