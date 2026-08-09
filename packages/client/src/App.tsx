@@ -22,9 +22,9 @@ function App() {
 	const { isPending, mutate } = useMutation({ mutationFn: refreshDatabase });
 
 	return (
-		<>
-			<Flex justifyContent="space-between" mb={2}>
-				<Flex alignItems="center" mb={2}>
+		<Box maxW="6xl" mx="auto" px={{ base: 4, md: 6 }} py={6}>
+			<Flex justifyContent="space-between" mb={4}>
+				<Flex alignItems="center">
 					<Box mr={2}>Status:</Box>
 					<Select.Root
 						collection={dropdownOptions}
@@ -72,7 +72,7 @@ function App() {
 				</HStack>
 			</Flex>
 			<DownloadList statusOption={statusOption} />
-		</>
+		</Box>
 	);
 }
 
