@@ -23,7 +23,7 @@ function App() {
 
 	return (
 		<>
-			<Flex justifyContent="space-between" mb={2}>
+			<Flex justifyContent="space-between" mb={2} pt={4} px={4}>
 				<Flex alignItems="center" mb={2}>
 					<Box mr={2}>Status:</Box>
 					<Select.Root
