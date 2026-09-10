@@ -59,7 +59,7 @@ export const SearchFileDialog = () => {
 				<Portal>
 					<Dialog.Backdrop />
 					<Dialog.Positioner>
-						<Dialog.Content maxW="90%">
+						<Dialog.Content maxW="90%" my={4}>
 							<Dialog.Header>
 								<Dialog.Title>Search file</Dialog.Title>
 								<Dialog.CloseTrigger asChild>
