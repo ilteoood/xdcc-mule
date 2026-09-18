@@ -1,16 +1,5 @@
 import { useBoolean } from "@fluentui/react-hooks";
-import {
-	Badge,
-	Box,
-	Flex,
-	HStack,
-	Heading,
-	IconButton,
-	Progress,
-	Separator,
-	Stack,
-	Text,
-} from "@chakra-ui/react";
+import { Badge, Box, Flex, HStack, Heading, IconButton, Progress, Separator, Stack, Text } from "@chakra-ui/react";
 import { Download, Trash2 } from "lucide-react";
 import prettyMilliseconds from "pretty-ms";
 import { type ComponentProps, useCallback } from "react";
@@ -88,9 +77,7 @@ export const DownloadableItem = (props: DownloadableItemProps) => {
 								{downloadableFile.status}
 							</Badge>
 						)}
-						{Number(downloadableFile.eta) > 0 && (
-							<Text>ETA {prettyMilliseconds(Number(downloadableFile.eta))}</Text>
-						)}
+						{Number(downloadableFile.eta) > 0 && <Text>ETA {prettyMilliseconds(Number(downloadableFile.eta))}</Text>}
 					</HStack>
 				</Stack>
 

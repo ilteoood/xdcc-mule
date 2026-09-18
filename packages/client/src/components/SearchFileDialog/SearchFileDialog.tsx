@@ -1,16 +1,6 @@
 import { useBoolean } from "@fluentui/react-hooks";
 import { useQuery } from "@tanstack/react-query";
-import {
-	Button,
-	CloseButton,
-	Dialog,
-	Flex,
-	HStack,
-	Input,
-	InputGroup,
-	Portal,
-	Stack,
-} from "@chakra-ui/react";
+import { Button, CloseButton, Dialog, Flex, HStack, Input, InputGroup, Portal, Stack } from "@chakra-ui/react";
 import { File, Search } from "lucide-react";
 import { type ChangeEvent, type KeyboardEvent, useCallback, useState } from "react";
 import { searchFile } from "../../services/files";
@@ -55,7 +45,13 @@ export const SearchFileDialog = () => {
 			<DoubleIconButton aria-label="Search files" onClick={setVisible}>
 				<File />
 			</DoubleIconButton>
-			<Dialog.Root open={isVisible} onOpenChange={(e) => !e.open && setInvisible()} size="lg" placement="center" scrollBehavior="inside">
+			<Dialog.Root
+				open={isVisible}
+				onOpenChange={(e) => !e.open && setInvisible()}
+				size="lg"
+				placement="center"
+				scrollBehavior="inside"
+			>
 				<Portal>
 					<Dialog.Backdrop />
 					<Dialog.Positioner>
@@ -70,12 +66,7 @@ export const SearchFileDialog = () => {
 								<ErrorBoundary isLoading={isLoading || isRefetching} isError={isError || isRefetchError}>
 									<Stack gap={2}>
 										<Flex justifyContent="space-between" mb={2}>
-											<InputGroup
-												startElement={<File />}
-												width="auto"
-												flex={1}
-												mr={2}
-											>
+											<InputGroup startElement={<File />} width="auto" flex={1} mr={2}>
 												<Input
 													value={fileName}
 													placeholder="File name"
