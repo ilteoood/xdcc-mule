@@ -55,7 +55,7 @@ export const SearchFileDialog = () => {
 			<DoubleIconButton aria-label="Search files" onClick={setVisible}>
 				<File />
 			</DoubleIconButton>
-			<Dialog.Root open={isVisible} onOpenChange={(e) => !e.open && setInvisible()} size="lg" placement="center">
+			<Dialog.Root open={isVisible} onOpenChange={(e) => !e.open && setInvisible()} size="lg" placement="center" scrollBehavior="inside">
 				<Portal>
 					<Dialog.Backdrop />
 					<Dialog.Positioner>
