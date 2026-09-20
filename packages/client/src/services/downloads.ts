@@ -1,6 +1,7 @@
 export type StatusOption = "pending" | "downloading" | "downloaded" | "error" | "cancelled";
 
 export interface DownloadableFile {
+	id: string;
 	channelName: string;
 	network: string;
 	fileNumber: string;

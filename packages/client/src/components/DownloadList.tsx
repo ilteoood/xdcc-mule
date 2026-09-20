@@ -27,7 +27,7 @@ export const DownloadList = ({ statusOption }: DownloadListProps) => {
 		<ErrorBoundary isLoading={isLoading} isError={isError}>
 			<Stack gap={2}>
 				{data.map((file) => (
-					<DownloadableItem key={file.fileName} action={FILE_OPTIONS} {...file} />
+					<DownloadableItem key={file.id} action={FILE_OPTIONS} {...file} />
 				))}
 			</Stack>
 		</ErrorBoundary>
