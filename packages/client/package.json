@@ -19,7 +19,7 @@
 		"pretty-ms": "^9.3.1",
 		"react": "^19.3.0",
 		"react-dom": "^19.3.0",
-		"react-error-boundary": "^6.1.5"
+		"react-error-boundary": "^6.1.6"
 	},
 	"devDependencies": {
 		"@testing-library/dom": "^10.4.2",
