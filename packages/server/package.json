@@ -19,7 +19,7 @@
 		"find-my-way": "^9.9.0",
 		"ip-address": "^10.7.2",
 		"node-cron": "^4.6.0",
-		"undici": "^8.10.2",
+		"undici": "^8.11.0",
 		"xdccjs": "^5.4.11"
 	},
 	"devDependencies": {
