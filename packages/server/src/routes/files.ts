@@ -22,6 +22,7 @@ export default async function (fastify: FastifyInstance) {
 						items: {
 							type: "object",
 							properties: {
+								id: { type: "string" },
 								channelName: { type: "string" },
 								network: { type: "string" },
 								fileNumber: { type: "string" },

@@ -101,6 +101,7 @@ describe("SearchFileDialog", () => {
 	it("should render search results", async () => {
 		const mockFiles = [
 			{
+				id: "test-network-test-channel-test-bot-1-search-result.txt-100MB",
 				channelName: "test-channel",
 				network: "test-network",
 				fileNumber: "1",

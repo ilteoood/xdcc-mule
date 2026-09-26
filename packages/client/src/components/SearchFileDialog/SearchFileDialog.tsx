@@ -84,7 +84,7 @@ export const SearchFileDialog = () => {
 										{fileName && (
 											<Stack gap={2}>
 												{data.map((file: DownloadingFile) => (
-													<DownloadableItem key={file.fileName} action={FILE_OPTIONS} {...file} />
+													<DownloadableItem key={file.id} action={FILE_OPTIONS} {...file} />
 												))}
 											</Stack>
 										)}

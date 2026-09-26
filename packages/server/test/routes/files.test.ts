@@ -44,6 +44,7 @@ describe("files route", () => {
 			expect(response.statusCode).toBe(200);
 			expect(response.json()).toStrictEqual([
 				{
+					id: "irc.test.net-#test-TestBot-#1-TestFile.rar-100M",
 					channelName: "#test",
 					network: "irc.test.net",
 					fileNumber: "#1",
