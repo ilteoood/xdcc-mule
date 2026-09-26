@@ -8,9 +8,11 @@ export default async function (fastify: FastifyInstance) {
 			schema: {
 				querystring: {
 					type: "object",
+					required: ["name"],
 					properties: {
 						name: {
 							type: "string",
+							minLength: 1,
 						},
 					},
 				},

@@ -30,7 +30,7 @@ describe("api route", () => {
 		it("should register files route under /api/files", async () => {
 			const response = await app.inject({
 				method: "GET",
-				url: "/api/files",
+				url: "/api/files?name=test",
 			});
 
 			expect(response.statusCode).toBe(200);

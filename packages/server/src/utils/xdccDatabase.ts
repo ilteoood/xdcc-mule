@@ -103,6 +103,10 @@ export const refresh = async () => {
 };
 
 export const search = async (value: string) => {
+	if (!value) {
+		return [];
+	}
+
 	if (!sqliteDb) {
 		await refresh();
 	}
