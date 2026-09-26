@@ -67,17 +67,24 @@ describe("files route", () => {
 			expect(response.json()).toStrictEqual([]);
 		});
 
-		it("should search with undefined name parameter", async () => {
-			mockSearch.mockResolvedValue([]);
-
+		it("should reject request without name parameter", async () => {
 			const response = await app.inject({
 				method: "GET",
 				url: "/",
 			});
 
-			expect(response.statusCode).toBe(200);
-			expect(response.json()).toStrictEqual([]);
-			expect(mockSearch).toHaveBeenCalledWith(undefined);
+			expect(response.statusCode).toBe(400);
+			expect(mockSearch).not.toHaveBeenCalled();
+		});
+
+		it("should reject request with empty name parameter", async () => {
+			const response = await app.inject({
+				method: "GET",
+				url: "/?name=",
+			});
+
+			expect(response.statusCode).toBe(400);
+			expect(mockSearch).not.toHaveBeenCalled();
 		});
 	});
 

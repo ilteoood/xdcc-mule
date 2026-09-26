@@ -224,6 +224,13 @@ invalid line
 
 			expect(result).toStrictEqual([]);
 		});
+
+		it("should return empty array for empty input without querying the database", async () => {
+			const result = await search("");
+
+			expect(result).toStrictEqual([]);
+			expect(mockPrepare).not.toHaveBeenCalled();
+		});
 	});
 
 	describe("refresh", () => {
