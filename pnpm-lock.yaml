@@ -25,8 +25,8 @@ importers:
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.3.0)(react@19.3.0)
       '@fluentui/react-hooks':
-        specifier: ^8.10.2
-        version: 8.10.2(@types/react@19.3.0)(react@19.3.0)
+        specifier: ^8.10.3
+        version: 8.10.3(@types/react@19.3.0)(react@19.3.0)
       '@tanstack/react-query':
         specifier: ^5.104.0
         version: 5.104.0(react@19.3.0)
@@ -507,11 +507,11 @@ packages:
   '@fluentui/dom-utilities@2.3.10':
     resolution: {integrity: sha512-6WDImiLqTOpkEtfUKSStcTDpzmJfL6ZammomcjawN9xH/8u8G3Hx72CIt2MNck9giw/oUlNLJFdWRAjeP3rmPQ==}
 
-  '@fluentui/merge-styles@8.6.14':
-    resolution: {integrity: sha512-vghuHFAfQgS9WLIIs4kgDOCh/DHd5vGIddP4/bzposhlAVLZR6wUBqldm9AuCdY88r5LyCRMavVJLV+Up3xdvA==}
+  '@fluentui/merge-styles@8.6.15':
+    resolution: {integrity: sha512-aNob5pyHJ9wxyr/E79+YTrS9B0kkUcaHoY0dfeCVM+VF4IvWOr8u/9Cxan7vpYUMXy93QWPeDxAVmlzsRTlEpA==}
 
-  '@fluentui/react-hooks@8.10.2':
-    resolution: {integrity: sha512-HAd5cX50yKW/LljWlwt+FpSpdS/pNJutk9kMb7FyzxfoGBulL7sj6vX2HvxhSKyJMRKuTstXTdfJmsh22+3W3w==}
+  '@fluentui/react-hooks@8.10.3':
+    resolution: {integrity: sha512-fFy8Rhs/dpFCJ3X+2jv9pc4KRn6iEOaRqBqaUXKjOvIWyQDe8/LGupRWUYEHdniroZcPWEbgGulFYjLvGP0wzw==}
     peerDependencies:
       '@types/react': '>=16.8.0 <20.0.0'
       react: '>=16.8.0 <20.0.0'
@@ -525,8 +525,8 @@ packages:
   '@fluentui/set-version@8.2.24':
     resolution: {integrity: sha512-8uNi2ThvNgF+6d3q2luFVVdk/wZV0AbRfJ85kkvf2+oSRY+f6QVK0w13vMorNhA5puumKcZniZoAfUF02w7NSg==}
 
-  '@fluentui/utilities@8.17.2':
-    resolution: {integrity: sha512-TmeWVtGN+Lk0mch7tuRcbkeMdrBwltI68fvQbPwcNLo4igFtTInMmjEnVJGa7pBQN5lQAmHYqB9IJI6RZU/t6w==}
+  '@fluentui/utilities@8.17.3':
+    resolution: {integrity: sha512-lMk+/k7kVGXSlLC86Z0MlMrL5aeaLuDbF2GG25hiWqMBqh2dJVeqwgqruZDt5rYXs0SEBAls3YvvN/IR81PQyw==}
     peerDependencies:
       '@types/react': '>=16.8.0 <20.0.0'
       react: '>=16.8.0 <20.0.0'
@@ -2825,16 +2825,16 @@ snapshots:
       '@fluentui/set-version': 8.2.24
       tslib: 2.8.1
 
-  '@fluentui/merge-styles@8.6.14':
+  '@fluentui/merge-styles@8.6.15':
     dependencies:
       '@fluentui/set-version': 8.2.24
       tslib: 2.8.1
 
-  '@fluentui/react-hooks@8.10.2(@types/react@19.3.0)(react@19.3.0)':
+  '@fluentui/react-hooks@8.10.3(@types/react@19.3.0)(react@19.3.0)':
     dependencies:
       '@fluentui/react-window-provider': 2.3.2(@types/react@19.3.0)(react@19.3.0)
       '@fluentui/set-version': 8.2.24
-      '@fluentui/utilities': 8.17.2(@types/react@19.3.0)(react@19.3.0)
+      '@fluentui/utilities': 8.17.3(@types/react@19.3.0)(react@19.3.0)
       '@types/react': 19.3.0
       react: 19.3.0
       tslib: 2.8.1
@@ -2850,10 +2850,10 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@fluentui/utilities@8.17.2(@types/react@19.3.0)(react@19.3.0)':
+  '@fluentui/utilities@8.17.3(@types/react@19.3.0)(react@19.3.0)':
     dependencies:
       '@fluentui/dom-utilities': 2.3.10
-      '@fluentui/merge-styles': 8.6.14
+      '@fluentui/merge-styles': 8.6.15
       '@fluentui/react-window-provider': 2.3.2(@types/react@19.3.0)(react@19.3.0)
       '@fluentui/set-version': 8.2.24
       '@types/react': 19.3.0
