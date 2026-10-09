@@ -110,8 +110,8 @@ importers:
         specifier: ^9.9.0
         version: 9.9.0
       ip-address:
-        specifier: ^10.7.2
-        version: 10.7.2
+        specifier: ^10.7.3
+        version: 10.7.3
       node-cron:
         specifier: ^4.6.0
         version: 4.6.0
@@ -1707,8 +1707,8 @@ packages:
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
 
-  ip-address@10.7.2:
-    resolution: {integrity: sha512-7H/2gFSIitxc0hG3nOI1glS8QLo/EHBFFLk8vEUjXY/xu0AdL8jZ9U1IzO2PUm0d2D/ofQcAifb0g6OBkt8U7w==}
+  ip-address@10.7.3:
+    resolution: {integrity: sha512-A1kdq/tSb5QjvKvAMgIoEvDBIgL7qaqVP/jkvSwYYRZ9iEzvPpopxp2wQfu3SuZRHtpHNxMn8Fs0bS+gf5Xmwg==}
     engines: {node: '>= 12'}
 
   ip-regex@5.0.0:
@@ -4182,7 +4182,7 @@ snapshots:
 
   inherits@2.0.4: {}
 
-  ip-address@10.7.2: {}
+  ip-address@10.7.3: {}
 
   ip-regex@5.0.0: {}
 
@@ -4580,7 +4580,7 @@ snapshots:
 
   socks@2.8.9:
     dependencies:
-      ip-address: 10.7.2
+      ip-address: 10.7.3
       smart-buffer: 4.2.0
 
   sonic-boom@4.2.1:
