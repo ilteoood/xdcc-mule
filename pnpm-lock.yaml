@@ -92,8 +92,8 @@ importers:
   packages/server:
     dependencies:
       '@fastify/static':
-        specifier: ^10.1.5
-        version: 10.1.5
+        specifier: ^10.1.6
+        version: 10.1.6
       axios:
         specifier: ^1.20.0
         version: 1.20.0(debug@4.4.3)
@@ -492,8 +492,8 @@ packages:
   '@fastify/send@4.1.0':
     resolution: {integrity: sha512-TMYeQLCBSy2TOFmV95hQWkiTYgC/SEx7vMdV+wnZVX4tt8VBLKzmH8vV9OzJehV0+XBfg+WxPMt5wp+JBUKsVw==}
 
-  '@fastify/static@10.1.5':
-    resolution: {integrity: sha512-3r0ZFXo82nKlPzySOUYhwWVfPZStfiwjmyevkX7cJWL2yXmEzl0Rpxv+L6L1R4OxqvlDGqf3g8OdBzILKgqe6w==}
+  '@fastify/static@10.1.6':
+    resolution: {integrity: sha512-f3x9XisI+y6AIhIfA/+Q3SFsuXeqNNk5HQh5htgHsPxmMLb4pLFskV6eFaLSW3IbI4azrS5np+/tkzXNH99LyQ==}
 
   '@floating-ui/core@1.8.0':
     resolution: {integrity: sha512-0CIZ5itps/8x7BG8dEIhs53BvCUH2PCoogtakwRTut+Arm58sJooJ0AuZhLw2HJYIR5cMLNPBSS728sPho2khQ==}
@@ -2910,7 +2910,7 @@ snapshots:
       http-errors: 2.0.1
       mime: 3.0.0
 
-  '@fastify/static@10.1.5':
+  '@fastify/static@10.1.6':
     dependencies:
       '@fastify/accept-negotiator': 2.0.1
       '@fastify/error': 4.2.0
